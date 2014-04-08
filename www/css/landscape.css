@@ -1,0 +1,226 @@
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+@media only screen and (min-width : 300px)  
+{
+   body { font-size:12px; }
+}
+@media only screen and (min-width : 400px)  
+{
+   body { font-size:16px; }
+}
+@media only screen and (min-width : 500px)  
+{
+   body { font-size:20px; }
+}
+@media only screen and (min-width : 600px)  
+{
+   body { font-size:24px; }
+}
+
+@font-face {
+    font-family: kondenz;
+    src: url("../fonts/MyriadPro-Cond.otf") format("opentype");    
+    }
+
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#553822;
+    background-attachment:fixed;
+    padding:none;
+}
+a{
+	text-decoration: none;
+	highlight:none;
+}
+
+.oldal{
+	top:0px;
+	left:0px;
+	height:100%;
+	width:100%;
+	position: absolute;
+	overflow: hidden;
+	background: url(../img/hatter.png) no-repeat;
+	background-size: 100% 100%;
+}
+.fejlec{
+	position : relative;
+	top:0;
+	left:0;
+	height:20%;
+	--padding:1%;
+	float:left;
+	width:20%;
+}
+.logo{
+	max-width:100%;
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	margin:auto;
+}
+.settings{
+	position:absolute;
+	top:10%;
+	right:1%;
+	height:8%;
+	z-index: 5;
+}
+#SETTINGS3,#SETTINGS4,#SETTINGS5,#SETTINGS6,#SETTINGS7 { display:none; }
+.csik{
+	background-color: #af9a8a;
+	background:         linear-gradient(to left, #af9a8a 0%, #aa9383 75%  ,#170603 100%); /* W3C */
+	opacity: 0.9;
+	width:85%;
+	height:10%;
+	text-align:left;
+	position:absolute;
+	top:0;
+	left:20%;
+}
+#CSIK7 { display:none; }
+.csik a{
+	height:100%;
+}
+.vissza{
+	padding-top:1%;
+	--width:50%;
+	height:90%;
+	margin-left:1%;
+	background: url('../img/vissza2.png') no-repeat;
+	background-size:auto 95%;
+	margin-top:0.5%;
+}
+#VISSZA_IMG3 {
+	position: absolute;
+	left:21%;
+	top:1%;
+	height:15%;
+	width:11%;
+}
+.csiktxt{
+	position:relative;
+	left:20%;
+	top:-98%;
+	width:71%;
+	font-size:1.6em;
+	font-family:kondenz;
+	text-align:right;
+}
+#CSIKTXT5{  font-size:1.7em; top:-95%;  }
+.porond{
+	width:80%;
+	left:20%;
+	top:10%;
+	bottom:0;
+	position:absolute;
+}
+#POROND7 {
+	top:0;
+	left:0;
+	width:100%;
+}
+.wheel{
+	margin-top:20%;
+	height:40%;
+	width:33%;
+}
+.wheelpng{
+	width: 100%;
+	height:100%;
+}
+.scroller{
+	--height:100%;
+	width:100%;
+	--display:block;
+	--position:absolute;
+}
+.lablec{
+	width:20%;
+	height:79%;
+	position:absolute;
+	top:21%;
+	bottom:0;
+	left:0;
+}
+#LABLEC7 {
+	display:none;
+}
+
+.menu{
+	width:100%;
+	height:25%;
+	text-align: center;
+}
+.porond_terkoz{
+	width:100%;
+	--height:1%;
+}
+/* ----  KEZDŐLAP -------------------------- */
+.csik_hatter{
+	width:100%;
+	height:22%;
+	background:url('../img/arnyek.png') no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+	overflow: hidden;
+}
+.csik_touch{
+	width:100%;
+	height:22%;
+	position:relative;
+	margin-top:-20%;
+	z-index: 2;
+}
+.csik_csik{
+	margin-left:3%;
+	--margin-top:3%;
+	width:94%;
+	height:80%;
+	border-radius:4%/20%;
+	background-color:#563922;
+	border:1px solid black;
+	overflow: hidden;
+}
+.csik_kisfoto{
+	width:20%;
+	height:100%;
+	float:left;	
+}
+.csik_csillag{
+	float:left;
+	width:3%;
+	height:90%;
+	margin-top:0.5%;
+	margin-left:1%;
+}
+.cs {
+	height:20%;
+	margin-bottom: 3%;
+	width:100%;
+}
+.csik_nev{
+	font-size: 1.4em;
+	font-family: kondenz;
+	color:white;
+	margin-top:2%;
+	margin-left:25%;
+	width:67%;
+	position:absolute;
+}
+.csik_ido{
+	font-size: 1em;
+	font-family:kondenz;
+	color:#b09f92;
+	margin-top:11%;
+	margin-left:25%;
+	width:60%;
+	text-align:left;
+	position:absolute;
+}

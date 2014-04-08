@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+        <link rel="stylesheet" type="text/css" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="css/portrait.css"  media="only screen and (orientation:portrait)"  />
+        <link rel="stylesheet" type="text/css" href="css/landscape.css" media="only screen and (orientation:landscape)" />
+
+        <title>Fitness</title>
+        <script type="text/javascript" src="phonegap.js"></script>       
+        <script type="text/javascript" src="facebook-js-sdk.js"></script>
+        <script type="text/javascript" src="cdv-plugin-fb-connect.js"></script>
+        <script type="text/javascript" src="EmailComposer.js"></script>
+        
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/hammer.min.js"></script>
+        <script type="text/javascript" src="js/iscroll-lite.js"></script>
+        <script type="text/javascript" src="js/ajax.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+        
+    </head>
+    <body onload="app.onDeviceReady();">
+    	<div id="fb-root"></div>
+    	<script>(function(d, s, id) {
+					  var js, fjs = d.getElementsByTagName(s)[0];
+					  if (d.getElementById(id)) return;
+					  js = d.createElement(s); js.id = id;
+					  js.src = "//connect.facebook.net/hu_HU/all.js#xfbml=1&appId=529520623830569";
+					  fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'facebook-jssdk'));</script>
+    	
+    			
+        
+        <div id="Oldal1" class="oldal" style="display:block;">   									<!-- Kezdőlap -->
+			<img id="SETTINGS1" class="settings" src="img/settings.png" ontouchstart="Oldal(8,0);">
+			<div id="FEJLEC1" class="fejlec">
+				<img id="LOGO1" class="logo" src="img/bme/logo.jpg" />
+				
+			</div>
+			
+			<div id="POROND1" class="porond">
+				<div class="fomenu"><div><img id="F1" src="img/bme/menu1.jpg"/><img src="img/bme/logo_kicsi.jpg"/></div></div>
+				<div class="fomenu"><div><img id="F2" src="img/bme/menu2.jpg"/></div></div>
+				<div class="fomenu"><div><img id="F3" src="img/bme/menu3.jpg"/></div></div>
+				<div class="fomenu"><div><img id="F4" src="img/bme/menu4.jpg"/></div></div>
+				<div class="fomenu"><div><img id="F5" src="img/bme/menu5.jpg"/></div></div>
+			</div>
+			<div id="LABLEC1" class="lablec">
+				
+			</div>	
+        </div>
+        
+        
+        
+        <div id="Oldal8" class="oldal" style="display:none;">   									<!-- Beállítások -->
+			<div id="FEJLEC8" class="fejlec">
+				<img id="LOGO8" class="logo" src="img/logo.png" />
+			</div>
+			<div id="CSIK8" class="csik">
+					<a id="VISSZA8" href="#" ontouchstart="javascript:Vissza();"><div class="vissza" ></div></a>
+					<div id="CSIKTXT8" class="csiktxt">Beállítások</div>
+			</div>
+			<div id="POROND8" class="porond" style="overflow:scroll;-webkit-overflow-scrolling:touch;">
+				<div id="SCROLLER3" class="scroller">
+					<div class="beall_sor">
+						<div class="blokk">
+							<div class="beallitas" style="color:lightgray;">Jelenlegi internetkapcsolat : </div>
+							<div class="magyarazat">Készüléke hogyan csatlakozik az internethez.</div>
+						</div>	
+						<div id="NETWORKSTATUS" class="setting" style="border:none;"></div><br>
+					</div>	
+					
+					<div class="beall_sor">
+						<div class="blokk">
+							<div class="beallitas">Frissítés csak WiFi kapcsolat esetén </div>
+							<div class="magyarazat">A receptek és fotók csak ezen típusú internetkapcsolat esetén frissülnek illetve töltődnek le.</div>
+						</div>
+						<img 	id="WIFI_ONLY" class="setting on" 
+								src="img/beki1.png" 
+								ontouchstart="this.src=(this.className=='setting on')?'img/beki0.png':'img/beki1.png';
+										 this.className=(this.className=='setting on')?'setting':'setting on';
+										 Preferences(1,((this.className=='setting on')?1:0));
+										 " />
+					</div>	
+					
+					<div class="beall_sor">
+						<div class="blokk">
+							<div class="beallitas">Kategória nézet után kategóriakeresés </div>
+							<div class="magyarazat">Amennyiben a keresést kategória nézet után indítja, úgy a keresés csak a recept kategórián belül történik.</div>
+						</div>
+						<img 	id="KAT_SEARCH" 
+								class="setting on" 
+								src="img/beki1.png" 
+								ontouchstart="this.src=(this.className=='setting on')?'img/beki0.png':'img/beki1.png';
+										 this.className=(this.className=='setting on')?'setting':'setting on';
+										 Preferences(2,((this.className=='setting on')?1:0));
+										 " />
+					</div>	
+					
+					
+
+ 					<div class="beall_sor">
+						<div class="blokk">
+							<div class="beallitas" style="color:lightgray;">Receptek száma : </div>
+							<!--  <div class="magyarazat" id="DB_UPDATE">Legutóbbi frissítés : </div> -->
+						</div>	
+							<div id="RECNUMINFO" class="setting" style="border:none;"></div><br>
+					</div>
+					
+				</div>  <!-- SCROLLER -->	
+			</div>
+			<div id="LABLEC8" class="lablec">
+				
+			</div>	
+        </div>
+        
+        
+        
+        <div style="display:none;">
+        	  <div id="ERTEKELES"></div>
+        	  <div id="ERTEKELESEK"></div>
+        </div>
+        
+    </body>
+</html>
