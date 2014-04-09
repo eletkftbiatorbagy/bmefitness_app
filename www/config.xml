@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="hu.e-let.bmefitness" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-   <name>Sütipédia</name>
+   <name>BME Fitness</name>
     <description>
         BME Fitness
     </description>
@@ -34,7 +34,6 @@
     <preference name="webviewbounce" value="false" />
     
     
-    <icon src="icon.png" />
     <icon gap:density="ldpi" gap:platform="android" src="res/icon/android/icon-29-ldpi.png" />
     <icon gap:density="mdpi" gap:platform="android" src="res/icon/android/icon-50-mdpi.png" />
     <icon gap:density="hdpi" gap:platform="android" src="res/icon/android/icon-72-hdpi.png" />
