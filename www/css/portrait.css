@@ -19,7 +19,7 @@
 }
 
 @font-face {
-    font-family: betu;
+    font-family: betu1;
     src: url("../fonts/Sturkopf.otf") format("opentype");    
     }
 
@@ -31,6 +31,7 @@ body {
     background-color:#262F0E;
     background-attachment:fixed;
     padding:none;
+    font-family:betu1;
 }
 a{
 	text-decoration: none;
@@ -50,13 +51,22 @@ a{
 .fejlec{
 	top:0px;
 	width:100%;
-	height:18%;
+	height:12%;
 	--background-color: #422d1d;
 	text-align:center;
 	--border:1px solid red;
 }
+.fejlec h1{
+	font-size:4em;
+	text-align-center;
+	float:left;
+	width:52%;
+	color:white;
+	padding-top:3%;
+}
+
 .logo{
-	height:120%;
+	height:100%;
 	right:0;
 	top:0;
 	float:right;
@@ -81,15 +91,6 @@ a{
 	height:100%;
 	width:33%;
 }
-.vissza{
-		
-	height:98%;
-	
-	margin-left:1%;
-	background: url('../img/vissza.png') no-repeat;
-	background-size:auto 95%;
-	margin-top:2%;
-}
 
 .csiktxt{
 	position:relative;
@@ -103,11 +104,12 @@ a{
 
 .porond{
 	width:100%;
-	height: 68%;
+	height: 74%;
 	left:0px;
 	position:absolute;
 	padding-top:2%;
 }
+
 .scroller{
 	--height:100%;
 	width:100%;
@@ -127,6 +129,10 @@ a{
 	height:100%;
 	text-align: center;
 }
+.ikon{
+	height:90%;
+	margin-top:5%;
+}
 .porond_terkoz{
 	width:100%;
 	--height:1%;
@@ -135,7 +141,7 @@ a{
 /* ----  KEZDŐLAP -------------------------- */
 .fomenu{
 	width:100%;
-	height:19%;
+	height:20%;
 	background:url('../img/arnyek.png') no-repeat;
 	background-size: 100% 100%;
 	position: relative;
@@ -148,7 +154,7 @@ a{
 	border:1px solid #3A782C;
 	overflow: hidden;
 	width:95%;
-	height:84%;
+	height:80%;
 	margin-left:2%;
 	--margin-top:1%;
 }
@@ -161,3 +167,36 @@ a{
 	float:left;	
 }
 
+/* ----- BEÁLLÍTÁSOK ----------------- */
+.beall_sor{
+	width:100%;
+	margin-top:2%;
+}
+.blokk{
+	margin-left:5%;
+	margin-top:5%;
+	width:72%;
+	display:block;
+	float:left;
+}
+.beallitas{
+	color: #dcfa0a;
+	font: 1.2em Arial;
+}
+.magyarazat{
+	color: white;
+	font:italic 1em Arial;
+	margin-top:1%;
+	margin-right:5%;
+}
+.setting{
+	margin-top:5%;
+	--margin-left:1%;
+	float:left;
+	width:20%;
+	color:yellow;
+	font: 1.2em Arial;
+	text-align: center;
+	display: block;
+	border:1px solid white;
+}

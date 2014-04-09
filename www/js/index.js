@@ -1,4 +1,4 @@
-const OldalSzam = 1;   //  ennyi lap van definiálva a .html fájlban
+const OldalSzam = 11;   //  ennyi lap van definiálva a .html fájlban
 var ReceptMost;      // aktuálisan mutatott recept ID-ja
 var ReceptAZONOSITO;    // megosztáshoz ...
 var ReceptIMG;
@@ -47,14 +47,7 @@ var app = {
 		{
 			setTimeout(function () 
 			{
-				PS3 = new iScroll('POROND3',{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				PS4 = new iScroll('POROND4',{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				PS5 = new iScroll('POROND5',{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				PS6 = new iScroll('POROND6',{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				PS8 = new iScroll('POROND8',{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				RM1 = new iScroll('RECEPT_MEZO1',{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				RM2 = new iScroll('HOZZAVALOK',{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				RM3 = new iScroll('RECEPT_MEZO3',{ hScrollbar: false, vScrollbar: false, hScroll: false });
+				/// PS3 = new iScroll('POROND3',{ hScrollbar: false, vScrollbar: false, hScroll: false });
 			}, 100);
 		}
 		window.addEventListener('load', loaded, false);
@@ -69,14 +62,25 @@ var app = {
         
         OrientationReCalc();
                 
-        Lablec(1,1);
+        Lablec(0,0);
         		
-		document.getElementById("WIFI_ONLY").src="img/beki"+((Preferences(1)==0)?0:1)+".png";			  // DEFAULT : bekapcsolva
+		document.getElementById("WIFI_ONLY").src="img/bme/beki"+((Preferences(1)==0)?0:1)+".png";			  // DEFAULT : bekapcsolva
     	document.getElementById("WIFI_ONLY").className=((Preferences(1)==0)?"setting":"setting on");
-		document.getElementById("KAT_SEARCH").src="img/beki"+((Preferences(2)==1)?1:0)+".png";            // DEFAULT : kikapcsolva
-    	document.getElementById("KAT_SEARCH").className=((Preferences(2)==0)?"setting":"setting on");
 		
-		    	
+		
+		Hammer(document.getElementById("SETTINGS0")).on("tap", function(event){ Oldal(10,0); });
+		
+		Hammer(document.getElementById("F1")).on("tap", function(event){ Oldal(5,0); });
+		Hammer(document.getElementById("F2")).on("tap", function(event){ Oldal(6,0); });
+		Hammer(document.getElementById("F3")).on("tap", function(event){ Oldal(7,0); });
+		Hammer(document.getElementById("F4")).on("tap", function(event){ Oldal(8,0); });
+		Hammer(document.getElementById("F5")).on("tap", function(event){ Oldal(9,0); });
+		
+		for (var v=1;v<=OldalSzam; v++)
+		{
+			Hammer(document.getElementById("VISSZA"+v)).on("tap", function(event){ Vissza(); }); 
+			Hammer(document.getElementById("LOGO"+v)).on("tap", function(event){ Oldal(0,0); });
+		}	
     	   	   	
 		document.addEventListener("backbutton", Vissza, false);
 		
@@ -90,14 +94,14 @@ var app = {
    //   ooDeviceReady vége ================================================================================================================================================= 
     
    
-var LastPage=[1];
-var LastLablec=[1];
+var LastPage=[0];			// első oldal száma
+var LastLablec=[0];			// első oldal lábléce
 
 
 
 function Oldal(oldal,lablec)
 {
-	if (!oldal) { return; }
+	//if (!oldal) { return; }
 	if (oldal<0)        // vissza
 	{
 		oldal = Math.abs(oldal);
@@ -106,7 +110,6 @@ function Oldal(oldal,lablec)
 	{
 		LastPage.push(oldal);
 		LastLablec.push(lablec);
-		LastRecept.push(ReceptMost);
 	}
 	if (oldal==3 || oldal==4 || oldal==5 || oldal==6)	
 	{
@@ -116,7 +119,7 @@ function Oldal(oldal,lablec)
 		//Kerek.style.display="block";				// Forgó logo kikapcsolva ...
 		//Wheel(true,oldal);
 	}
-	for (var n=1;n<=OldalSzam;n++)
+	for (var n=0;n<=OldalSzam;n++)
 	{
 		document.getElementById("Oldal"+n).style.display=(oldal==n)?"block":"none";
 	}
@@ -131,27 +134,9 @@ function Oldal(oldal,lablec)
 
 function Oldal2(oldal,lablec)
 {
-	
-	if (oldal==2) { document.getElementById("KERES").focus();document.getElementById("KERES").select(); }
-	if (oldal==3) { ReceptBeolvasas(3,-1); }	//	kedvencek  (KAT= -1)
-	if (oldal==4) { ReceptBeolvasas(4, 0); }	//	előzmények (KAT=  0)
-	
-	//if (oldal>=3 && oldal<=6) { document.getElementById("POROND"+oldal).scrollTop = 0; }
-	if (oldal==7) { document.getElementById("NAGYKEP").scrollTop = 0; document.getElementById("HOZZAVALOK").scrollTop = 0; document.getElementById("ELKESZITES").scrollTop = 0;}
-	
-	
 
-		setTimeout(function()
-		{
-			Wheel(false,oldal);
-			var Porond = document.getElementById("POROND"+oldal);
-			var Kerek  = document.getElementById("WHEEL"+oldal);
-			if (Porond) { Porond.style.display="block"; }
-			if (Kerek)  { Kerek.style.display="none"; }
-		},0);
-	
-	
-	if (oldal==8) 
+			
+	if (oldal==11) 
 	{
 		document.getElementById("RECNUMINFO").innerHTML=Receptek.length-1;
 		document.getElementById("NETWORKSTATUS").innerHTML=network_status();
@@ -163,9 +148,6 @@ function Vissza()
 	if (LastPage.length==1) { return; }    // utolsó oldalon vagyunk
 	var LP=LastPage.pop();	  if (!LP){ return; }
 	var LL=LastLablec.pop();
-	var LR=LastRecept.pop();
-	ReceptMost = LR;  												
-	if (LastPage[parseInt(LastPage.length-1)]==7) { Recept_mutat(); }
 	Oldal(-1*LastPage[parseInt(LastPage.length-1)],LastLablec[parseInt(LastLablec.length-1)]);
 }
 
@@ -185,16 +167,16 @@ function Lablec(oldal,NR)
 			if (window.innerWidth > 628)
 				tabletSize += "_tablet";
 			
-			MENU.style.background="url('img/menu_hatter"+tabletSize+((parseInt(n+1)==NR)?"1":"0")+".jpg') no-repeat";
-			//MENU.addEventListener("onclick",OLF,false);
+			//MENU.style.background="url('img/menu_hatter"+tabletSize+((parseInt(n+1)==NR)?"1":"0")+".jpg') no-repeat";
+			
 		var IMG = document.createElement("img");
 			IMG.className="ikon";
 			IMG.src="img/bme/menu"+parseInt(n+1)+((n+1==NR)?"1":"0")+".png";
-		IMG.setAttribute("nr",n);
+		IMG.setAttribute("nr",n+1);
 		MENU.appendChild(IMG);
 		LL.appendChild(MENU);
 		//var OLF = ;
-		var hammertime = Hammer(MENU).on("tap", function(event){ Oldal(parseInt(event.target.getAttribute('nr'))+1,parseInt(event.target.getAttribute('nr'))+1); });
+		var hammertime = Hammer(MENU).on("tap", function(event){ Oldal(parseInt(event.target.getAttribute('nr')),parseInt(event.target.getAttribute('nr'))); });
 		
 	}	
 }
@@ -897,7 +879,7 @@ function OrientationReCalc()
         	sH = window.innerHeight;
         }
         
-		for (var n=1;n<=OldalSzam;n++)
+		for (var n=0;n<=OldalSzam;n++)
 		{
 			document.getElementById("Oldal"+n).style.width = sW+"px";
 			document.getElementById("Oldal"+n).style.height = sH+"px";
@@ -928,7 +910,7 @@ function OrientationReCalc()
         	sH = window.innerHeight;
         }
         
-		for (var n=1;n<=OldalSzam;n++)
+		for (var n=0;n<=OldalSzam;n++)
 		{
 			document.getElementById("Oldal"+n).style.width = sW+"px";
 			document.getElementById("Oldal"+n).style.height = sH+"px";
@@ -1055,21 +1037,14 @@ function ScrollRefresh(oldal)
 {
 	if (oldal)
 	{
-		if (oldal==3) { setTimeout(function () { PS3.refresh();},100); }
-		if (oldal==4) { setTimeout(function () { PS4.refresh();},100); }
-		if (oldal==5) { setTimeout(function () { PS5.refresh();},100); }
-		if (oldal==6) { setTimeout(function () { PS6.refresh();},100); }
-		if (oldal==8) { setTimeout(function () { PS8.refresh();},100); }
+		/// if (oldal==3) { setTimeout(function () { PS3.refresh();},100); }
 	}
 	else
 	{
 		setTimeout(function () 
 		{ 
-			PS3.refresh();
-			PS4.refresh();
-			PS5.refresh();
-			PS6.refresh();
-			PS8.refresh();
+			/// PS3.refresh();
+			
 		},100);
 	}
 }
