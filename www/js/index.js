@@ -91,8 +91,8 @@ var app = {
 					{ 	quality: 50, allowEdit: true,
 						destinationType: destinationType.DATA_URL, 
 						encodingType: Camera.EncodingType.JPEG,
-						targetWidth: 100,
-						targetHeight: 100,
+						targetWidth: 150,
+						targetHeight: 150,
 						MediaType: 0,
 						popoverOptions: CameraPopoverOptions,
 						saveToPhotoAlbum: true
@@ -100,10 +100,12 @@ var app = {
 				});
 		Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 
 					navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
-					{ 	quality: 50, 
+					{ 	
+						quality: 50,
+						targetWidth: 150,
+						targetHeight: 150,
 						destinationType: destinationType.DATA_URL,
-						sourceType: pictureSource.PHOTOLIBRARY,
-						MediaType : Camera.PictureSourceType.CAMERA
+						sourceType: pictureSource.PHOTOLIBRARY
 					} );
 				});
 	

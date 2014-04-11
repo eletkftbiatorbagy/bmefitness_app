@@ -4,18 +4,26 @@
 @media only screen and (min-width : 300px)  
 {
    body { font-size:12px; }
+   .login_gravatar { width:80px; height:80px; }
+   .avatar 		   { width:30px; height:30px; }
 }
 @media only screen and (min-width : 400px)  
 {
    body { font-size:16px; }
+   .login_gravatar { width:120px; height:120px; }
+   .avatar 		   { width:45px; height:45px; }
 }
 @media only screen and (min-width : 500px)  
 {
    body { font-size:20px; }
+   .login_gravatar { width:140px; height:140px; }
+   .avatar 		   { width:55px; height:55px; }
 }
 @media only screen and (min-width : 600px)  
 {
    body { font-size:24px; }
+   .login_gravatar { width:160px; height:160px; }
+   .avatar 		   { width:66px; height:66px; }
 }
 
 @font-face {
@@ -266,13 +274,13 @@ p {
 .login_gravatar{
 	margin: 3% auto;
 	margin-bottom:1%;
-	width:22%;
 	overflow: hidden;
 	border-radius:100%/100%;
 	border: 3px solid #0a510a;
-}
-.login_gravatar img{
-	width:100%;
+	background:url('../img/default-avatar.jpg') no-repeat;
+	background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .login_email{
 	width:76%;
