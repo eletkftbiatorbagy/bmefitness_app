@@ -277,10 +277,11 @@ p {
 	overflow: hidden;
 	border-radius:100%/100%;
 	border: 3px solid #0a510a;
-	background:url('../img/default-avatar.jpg') no-repeat;
-	background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+}
+.login_gravatar img{
+	width:104%;
+	margin-left:-2%;
+	margin-top:-2%;
 }
 .login_email{
 	width:76%;

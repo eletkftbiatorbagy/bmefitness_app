@@ -105,7 +105,7 @@ var app = {
 						targetWidth: 150,
 						targetHeight: 150,
 						destinationType: destinationType.DATA_URL,
-						sourceType: pictureSource.PHOTOLIBRARY
+						sourceType: Camera.PictureSourceType.PHOTOLIBRARY
 					} );
 				});
 	
