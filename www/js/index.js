@@ -85,19 +85,7 @@ var app = {
 		Hammer(document.getElementById("MODAVATAR")).on("tap", function(event){ Mod_Avatar();  });
 		
 		
-		EMAIL = window.localStorage.getItem("email");
-		if (!EMAIL) { document.getElementById("LOGINBUTTON").innerHTML="Regisztráció"; }
-		callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
-		ajax_hivas('login_get.php','', 'callback' ,'AJAX_LOGIN'); 
-			
-		if (window.device) 
-		{   	
-			FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });
-			pictureSource=navigator.camera.PictureSourceType;
-        	destinationType=navigator.camera.DestinationType;
-		}
-    		
-    	setTimeout( function()
+		setTimeout( function()
     	{
         	Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){ alert("MOd AVATAR"); });
 			Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){   Oldal(3,0);	}  );
@@ -112,7 +100,22 @@ var app = {
 							MediaType : 0    
 						} );  
 					});
-        },0);	
+        },0);
+		
+		
+		EMAIL = window.localStorage.getItem("email");
+		if (!EMAIL) { document.getElementById("LOGINBUTTON").innerHTML="Regisztráció"; }
+		callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
+		ajax_hivas('login_get.php','', 'callback' ,'AJAX_LOGIN'); 
+			
+		if (window.device) 
+		{   	
+			FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });
+			pictureSource=navigator.camera.PictureSourceType;
+        	destinationType=navigator.camera.DestinationType;
+		}
+    		
+    		
     	
     	
     }};
