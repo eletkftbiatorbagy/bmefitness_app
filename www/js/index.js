@@ -92,13 +92,14 @@ var app = {
 			
 		if (window.device) 
 		{   	
-			FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });  
-		
-    		pictureSource=navigator.camera.PictureSourceType;
+			FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });
+			pictureSource=navigator.camera.PictureSourceType;
         	destinationType=navigator.camera.DestinationType;
-        	Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){ ; });
+		}
+    		
+        	Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){  });
 			Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
-						navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
+						navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, { quality: 20, allowEdit: true,
 						destinationType: destinationType.DATA_URL, 
 						encodingType: Camera.EncodingType.JPEG,
 						targetWidth: 100,
@@ -108,7 +109,7 @@ var app = {
 						saveToPhotoAlbum: true}); 
 						});
 			Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 
-						navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 20, 
+						navigator.camera.getPicture(onPhotoURISuccess, onCameraFail, { quality: 20, 
 						destinationType: destinationType.FILE_URI,
 						sourceType: pictureSource.SAVEDPHOTOALBUM,
 						encodingType: Camera.EncodingType.JPEG,
@@ -118,7 +119,7 @@ var app = {
 						});
 						});
         	
-    	}
+    	
     	
     }};
    //   ooDeviceReady vége ================================================================================================================================================= 
@@ -521,7 +522,7 @@ function ScrollRefresh(oldal)
 
 
 function onCameraFail(message) {
-      alert('Kamera hiba : ' + message);
+      console.log('Kamera hiba : ' + message);
     }
 
 
