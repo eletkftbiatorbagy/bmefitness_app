@@ -97,6 +97,8 @@ var app = {
         	destinationType=navigator.camera.DestinationType;
 		}
     		
+    	setTimeout( function()
+    	{
         	Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){ alert("MOd AVATAR"); });
 			Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){   Oldal(3,0);	}  );
 			Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 	alert('album foto');
@@ -110,7 +112,7 @@ var app = {
 							MediaType : 0    
 						} );  
 					});
-        	
+        },0);	
     	
     	
     }};
