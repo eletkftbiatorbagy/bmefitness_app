@@ -267,11 +267,12 @@ p {
 	margin: 3% auto;
 	margin-bottom:1%;
 	width:22%;
-}
-.login_gravatar img{
-	width:105%;
+	overflow: hidden;
 	border-radius:100%/100%;
 	border: 3px solid #0a510a;
+}
+.login_gravatar img{
+	width:100%;
 }
 .login_email{
 	width:76%;

@@ -88,7 +88,7 @@ var app = {
 		Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){  });
 		Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
 					navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
-					{ 	quality: 40, allowEdit: true,
+					{ 	quality: 50, allowEdit: true,
 						destinationType: destinationType.DATA_URL, 
 						encodingType: Camera.EncodingType.JPEG,
 						targetWidth: 100,
@@ -100,13 +100,10 @@ var app = {
 				});
 		Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 
 					navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
-					{ 	quality: 40, 
+					{ 	quality: 50, 
 						destinationType: destinationType.DATA_URL,
 						sourceType: pictureSource.PHOTOLIBRARY,
-						encodingType: Camera.EncodingType.JPEG,
-						targetWidth: 100,
-						targetHeight: 100,
-						MediaType : 0
+						MediaType : Camera.PictureSourceType.CAMERA
 					} );
 				});
 	
