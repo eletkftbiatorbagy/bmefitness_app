@@ -21,7 +21,7 @@
         <script type="text/javascript" src="js/iscroll-lite.js"></script>
         <script type="text/javascript" src="js/ajax.js"></script>
         <script type="text/javascript">
-            app.initialize();
+            if (window.device) { app.initialize(); }
         </script>
         
     </head>
@@ -224,16 +224,65 @@
         <div id="Oldal11" class="oldal" style="display:none;">   									<!-- Login -->
 			<div id="FEJLEC11" class="fejlec">
 				<div class="menu"><img id="VISSZA11" class="ikon" src="img/bme/menu00.png"/></div>
-				<h1>Belépés</h1>
+				<h1>Bejelentkezés</h1>
 				<img id="LOGO11" class="logo" src="img/bme/logo_kicsi.jpg" />
 			</div>
 			
 			<div id="POROND11" class="porond">
+				<div id="LOGIN">
+					<div class="login_gravatar"><img id="CHAVATAR" src="img/default-avatar.jpg" /></div>
+					<div class="login_email">
+						<h5>Email :</h5> 
+						<input type="text" maxlength="30"/>
+					</div>
+					<div class="login_jelszo">
+						<h5>Jelszó :</h5> 
+						<input type="text" maxlength="30"/>
+						<div class="pipa"><h5>Ne kérjen jelszót ezen a készüléken</h5></div>
+					</div>
+					<div class="gomb"><div><h1 id="LOGINBUTTON">Bejelentkezés</h1></div></div>
+					
+					<p>
+						Egy megerősítő levelet küldük a megadott email címre. 
+						Kattintson a levélben található linkre. 
+						<br>A regisztrációja csak ezt követően lesz aktív.  
+					</p>
+					<p>
+						Fotójának megváltoztatásához kattintson a képre.
+					</p>
+				</div>
+				<div id="VARAKOZAS" style="display:none;">
+					
+				</div>
+				
 				
 			</div>
 			<div id="LABLEC11" class="lablec"></div>
-		</div>
+        </div>
         
+        <div id="Oldal12" class="oldal" style="display:none;">   									<!-- Avatar -->
+			<div id="FEJLEC12" class="fejlec">
+				<div class="menu"><img id="VISSZA12" class="ikon" src="img/bme/menu00.png"/></div>
+				<h1>Önarckép</h1>
+				<img id="LOGO12" class="logo" src="img/bme/logo_kicsi.jpg" />
+			</div>
+			
+			<div id="POROND12" class="porond">
+				<div id="AVSTART">
+					<div class="login_gravatar"><img id="MODAVATAR" src="img/default-avatar.jpg" /></div>
+					<div class="gomb"><div id="GRAVATAR_FOTO">Gravatar kép</div></div>
+					<div class="gomb"><div id="KAMERA_FOTO">Kamerafelvétel</div></div>
+					<div class="gomb"><div id="ALBUM_FOTO">Kép a fotóalbumból</div></div>
+					<p>
+						Válasszon az opciók közül vagy kattingasson a képre és állítson be egy arckép ikont.
+					</p>
+					<div class="gomb piros"><div>Mentés</div></div>
+				</div>		
+				
+			</div>
+			<div id="LABLEC12" class="lablec"></div>
+        </div>
+            
         
         
         

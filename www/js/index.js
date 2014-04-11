@@ -1,16 +1,14 @@
-const OldalSzam = 11;   //  ennyi lap van definiálva a .html fájlban
-var ReceptMost;      // aktuálisan mutatott recept ID-ja
-var ReceptAZONOSITO;    // megosztáshoz ...
-var ReceptIMG;
-var ReceptIMG2;
-var ReceptNEV;
-var ReceptADAG;
-var ReceptHOZZAVALOK;
-var ReceptLEIRAS;
-var ReceptIDO;
+const StartPage=1;      ///  DEVELOPMENT......................................................................................
+const AJAX_URL = "http://e-let.hu/fitness/";
+const OldalSzam = 12;   //  ennyi lap van definiálva a .html fájlban
+var LOGIN = false;
+var REGISZTRALVA = false;
+var EMAIL;
+var EMAIL_hash;
+var NEV;
 
-var EVSZAK;
-var EVSZAKnr;
+var pictureSource;   // picture source
+var destinationType; // sets the format of returned value
 
 var Elozmenyek = Array();
 const ElozmenyekMAX = 25;
@@ -35,10 +33,6 @@ var ErtekelesOK = false;
 var Ertekelesek = Array();
 var callback;                   // ajax hívás visszatérő függvénye
 
-var Kereses_Ido=5;
-var Kereses_Idok = Array(10,20,30,60,120,999);
-var Kereses_Fok=5;
-
 var app = {
     initialize: function() {
         this.bindEvents();
@@ -62,7 +56,10 @@ var app = {
         
         OrientationReCalc();
                 
-        Lablec(0,0);
+        if (StartPage) 
+        { Oldal(StartPage,0); }
+        else 
+        {  Lablec(0,0); }
         		
 		document.getElementById("WIFI_ONLY").src="img/bme/beki"+((Preferences(1)==0)?0:1)+".png";			  // DEFAULT : bekapcsolva
     	document.getElementById("WIFI_ONLY").className=((Preferences(1)==0)?"setting":"setting on");
@@ -84,11 +81,44 @@ var app = {
     	   	   	
 		document.addEventListener("backbutton", Vissza, false);
 		
+		Hammer(document.getElementById("CHAVATAR")).on("tap", function(event){ Oldal(12,0);  });
+		Hammer(document.getElementById("MODAVATAR")).on("tap", function(event){ Mod_Avatar();  });
 		
+		
+		EMAIL = window.localStorage.getItem("email");
+		if (!EMAIL) { document.getElementById("LOGINBUTTON").innerHTML="Regisztráció"; }
+		callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
+		ajax_hivas('login_get.php','', 'callback' ,'AJAX_LOGIN'); 
 			
-		if (window.device) {   	FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });  }
-    	
-    	
+		if (window.device) 
+		{   	
+			FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });  
+		
+    		pictureSource=navigator.camera.PictureSourceType;
+        	destinationType=navigator.camera.DestinationType;
+        	Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){ ; });
+			Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
+						navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
+						destinationType: destinationType.DATA_URL, 
+						encodingType: Camera.EncodingType.JPEG,
+						targetWidth: 100,
+						targetHeight: 100,
+						MediaType: 0,
+						popoverOptions: CameraPopoverOptions,
+						saveToPhotoAlbum: true}); 
+						});
+			Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 
+						navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 20, 
+						destinationType: destinationType.FILE_URI,
+						sourceType: pictureSource.SAVEDPHOTOALBUM,
+						encodingType: Camera.EncodingType.JPEG,
+						targetWidth: 100,
+						targetHeight: 100,
+						MediaType : 0
+						});
+						});
+        	
+    	}
     	
     }};
    //   ooDeviceReady vége ================================================================================================================================================= 
@@ -111,13 +141,11 @@ function Oldal(oldal,lablec)
 		LastPage.push(oldal);
 		LastLablec.push(lablec);
 	}
+	if (oldal==1 && !LOGIN) { oldal=11; }
 	if (oldal==3 || oldal==4 || oldal==5 || oldal==6)	
 	{
 		var Porond = document.getElementById("POROND"+oldal);
-		var Kerek  = document.getElementById("WHEEL"+oldal);
 		Porond.style.display="none";
-		//Kerek.style.display="block";				// Forgó logo kikapcsolva ...
-		//Wheel(true,oldal);
 	}
 	for (var n=0;n<=OldalSzam;n++)
 	{
@@ -138,7 +166,6 @@ function Oldal2(oldal,lablec)
 			
 	if (oldal==11) 
 	{
-		document.getElementById("RECNUMINFO").innerHTML=Receptek.length-1;
 		document.getElementById("NETWORKSTATUS").innerHTML=network_status();
 	}
 }
@@ -181,224 +208,15 @@ function Lablec(oldal,NR)
 	}	
 }
 
-function ReceptBeolvasas(oldal,KAT,SEARCH) 
-{
-	var PS = document.getElementById("SCROLLER"+oldal);
-	PS.innerHTML="<div id='POROND_TERKOZ"+oldal+"' class='porond_terkoz' style='height:"+parseInt(window.innerHeight*0.008)+"px'></div>";
-	if (SEARCH=="*") { SEARCH=null; }
-	if (SEARCH) { SEARCH = SEARCH.trim(); }
-	if (SEARCH!=null && Preferences(2)==1 && LastPage[parseInt(LastPage.length-3)]==5)  { KAT=LastKat; }
-	if (KAT>0) { LastKat=KAT; }
-	var TALALAT = Array();
-	var EREDMENY=0;					
-	if (SEARCH!=null)
-	{
-		for (var x=0;x<Receptek.length-1;x++)
-		{	
-			var Recept = Receptek[x].split("|");
-			var go = true;
-			if (Kereses_Ido!=5)     // elkészítési idő szerinti szűrés
-			{
-				if (parseInt(Recept[5])>Kereses_Idok[Kereses_Ido]) { go = false; }
-			}
-			if (Kereses_Fok!=5)     // nehézségi fok szerinti szűrés
-			{
-				if (parseInt(Recept[4])>parseInt(Kereses_Fok+1)) { go = false; }
-			}
-											
-			var Talalat=0;
-			if (go==true)
-			{
-				var SZAVAK = SEARCH.split(" ");
-				for (var t=0;t<SZAVAK.length;t++)
-				{
-					Talalat += substring_search(Recept[1],SZAVAK[t],true);
-					Talalat += substring_search(Recept[2],SZAVAK[t],true);
-					Talalat += substring_search(Recept[7],SZAVAK[t],true);
-				}
-			}
-			
-			TALALAT[x] = Array();
-			TALALAT[x][0]=x;		   // recept sorszám	
-			TALALAT[x][1]=Talalat;
-			TALALAT[x][2]=Recept[0];       //  recept ID
-		}
-		TALALAT.sort(function(a,b){return ((b[1] < a[1]) ? -1 : ((b[1] > a[1]) ? 1 : 0));});
-	}
-	
-	if (KAT==0)    //  Előzmények
-	{
-		for (var e=0;e<Receptek.length;e++)
-		{
-			if (e < EHistory.length)
-			{
-				TALALAT[e] = Array();
-				TALALAT[e][0]=ReceptNum(EHistory[e][0]);			
-				TALALAT[e][1]=EHistory[e][0];
-				TALALAT[e][2]=EHistory[e][1];
-			}
-			else
-			{
-				TALALAT[e] = Array();
-				TALALAT[e][0]=0;			
-				TALALAT[e][1]=0;
-				TALALAT[e][2]=0;
-			}
-		}	
-	}
-	
-	Evszak_Init();
-	
-	var elso=null;
-	
-	for (var n=0;n<Receptek.length-1;n++)
-	{
-		if ((SEARCH==null && KAT!=0) || TALALAT[n][1]>0)
-		{
-			var R = n;
-			if (SEARCH!=null || KAT==0) { R = TALALAT[n][0]; }
-			var Recept = Receptek[R].split("|");
-			ReceptMost=Recept[0];
-			
-			if (  !KAT || (KategoriaID[KAT]==parseInt(Recept[3])) || (KAT==-1 && Kedvenc()==1) || (KAT==0 && TALALAT[n][0]!=0 )  || (KAT==6 && EVSZAK==Recept[6])  )	
-			{
-				EREDMENY++;
-				var RHAT = document.createElement("div");
-					RHAT.className = "recept_hatter";
-					RHAT.style.height = RHatterH+"px";
-				var RCSI = document.createElement("div");
-					RCSI.className = "recept_csik";
-					RCSI.style.height = RCsikH+"px";
-					
-				var RKF = document.createElement("img");
-					RKF.className = "recept_kisfoto";
-					RKF.setAttribute("src","db/cache/"+Recept[8].substring(0,Recept[8].length-4)+".jpg");
-					
-				var REC = null; 
-					if (Ertekelesek[Recept[0]])
-					{
-						REC= document.createElement("div");
-						REC.className = "recept_csillag";
-						var atlag;
-						atlag = Ertekelesek[Recept[0]][2];
-						for (var e=5; e>=1; e--)
-						{
-							var CS = document.createElement("div");
-								CS.className = "cs";
-								CS.style.background="";
-								var ertek="0";
-								if (parseFloat(atlag)>parseFloat(e-0.25)) { ertek="1"; } 
-								else if (atlag>parseInt(e-0.75)) { ertek="f"; }
-								else { ertek="0"; }
-								CS.style.backgroundImage = "url('img/cs"+ertek+".png')";
-								CS.style.backgroundSize="100% 100%";
-								REC.appendChild(CS);
-						}
-						
-					}	
-				var RNEV = document.createElement("div");
-					RNEV.className = "recept_nev";
-					RNEV.style.fontSize=RNevH+"px";
-					RNEV.style.marginTop=parseInt(RNevT/2)+"px";
-					RNEV.style.height=RNevLH+"px";
-					RNEV.style.lineHeight=RNevLH+"px";
-					RNEV.innerHTML = Recept[1];
-					
-				var RIDO = document.createElement("div");
-					RIDO.className = "recept_ido";
-					RIDO.innerHTML = "Elkészítés: "+Recept[5]+" perc";
-					RIDO.style.fontSize=RIdoH+"px";
-					RIDO.style.marginTop=RIdoT+"px";
-				var RCSL = document.createElement("div");
-					RCSL.className = "recept_sipka";
-					RCSL.style.height = RCsiH+"px";
-					RCSL.style.marginTop= RCsiT+"px";
-					for (var m=1;m<=3;m++)
-					{
-						var STR = document.createElement("img");
-						STR.src="img/sipka"+((Recept[4]>=m)?"1":"0")+".png";
-						STR.className="sipka";
-						RCSL.appendChild(STR);
-					}
-				var RTOUCH = document.createElement("div");
-					RTOUCH.className = "recept_touch";
-					
-					RCSI.setAttribute("receptid",Recept[0]);
-								
-				
-				RCSI.appendChild(RKF);
-				if (REC) { RCSI.appendChild(REC); }
-				RCSI.appendChild(RNEV);
-				RCSI.appendChild(RIDO);
-				RCSI.appendChild(RCSL);
-				RHAT.appendChild(RCSI);
-				PS.appendChild(RHAT);
-				
-				
-						
-				Hammer(RCSI).on("tap", function(event){ Recept_mutat(parseInt(event.target.getAttribute('receptid'))); });
-					Hammer(RCSI, {tap_max_touchtime : 300, tap_max_distance  : 5 });
-				Hammer(RKF).on("tap", function(event){ Recept_mutat(parseInt(event.target.parentNode.getAttribute('receptid'))); });
-					Hammer(RKF, {tap_max_touchtime : 300, tap_max_distance  : 5 });
-				Hammer(RNEV).on("tap", function(event){ Recept_mutat(parseInt(event.target.parentNode.getAttribute('receptid'))); });
-					Hammer(RNEV, {tap_max_touchtime : 300, tap_max_distance  : 5 });
-				Hammer(RIDO).on("tap", function(event){ Recept_mutat(parseInt(event.target.parentNode.getAttribute('receptid'))); });
-					Hammer(RIDO, {tap_max_touchtime : 300, tap_max_distance  : 5 });
-				Hammer(RCSL).on("tap", function(event){ Recept_mutat(parseInt(event.target.parentNode.getAttribute('receptid'))); });
-					Hammer(RCSL, {tap_max_touchtime : 300, tap_max_distance  : 5 });
-					
-				
-					
-					
-			}
-		}	
-	}
-	document.getElementById("POROND_TERKOZ"+oldal).scrollIntoView(true); 
-	if (SEARCH!=null)
-	{
-		var Title = EREDMENY+" találat";
-		if (KAT) { Title += " "+"<span style='font-size:0.6em;'>/ "+KategoriaNEV[KAT]+"</span>"; }
-		document.getElementById("CSIKTXT"+oldal).innerHTML = Title;
-	}
-	else if (KAT)
-	{
-		var Title = "";
-		if (KAT== -1) { Title="Kedvencek"; } else { Title = KategoriaNEV[KAT]; }
-		document.getElementById("CSIKTXT"+oldal).innerHTML = Title;
-	}
-	
-	ScrollRefresh(oldal);
-	
-	if (oldal==3 || oldal==4 || oldal==5 || oldal==6)	
-	{
-		setTimeout(function()
-		{
-			Wheel(false,oldal);
-			var Porond = document.getElementById("POROND"+oldal);
-			var Kerek  = document.getElementById("WHEEL"+oldal);
-			Porond.style.display="block";
-			Kerek.style.display="none";
-		},0);	
-	}
-	
-}
 
 
-function Kereses(SEARCH)
-{
-	Oldal(6,2);
-	setTimeout(function()
-	{
-		ReceptBeolvasas(6,null,SEARCH);
-		hideKeyboard(document.getElementById('KERES'));
-	},0);
-}
 
-function KeresesEnter(e)
+
+function Enter(e)
 {
 	if (e.keyCode == 13)
 	{
-		Kereses(document.getElementById('KERES').value);
+		
 	}
 }
 
@@ -412,15 +230,6 @@ function hideKeyboard(element)
         element.removeAttribute('readonly');
         element.removeAttribute('disabled');
     }, 100);
-}
-
-
-function Recalc_enter(e)
-{
-	if (e.keyCode == 13)
-	{
-		Recalc();
-	}
 }
 
 function substring_search(string, subString, allowOverlapping)
@@ -441,321 +250,6 @@ function substring_search(string, subString, allowOverlapping)
 }
 
 
-function Kat(NR)
-{
-	Oldal(5,0);
-	setTimeout(function() { ReceptBeolvasas(5,NR); },100);
-}
-
-function Recept_mutat(ID)
-{
-	if (ID) 
-	{
-		ReceptMost=ID;   ReceptAZONOSITO = ID;
-		Oldal(7,0);
-	} 
-	else 
-	{ 
-		ID=ReceptMost; 
-	}
-	Elozmenyek_lementes();
-	var NR=ReceptNum(ID);
-	var Recept = Receptek[NR].split("|");
-	var RNEV = document.getElementById("RNEV");
-	RNEV.innerHTML=Recept[1];   ReceptNEV = Recept[1];
-	var RIDO = document.getElementById("RIDO");
-	RIDO.innerHTML="Elkészítés: "+Recept[5]+" perc";	ReceptIDO = Recept[5];
-	var CS = document.getElementById("RSIPKA");
-	CS.innerHTML="";
-	for (var m=1;m<=3;m++)
-				{
-					var STR = document.createElement("img");
-					STR.src="img/sipka"+((Recept[4]>=m)?"1":"0")+".png";
-					STR.className = "kissipka";
-					CS.appendChild(STR);
-				}		
-	document.getElementById("NAGYKEP").src="db/cache/"+Recept[8].substring(0,Recept[8].length-4)+".jpg";
-	ReceptIMG  = Recept[8].substring(0,Recept[8].length-4)+".jpg";
-	ReceptIMG2 = Recept[8].substring(0,Recept[8].length-4)+".THM";
-	
-	Recalc(ID);
-	var Leiras = Recept[2];    ReceptLEIRAS = Leiras;
-	// Leiras = Leiras.replace(/@@/gi,"&");  Leiras = Leiras.replace(/££/gi,";"); Leiras = Leiras.replace(/€€/gi,"#"); 
-	var p1 = new RegExp("&lt;p&gt;", 'g');
-	Leiras = Leiras.replace(p1,"");
-	var p2 = new RegExp("&lt;/p&gt;", 'g');		
-	Leiras = Leiras.replace(p2,"<br>");
-	var p3 = new RegExp("&lt;sup&gt;", 'g');
-	Leiras = Leiras.replace(p3,"<sup>");
-	var p4 = new RegExp("&lt;/sup&gt;", 'g');
-	Leiras = Leiras.replace(p4,"</sup>");
-	var p5 = new RegExp("&lt;br&gt;", 'g');
-	Leiras = Leiras.replace(p5,"<br>");
-	var p6 = new RegExp("&lt;br/&gt;", 'g');
-	Leiras = Leiras.replace(p6,"<br>");
-	var p7 = new RegExp("&lt;br /&gt;", 'g');
-	Leiras = Leiras.replace(p7,"<br>");
-	var pX = new RegExp("&lt;\/?[^&gt;]+(&gt;|$)",'g');
-	Leiras = Leiras.replace(pX, "");
-	document.getElementById("ELKESZITES").innerHTML=Leiras;   
-	document.getElementById("ELKESZITES").scrollIntoView (true);
-	ReceptMenu(1);
-	document.getElementById("RKEDVENC").src="img/kedvenc"+(Kedvenc())+".png";
-	
-	ShowErtekeles();
-	
-	if (RNEV.scrollHeight > RNevH) 
-	{
-		RNEV.style.marginTop = RNevT2+"px";
-		RIDO.style.marginTop=parseInt(RIdoH/10)+"px";
-		CS.style.marginTop="-"+parseInt(RCsiH*1.2)+"px";
-	}
-	else
-	{
-		RNEV.style.marginTop = RNevT+"px";
-		RIDO.style.marginTop=parseInt(RIdoH/2)+"px";
-		CS.style.marginTop="-"+parseInt(RCsiH*1.2)+"px";
-	}
-	
-		setTimeout(function()
-		{
-			Wheel(false,7);
-			var Porond = document.getElementById("POROND7");
-			var Kerek  = document.getElementById("WHEEL7");
-			Porond.style.display="block";
-			Kerek.style.display="none";
-		},0);
-		
-	
-	setTimeout(function(){ RM1.refresh(); },0);
-	setTimeout(function(){ RM3.refresh(); },0); 
-}
-
-function Recalc(ID)
-{
-	if (!ID) { ID=ReceptMost; }
-	var NR=ReceptNum(ID);
-	var R1OL = document.getElementById("SCROLLER_H");
-	R1OL.innerHTML="";
-	var SZEGMENSp = document.createElement("div");
-		SZEGMENSp.setAttribute("style","width:100%;display:block;overflow:hidden;background-color:#faf3de;margin-bottom:2%;");
-	var DIV1p = document.createElement("div");
-		DIV1p.setAttribute("style","width:47%; float:left;background-color:#faf3de;padding:1%;");
-	var DIV2p = document.createElement("div");	
-		DIV2p.setAttribute("style","width:47%; float:left;background-color:#faf3de;margin-left:2%;padding:1%;");
-	var SZEGMENS = SZEGMENSp.cloneNode(true); var elso=SZEGMENS;
-	var DIV1 = DIV1p.cloneNode(true);
-	var DIV2 = DIV2p.cloneNode(true);
-	var ADAG = document.getElementById("ADAG").value/4;   ReceptADAG = document.getElementById("ADAG").value;
-	if (ADAG)
-	{
-		if (Number(ADAG)<=0) { return; }
-		var Recept = Receptek[NR].split("|");
-		var SOR = Recept[7].split("∆");
-		var paros=true;
-		var ujsorba = false;
-		ReceptHOZZAVALOK = "";
-		for (var m=0; m<SOR.length; m++)
-		{
-			if (SOR[m]!="")
-			{
-			var LI1 = document.createElement("div");
-				LI1.setAttribute("style","float:left; width:100%; text-align:left; cursor:default;");
-				if (SOR[m].indexOf("=")!=-1)
-				{
-					var OSSZETEVO = SOR[m].split("=");
-					var hsor="";
-					var LD1 = document.createElement("div");
-						LD1.setAttribute("style","width:32%;  float:left; text-align:left;padding-left:2%;");
-						var R = OSSZETEVO[0];
-						var RR = R.split(" ");
-						RR[0]=RR[0].replace(/\,/gi,".");
-						
-						RR[0]=RR[0].replace(/fél/gi,"0.5");
-						RR[0]=RR[0].replace(/negyed/gi,"0.25");
-						RR[0]=RR[0].replace(/darab/gi,"db");
-						
-						if (RR[0].indexOf("-")!=-1)
-						{
-							var vagy=RR[0].split("-");
-							hsor = Number(ADAG*Number(vagy[0]))+"-"+Number(ADAG*Number(vagy[1]));
-						}
-						else
-						{
-							hsor = Number(ADAG*Number(RR[0]));
-						}	
-						hsor=hsor+"";
-						
-						
-						
-						hsor=hsor.replace(/0.25/gi,"negyed");
-						hsor=hsor.replace(/0.5/gi,"fél");
-						//hsor=hsor.replace(/0.75/gi,"háromnegy.");
-						//hsor=hsor.replace(/1.5/gi,"másfél");
-						hsor=hsor.replace(/\./gi,",");
-						
-						LD1.innerHTML=hsor+" "+RR[1];   ReceptHOZZAVALOK += hsor+" "+RR[1];
-					var LD2 = document.createElement("div");
-						LD2.setAttribute("style","width:63%;   float:left; text-align:left; padding-left:2%;");
-						var ossz = ""+OSSZETEVO[1];
-						ossz = ossz.replace(/\s+$/,"");
-						ossz = ossz.replace(/\,$/,"");
-						ossz = ossz.replace(/\.$/,"");
-						LD2.innerHTML=ossz;             ReceptHOZZAVALOK += " "+ossz+"<br>";
-					LI1.appendChild(LD1);
-					LI1.appendChild(LD2);
-				}
-				else
-				{
-					var LD=document.createElement("div");
-					LD.setAttribute("style","width:98%; text-align:right;padding-left:2%;");
-					if (SOR[m].indexOf(":")!=-1)
-					{
-						LD.innerHTML=SOR[m]; LD.style.textAlign="left"; LD.style.height="5%";     ReceptHOZZAVALOK += "<br>"+SOR[m]+"<br>";
-					} else
-					{
-						LD.innerHTML=SOR[m];       ReceptHOZZAVALOK += SOR[m]+"<br>";
-					}
-					LI1.appendChild(LD);
-					var kpont = SOR[m]+"";
-					kpont=kpont.replace(/\s+$/,"");
-					if (kpont.search(/:$/)!=-1)
-					{
-						ujsorba=true;
-						LD.style.textDecoration="underline";
-						LD.style.fontWeight="bold";
-						SZEGMENS.appendChild(DIV1);
-						SZEGMENS.appendChild(DIV2);
-						R1OL.appendChild(SZEGMENS);
-						if (DIV1.innerHTML==="" && DIV2.innerHTML==="") { SZEGMENS.style.display="none"; }
-						SZEGMENS=SZEGMENSp.cloneNode(true);
-						DIV1 = DIV1p.cloneNode(true);
-						DIV2 = DIV2p.cloneNode(true);
-					}	
-				}
-				if (paros)
-				{
-					DIV1.appendChild(LI1);
-					paros=false;
-					if (ujsorba)
-					{
-						var LIE  = document.createElement("div");
-							LIE.setAttribute("style","width:100%;  float:left; text-align:left;padding-left:2%; ");
-							LIE.innerHTML="&nbsp";
-							DIV2.appendChild(LIE);
-							paros=true;
-							ujsorba=false;
-					}
-				}
-				else
-				{
-					if (!ujsorba)
-					{
-						DIV2.appendChild(LI1);
-						paros=true;
-					}
-					else
-					{
-						var LIE  = document.createElement("div");
-							LIE.setAttribute("style","width:40%;  float:left; text-align:left;padding-left:2%; ");
-							LIE.innerHTML="&nbsp";
-							DIV2.appendChild(LIE);
-						DIV1.appendChild(LI1);
-						var LIE2  = document.createElement("div");
-							LIE2.setAttribute("style","width:40%;  float:left; text-align:left;padding-left:2%; ");
-							LIE2.innerHTML="&nbsp";
-						DIV2.appendChild(LIE2);
-						ujsorba=false;
-						paros=true;
-					}
-				}
-			}	
-		}
-		SZEGMENS.appendChild(DIV1);
-		SZEGMENS.appendChild(DIV2);
-		R1OL.appendChild(SZEGMENS);   //ReceptHOZZAVALOK = R1OL.innerHTML;
-		var space=document.createElement("div");
-		space.setAttribute("style","display:block;width:100%;height:20%;");
-		R1OL.appendChild(space);
-	}
-	hideKeyboard(document.getElementById("ADAG"));  //.blur();
-	setTimeout(function(){ RM2.refresh(); },0);	
-}
-
-function ReceptNum(ID)
-{
-	for (var n=0;n<Receptek.length;n++)
-	{
-		var Recept=Receptek[n].split("|");
-		if (Recept[0]==ID) { return n; }		
-	}
-	return -1;
-}
-
-function ReceptMenu(NR)
-{
-	for(var n=1;n<=4;n++)
-	{
-		document.getElementById("RMENU"+n).className=(n==NR)?"recept_menu selected":"recept_menu";
-		document.getElementById("RECEPT_MEZO"+n).style.display=(n==NR)?"block":"none";
-		//if (NR==2) { document.getElementById("ADAG").focus();document.getElementById("ADAG").select(); }
-		if (NR==1) { setTimeout(function(){ RM1.refresh(); },0); }
-		if (NR==2) { setTimeout(function(){ RM2.refresh(); },0); }
-		if (NR==3) { setTimeout(function(){ RM3.refresh(); },0); }
-		//if (NR==4) { setTimeout(function(){ RM4.refresh(); },0); }     // nincs rá szükség
-	}
-}
-
-function Kedvenc(BeKi)
-{
-	var K = window.localStorage.getItem("kedvenc"+ReceptMost);
-	if (BeKi) { window.localStorage.setItem("kedvenc"+ReceptMost, (K==1)?0:1  );  K=(K==1)?0:1; document.getElementById("RKEDVENC").src="img/kedvenc"+K+".png"; }
-	if (K==null) { K=0; }
-	return K;
-}
-
-function Elozmenyek_beallitas()
-{
-	var ELO = document.getElementById("ELOZMENY");
-	var UJ=parseInt(ELO.getAttribute("ertek"));
-	UJ++;
-	if (UJ>ELOZMENYEK.length-1){UJ=0;}
-	ELO.setAttribute("ertek",UJ);
-	ELO.innerHTML=ELOZMENYEK[UJ];
-	Preferences(3,UJ);
-}
-function Elozmenyek_lementes()
-{
-	for (var n=0; n<Elozmenyek.length;n++)
-	{
-		if (Elozmenyek[n][0]==ReceptMost) 
-		{  
-			Elozmenyek[n][0]=0;
-			Elozmenyek[n][1]="";
-		}
-	}
-	var d=new Date();
-	var EL = Elozmenyek.length;
-	Elozmenyek[EL] = Array();
-	Elozmenyek[EL][0]=ReceptMost;
-	Elozmenyek[EL][1]=d.toDateString();
-	
-	EHistory.splice(0,EHistory.length);
-	HPos = 0;
-	for (var m=0;m<Elozmenyek.length;m++)
-	{
-		var EPos = Elozmenyek.length-m-1;
-		if (Elozmenyek[EPos][0]!=0 && HPos<ElozmenyekMAX-1 )  
-			{
-				window.localStorage.setItem("erecept"+HPos,Elozmenyek[EPos][0]);
-				window.localStorage.setItem("edatum"+HPos,Elozmenyek[EPos][1]); 
-				EHistory[HPos] = Array();
-				EHistory[HPos][0] = Elozmenyek[EPos][0];
-				EHistory[HPos][1] = Elozmenyek[EPos][1];
-				HPos++;
-			}
-	}
-}
 
 function Preferences(PrefNR,Ertek)
 {
@@ -766,6 +260,7 @@ function Preferences(PrefNR,Ertek)
 }
 
 function network_status() {
+			if (!window.device)  { return "PC"; }
             var networkState = navigator.connection.type;
 
             var states = {};
@@ -828,18 +323,6 @@ function Megoszt(MODE)
 	}
 }
 
-// function shouldRotateToOrientation (rotation) {     // iOS-en elforgatás engedélyezése, tiltása
-//     switch (rotation) {
-//         //Portrait or PortraitUpsideDown
-//         case 0:
-//         case 180:
-//             return true;
-//         //LandscapeRight or LandscapeLeft
-//         case 90:
-//         case -90:
-//              return false;
-//     }
-// }
 
 var oc_timer;
 
@@ -1001,11 +484,10 @@ function Ertekeles_letolt()
 	ajax_hivas('http://koronascukor.hu/code/microsite/sutipedia/app/ertekelesek.php?random='+Math.random(), 'callback' ,'ERTEKELESEK');
 }
 
-var PROBA =1;
 
 function Ertekeles_feldolgoz(CMEZO,response)
 {
-		if (!response) { return; }    // a callback kétszer is meghívja (bug), de addigra már lehet, hogy fel van szabadítva
+		if (!response) { return; }    // ha a callback kétszer is meghívja (bug), de addigra már lehet, hogy fel van szabadítva
 		obj = eval( response );    
 		for (var n=0; n<obj.length; n++)
 		{
@@ -1018,18 +500,6 @@ function Ertekeles_feldolgoz(CMEZO,response)
 		}
 		ErtekelesOK = true; 
 		FreeCallback(CMEZO);
-}
-
-var SkalaPoz = Array();
-SkalaPoz[1] = Array (-4,15,34,53,72,91);
-SkalaPoz[2] = Array (-4,29,59,91);
-
-function Skala(NR,NUM)
-{
-	var golyo = document.getElementById("GOLYO"+NR);
-	golyo.style.left=SkalaPoz[NR][NUM]+"%";
-	if (NR==1) { Kereses_Ido = NUM; }
-	if (NR==2) { Kereses_Fok = NUM; }
 }
 
 
@@ -1050,29 +520,17 @@ function ScrollRefresh(oldal)
 }
 
 
+function onCameraFail(message) {
+      alert('Kamera hiba : ' + message);
+    }
 
-function Evszak_Init()
-{
-		var D = new Date();
-		var HO  = parseInt(D.getMonth()+1);					
-		var NAP = D.getDate();				
-		EVSZAK = EvszakID[EvszakID.length-1];				// ha végül nem talál, akkor = tél (év eleje átnyúlik)
-		var keres = true;
-		for (var n=1; n<EvszakID.length; n++)
-		{
-			EHO1  = EvszakD1[n].substr(5,2);
-			ENAP1 = EvszakD1[n].substr(8,2);
-			EHO2  = EvszakD2[n].substr(5,2);
-			ENAP2 = EvszakD2[n].substr(8,2);
-			if (keres)
-			{
-				if ( (HO>=EHO1 && NAP>=ENAP1) && (HO<=EHO2 && NAP<=ENAP2))
-				{
-					keres = false;
-					EVSZAK = EvszakID[n];
-					EVSZAKnr = n;
-				}
-			}
-		}
-		console.log(EVSZAK);
+
+function onPhotoDataSuccess(imageData) {
+	document.getElementById("MODAVATAR").src = "data:image/jpeg;base64," + imageData;
 }
+
+
+function onPhotoURISuccess(imageURI) {
+	document.getElementById("MODAVATAR").src = imageURI;
+}
+
