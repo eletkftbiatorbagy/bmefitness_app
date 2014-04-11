@@ -110,22 +110,19 @@ var app = {
 					} );
 				});
 	
-		EMAIL = window.localStorage.getItem("email");
-		if (!EMAIL) { document.getElementById("LOGINBUTTON").innerHTML="Regisztráció"; }
-		callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
-		ajax_hivas('login_get.php','', 'callback' ,'AJAX_LOGIN'); 
-		
 		if (window.device) 
 		{   	
 			FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });
 			pictureSource=navigator.camera.PictureSourceType.CAMERA;
         	destinationType=navigator.camera.DestinationType;
 		}
-    		
-        	
-        	
-    	
-    	
+	
+			
+		EMAIL = window.localStorage.getItem("email");
+		if (!EMAIL) { document.getElementById("LOGINBUTTON").innerHTML="Regisztráció"; }
+		callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
+		ajax_hivas('login_get.php','', 'callback' ,'AJAX_LOGIN'); 
+		
     }};
    //   ooDeviceReady vége ================================================================================================================================================= 
     
@@ -168,8 +165,6 @@ function Oldal(oldal,lablec)
 
 function Oldal2(oldal,lablec)
 {
-
-			
 	if (oldal==11) 
 	{
 		document.getElementById("NETWORKSTATUS").innerHTML=network_status();
