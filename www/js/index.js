@@ -85,37 +85,45 @@ var app = {
 		Hammer(document.getElementById("MODAVATAR")).on("tap", function(event){ Mod_Avatar();  });
 		
 		
-		setTimeout( function()
-    	{
-        	Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){ alert("MOd AVATAR"); });
-			Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){   Oldal(3,0);	}  );
-			Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 	alert('album foto');
-						navigator.camera.getPicture(onPhotoURISuccess, onCameraFail,   
-						{ 	quality: 20, 
-							destinationType: destinationType.FILE_URI, 
-							sourceType: pictureSource.SAVEDPHOTOALBUM, 
-							encodingType: Camera.EncodingType.JPEG,    
-							targetWidth: 100,  
-							targetHeight: 100,  
-							MediaType : 0    
-						} );  
-					});
-        },0);
-		
-		
+		Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){  });
+		Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
+					navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
+					{ 	quality: 20, allowEdit: true,
+						destinationType: destinationType.DATA_URL, 
+						encodingType: Camera.EncodingType.JPEG,
+						targetWidth: 100,
+						targetHeight: 100,
+						MediaType: 0,
+						popoverOptions: CameraPopoverOptions,
+						saveToPhotoAlbum: true
+					} ); 
+				});
+		Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 
+					navigator.camera.getPicture(onPhotoURISuccess, onCameraFail, 
+					{ 	quality: 20, 
+						destinationType: destinationType.FILE_URI,
+						sourceType: pictureSource.SAVEDPHOTOALBUM,
+						encodingType: Camera.EncodingType.JPEG,
+						targetWidth: 100,
+						targetHeight: 100,
+						MediaType : 0
+					} );
+				});
+	
 		EMAIL = window.localStorage.getItem("email");
 		if (!EMAIL) { document.getElementById("LOGINBUTTON").innerHTML="Regisztráció"; }
 		callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
 		ajax_hivas('login_get.php','', 'callback' ,'AJAX_LOGIN'); 
-			
+		
 		if (window.device) 
 		{   	
 			FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });
-			pictureSource=navigator.camera.PictureSourceType;
+			pictureSource=navigator.camera.PictureSourceType.CAMERA;
         	destinationType=navigator.camera.DestinationType;
 		}
     		
-    		
+        	
+        	
     	
     	
     }};
@@ -129,7 +137,7 @@ var LastLablec=[0];			// első oldal lábléce
 
 function Oldal(oldal,lablec)
 {
-	//if (!oldal) { return; }
+	if (!oldal) { return; }
 	if (oldal<0)        // vissza
 	{
 		oldal = Math.abs(oldal);
@@ -257,21 +265,7 @@ function Preferences(PrefNR,Ertek)
 	return E;
 }
 
-function network_status() {
-			if (!window.device)  { return "PC"; }
-            var networkState = navigator.connection.type;
 
-            var states = {};
-            states[Connection.UNKNOWN]  = '???';
-            states[Connection.ETHERNET] = 'Vezetékes';
-            states[Connection.WIFI]     = 'WiFi';
-            states[Connection.CELL_2G]  = 'Mobil';
-            states[Connection.CELL_3G]  = 'Mobil';
-            states[Connection.CELL_4G]  = 'Mobil';
-            states[Connection.CELL]     = 'Mobil';
-            states[Connection.NONE]     = 'nincs';
-            return states[networkState];
-} 
 
 function Megoszt(MODE)
 {
