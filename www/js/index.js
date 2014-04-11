@@ -1,11 +1,12 @@
 const StartPage=1;      ///  DEVELOPMENT......................................................................................
 const AJAX_URL = "http://e-let.hu/fitness/";
-const OldalSzam = 12;   //  ennyi lap van definiálva a .html fájlban
+const OldalSzam = 13;   //  ennyi lap van definiálva a .html fájlban
 var LOGIN = false;
 var REGISZTRALVA = false;
 var EMAIL;
 var EMAIL_hash;
 var NEV;
+var AVATAR;
 
 var pictureSource;   // picture source
 var destinationType; // sets the format of returned value
@@ -81,6 +82,8 @@ var app = {
     	   	   	
 		document.addEventListener("backbutton", Vissza, false);
 		
+		Hammer(document.getElementById("LOGINBUTTON")).on("tap", function(event){ LoginButton();  });
+		
 		Hammer(document.getElementById("CHAVATAR")).on("tap", function(event){ Oldal(12,0);  });
 		Hammer(document.getElementById("MODAVATAR")).on("tap", function(event){ Mod_Avatar();  });
 		
@@ -95,6 +98,7 @@ var app = {
 						targetHeight: 150,
 						MediaType: 0,
 						popoverOptions: CameraPopoverOptions,
+						cameraDirection: Camera.Direction.FRONT,
 						saveToPhotoAlbum: true
 					} ); 
 				});
@@ -105,7 +109,8 @@ var app = {
 						targetWidth: 150,
 						targetHeight: 150,
 						destinationType: destinationType.DATA_URL,
-						sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+						MediaType: 0,
+						sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM
 					} );
 				});
 	
@@ -118,7 +123,7 @@ var app = {
 	
 			
 		EMAIL = window.localStorage.getItem("email");
-		if (!EMAIL) { document.getElementById("LOGINBUTTON").innerHTML="Regisztráció"; }
+		if (!EMAIL) { document.getElementById("LOGINTXT").innerHTML="Tovább >>>"; }
 		callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
 		ajax_hivas('login_get.php','', 'callback' ,'AJAX_LOGIN'); 
 		
@@ -513,10 +518,30 @@ function onCameraFail(message) {
 
 function onPhotoDataSuccess(imageData) {
 	document.getElementById("MODAVATAR").src = "data:image/jpeg;base64," + imageData;
+	document.getElementById("CHAVATAR").src = "data:image/jpeg;base64," + imageData;
+	document.getElementById("DATAAVATAR").src = "data:image/jpeg;base64," + imageData;
+	AVATAR = "data:image/jpeg;base64," + imageData;
 }
 
 
-function onPhotoURISuccess(imageURI) {
-	document.getElementById("MODAVATAR").src = imageURI;
+function LoginButton()
+{
+	if (!EMAIL) { Oldal(13,0); }
 }
 
+
+function set_Hash()
+{
+	EMAIL_hash = CryptoJS.MD5(EMAIL);
+}
+
+function Gravatar()
+{
+	callback = function(response) { Gravatar_betolt('GRAVATAR',response); }
+	get_Gravatar(EMAIL_hash,'callback','GRAVATAR');
+}
+
+function Gravatar_betolt(DOM,response)
+{
+	
+}

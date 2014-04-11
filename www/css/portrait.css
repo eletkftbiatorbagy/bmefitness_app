@@ -279,7 +279,7 @@ p {
 	border: 3px solid #0a510a;
 }
 .login_gravatar img{
-	width:104%;
+	width:105%;
 	margin-left:-2%;
 	margin-top:-2%;
 }
@@ -294,19 +294,26 @@ p {
 	margin: 3% auto;
 	height:7%;
 }
-#LOGIN .gomb{
+.adatok{
+	width:76%;
+	margin: 3% auto;
+	height:7%
+}
+
+
+#LOGIN .gomb,#ADATOK .gomb{
 	width:78%;
 	margin-top:3%;
 }
-#LOGIN p{
+#LOGIN p,#ADATOK p{
 	margin-left:12%;
 	margin-right:12%;
-	font-size: 1em;
+	font-size: 1.5em;
 }
 /* ----- AVATAR ---------------- */
 #AVSTART .gomb{
 	width:80%;
-	margin-top:5%;
+	margin-top:3%;
 }
 #AVSTART p{
 	margin:3% 12%;
