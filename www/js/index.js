@@ -98,14 +98,10 @@ var app = {
 		}
     		
         	Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){  });
-			Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
-						navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
-						{ 	quality: 20, allowEdit: true,
-							destinationType: destinationType.DATA_URL 
-							
-						} ); 
+			Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){   console.log("kamera fotó");
+						
 					});
-			Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 
+			Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 	console.log("album fotó");
 						navigator.camera.getPicture(onPhotoURISuccess, onCameraFail, 
 						{ 	quality: 20, 
 							destinationType: destinationType.FILE_URI,
