@@ -99,25 +99,23 @@ var app = {
     		
         	Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){  });
 			Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
-						navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, { quality: 20, allowEdit: true,
-						destinationType: destinationType.DATA_URL, 
-						encodingType: Camera.EncodingType.JPEG,
-						targetWidth: 100,
-						targetHeight: 100,
-						MediaType: 0,
-						popoverOptions: CameraPopoverOptions,
-						saveToPhotoAlbum: true}); 
-						});
+						navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
+						{ 	quality: 20, allowEdit: true,
+							destinationType: destinationType.DATA_URL 
+							
+						} ); 
+					});
 			Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 
-						navigator.camera.getPicture(onPhotoURISuccess, onCameraFail, { quality: 20, 
-						destinationType: destinationType.FILE_URI,
-						sourceType: pictureSource.SAVEDPHOTOALBUM,
-						encodingType: Camera.EncodingType.JPEG,
-						targetWidth: 100,
-						targetHeight: 100,
-						MediaType : 0
-						});
-						});
+						navigator.camera.getPicture(onPhotoURISuccess, onCameraFail, 
+						{ 	quality: 20, 
+							destinationType: destinationType.FILE_URI,
+							sourceType: pictureSource.SAVEDPHOTOALBUM,
+							encodingType: Camera.EncodingType.JPEG,
+							targetWidth: 100,
+							targetHeight: 100,
+							MediaType : 0
+						} );
+					});
         	
     	
     	
