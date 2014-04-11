@@ -97,8 +97,8 @@ var app = {
         	destinationType=navigator.camera.DestinationType;
 		}
     		
-        	Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){  });
-			Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){   alert('kamera foto');	}  );
+        	Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){ alert("MOd AVATAR"); });
+			Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){   Oldal(3,0);	}  );
 			Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 	alert('album foto');
 						navigator.camera.getPicture(onPhotoURISuccess, onCameraFail,   
 						{ 	quality: 20, 
