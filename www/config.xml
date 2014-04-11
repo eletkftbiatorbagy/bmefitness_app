@@ -79,7 +79,7 @@
     	<param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
     	<param name="ios-package" value="CDVCamera" />
 	</feature>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
     
     <gap:plugin name="com.phonegap.plugins.facebookconnect">
     	<param name="APP_ID" value="529520623830569" />
