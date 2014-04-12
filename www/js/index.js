@@ -324,6 +324,7 @@ function Megoszt(MODE)
 var oc_timer;
 
 window.addEventListener("orientationchange", function() {   
+	console.log("orientationchange");
 	clearTimeout(oc_timer);
 	var oc_delay = 0;
 	if (device && device.platform=="Android") { oc_delay=500; }
@@ -332,6 +333,7 @@ window.addEventListener("orientationchange", function() {
 
 
 window.addEventListener("resize", function() {
+	console.log("resize");
 	var MT;
 	if (window.device)
 	{
@@ -344,7 +346,7 @@ window.addEventListener("resize", function() {
     document.body.style.height = BodyHeight + "px";
     document.body.style.marginTop = MT + "px";
     window.scrollTo(0,-MT); //alert(MT);
-    console.log(parseInt(window.innerHeight - BodyHeight) +"px");
+    //console.log(parseInt(window.innerHeight - BodyHeight) +"px");
 },false);
 
 function OrientationReCalc()
