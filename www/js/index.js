@@ -333,20 +333,22 @@ window.addEventListener("orientationchange", function() {
 
 
 window.addEventListener("resize", function() {
-	console.log("resize");
 	var MT;
 	if (window.device)
 	{
+		console.log("resize");
 		MT = parseInt(documentElement.clientHeight - BodyHeight);
+		console.log(parseInt(documentElement.clientHeight - BodyHeight));
 	}
 	else
 	{
 		MT = parseInt(window.innerHeight - BodyHeight);		
 	}
+	console.log("átméreezés indul");
     document.body.style.height = BodyHeight + "px";
     document.body.style.marginTop = MT + "px";
     window.scrollTo(0,-MT); //alert(MT);
-    //console.log(parseInt(window.innerHeight - BodyHeight) +"px");
+    console.log(parseInt(window.innerHeight - BodyHeight) +"px");
 },false);
 
 function OrientationReCalc()
