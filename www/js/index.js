@@ -9,6 +9,7 @@ var NEV;
 var AVATAR;
 
 var BodyHeight;
+var OldalMost;
 
 var pictureSource;   // picture source
 var destinationType; // sets the format of returned value
@@ -155,7 +156,7 @@ function Oldal(oldal,lablec)
 	else
 	{
 		LastPage.push(oldal);
-		LastLablec.push(lablec);
+		LastLablec.push(lablec);  
 	}
 	if (oldal==1 && !LOGIN) { oldal=11; }
 	if (oldal==3 || oldal==4 || oldal==5 || oldal==6)	
@@ -170,7 +171,7 @@ function Oldal(oldal,lablec)
 	if (!lablec) { lablec=0; }
 	Lablec(oldal,lablec);
 	setTimeout(function(){ Oldal2(oldal,lablec); },1000);
-
+	OldalMost = oldal;
 }	
 
 function Oldal2(oldal,lablec)
@@ -332,7 +333,7 @@ window.addEventListener("orientationchange", function() {
 }, false);
 
 
-window.addEventListener("resize", function() {
+window.addEventListener("resize", function(e) {
 	var MT;
 	if (window.device)
 	{
@@ -344,11 +345,14 @@ window.addEventListener("resize", function() {
 	{
 		MT = parseInt(window.innerHeight - BodyHeight);		
 	}
-	console.log("átméreezés indul");
-    document.body.style.height = BodyHeight + "px";
-    document.body.style.marginTop = MT + "px";
-    window.scrollTo(0,-MT); //alert(MT);
-    console.log(parseInt(window.innerHeight - BodyHeight) +"px");
+    var Lp = document.getElementById("Oldal"+OldalMost);  
+    if (Lp)
+    {
+    	Lp.style.height = BodyHeight + "px";
+    	Lp.style.marginTop = MT + "px";
+    	window.scrollTo(0,-MT); //alert(MT);
+    	console.log(parseInt(window.innerHeight - BodyHeight) +"px");
+    }	
 },false);
 
 function OrientationReCalc()

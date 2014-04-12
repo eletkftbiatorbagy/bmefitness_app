@@ -40,6 +40,8 @@ body {
     background-attachment:fixed;
     padding:none;
     font-family:betu1;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 a{
 	text-decoration: none;
