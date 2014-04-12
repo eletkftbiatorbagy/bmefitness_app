@@ -333,7 +333,7 @@ window.addEventListener("orientationchange", function() {
 function OrientationReCalc()
 {
 	document.body.style.height = screen.availHeight + 'px';
-	if (!ReSizeEnabled) { return; }   // keyboard miatt történt
+	if (ReSizeEnabled) { return; }   // keyboard miatt történt
 	var sW;
     var sH;
     var PORTRAIT = true;
