@@ -8,6 +8,8 @@ var EMAIL_hash;
 var NEV;
 var AVATAR;
 
+var ReSizeEnabled = true;   // átméretezés (elforgatás) engedélyezése - letiltva billentyűzetnél
+
 var pictureSource;   // picture source
 var destinationType; // sets the format of returned value
 
@@ -73,6 +75,13 @@ var app = {
 		Hammer(document.getElementById("F3")).on("tap", function(event){ Oldal(7,0); });
 		Hammer(document.getElementById("F4")).on("tap", function(event){ Oldal(8,0); });
 		Hammer(document.getElementById("F5")).on("tap", function(event){ Oldal(9,0); });
+		
+		for (var v=1;v<=3; v++)
+		{
+			var V = document.getElementById("DATA"+v);
+			V.addEventListener('focus', function(e){ keyboard(false,e); } ,false);
+			V.addEventListener('blur', function(e){ keyboard(true,e); } ,false);
+		}	
 		
 		for (var v=1;v<=OldalSzam; v++)
 		{
@@ -161,10 +170,7 @@ function Oldal(oldal,lablec)
 	if (!lablec) { lablec=0; }
 	Lablec(oldal,lablec);
 	setTimeout(function(){ Oldal2(oldal,lablec); },1000);
-	// if (oldal==7)
-// 	{ window.plugins.orientationchanger.lockOrientation('default'); }
-// 	else
-// 	{ window.plugins.orientationchanger.lockOrientation('portrait'); }
+
 }	
 
 function Oldal2(oldal,lablec)
@@ -326,6 +332,7 @@ window.addEventListener("orientationchange", function() {
 
 function OrientationReCalc()
 {
+	if (!ReSizeEnabled) { return; }   // keyboard miatt történt
 	var sW;
     var sH;
     var PORTRAIT = true;
@@ -546,8 +553,14 @@ function Gravatar_betolt(DOM,response)
 	
 }
 
-function keyboard(event)
+function keyboard(OnFF,event)
 {
-	event.preventDefault(); event.stopPropagation();
+	 ReSizeEnabled = OnFF;	
+	 // if(event.which)
+// 		{	
+// 			x=event.which;
+// 		
+// 			event.preventDefault(); event.stopPropagation();
+// 		}	
     window.scrollTo(0,0);
 }
