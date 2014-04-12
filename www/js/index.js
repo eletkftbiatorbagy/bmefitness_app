@@ -138,7 +138,7 @@ var LastLablec=[0];			// első oldal lábléce
 
 function Oldal(oldal,lablec)
 {
-	if (!oldal) { return; }
+	if (!oldal && oldal!=0) { return; }
 	if (oldal<0)        // vissza
 	{
 		oldal = Math.abs(oldal);
@@ -544,4 +544,10 @@ function Gravatar()
 function Gravatar_betolt(DOM,response)
 {
 	
+}
+
+function keyboard(event)
+{
+	event.preventDefault(); event.stopPropagation();
+    window.scrollTo(0,0);
 }
