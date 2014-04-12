@@ -8,7 +8,7 @@ var EMAIL_hash;
 var NEV;
 var AVATAR;
 
-var ReSizeEnabled = true;   // átméretezés (elforgatás) engedélyezése - letiltva billentyűzetnél
+var BodyHeight;
 
 var pictureSource;   // picture source
 var destinationType; // sets the format of returned value
@@ -332,14 +332,24 @@ window.addEventListener("orientationchange", function() {
 
 
 window.addEventListener("resize", function() {
-	sWr = document.documentElement.clientWidth;    		//console.log("PORTRAIT");
-    sHr = document.documentElement.clientHeight;			
-    console.log("Felbontás : "+sWr+" x "+sHr);
+	var MT;
+	if (window.device)
+	{
+		MT = parseInt(documentElement.clientHeight - BodyHeight);
+	}
+	else
+	{
+		MT = parseInt(window.innerHeight - BodyHeight);		
+	}
+    document.body.style.height = BodyHeight + "px";
+    document.body.style.marginTop = MT + "px";
+    window.scrollTo(0,-MT); //alert(MT);
+    console.log(parseInt(window.innerHeight - BodyHeight) +"px");
 },false);
 
 function OrientationReCalc()
 {
-	document.body.style.height = document.documentElement.clientHeight;    //screen.availHeight + 'px';
+	
 	var sW;
     var sH;
     var PORTRAIT = true;
@@ -358,12 +368,14 @@ function OrientationReCalc()
         if (window.device)     // mobil eszközön fut 
         {
         	sW = document.documentElement.clientWidth;    		//console.log("PORTRAIT");
-        	sH = document.documentElement.clientHeight;			
+        	sH = document.documentElement.clientHeight;
+        	BodyHeight = document.documentElement.clientHeight;
         }
         else					// PC-s bnöngészőn fut
         {
         	sW = window.innerWidth;
         	sH = window.innerHeight;
+        	BodyHeight = window.innerHeight;
         }
         
 		for (var n=0;n<=OldalSzam;n++)
@@ -390,6 +402,7 @@ function OrientationReCalc()
         	sW = document.documentElement.clientWidth;        // <<< 
         	sH = document.documentElement.clientHeight;		//console.log("LANDSCAPE");
         							//console.log("Felbontás : "+sW+" x "+sH);
+        	BodyHeight = document.documentElement.clientHeight;						
         }
         else					// PC-s bnöngészőn fut
         {
@@ -561,7 +574,7 @@ function Gravatar_betolt(DOM,response)
 
 function keyboard(OnFF,event)
 {
-	 ReSizeEnabled = OnFF;	
+	 //ReSizeEnabled = OnFF;	
 	 // if(event.which)
 // 		{	
 // 			x=event.which;
