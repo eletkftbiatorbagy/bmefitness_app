@@ -336,9 +336,9 @@ window.addEventListener("resize", function() {
 	var MT;
 	if (window.device)
 	{
-		console.log("resize");
-		MT = parseInt(documentElement.clientHeight - BodyHeight);
-		console.log(parseInt(documentElement.clientHeight - BodyHeight));
+		console.log("resize - clientHeight: ");
+		MT = parseInt(document.documentElement.clientHeight - BodyHeight);
+		console.log(parseInt(document.documentElement.clientHeight - BodyHeight));
 	}
 	else
 	{
