@@ -330,6 +330,13 @@ window.addEventListener("orientationchange", function() {
   	oc_timer = setTimeout(OrientationReCalc,oc_delay); 
 }, false);
 
+
+window.addEventListener("resize", function() {
+	sWr = document.documentElement.clientWidth;    		//console.log("PORTRAIT");
+    sHr = document.documentElement.clientHeight;			
+    console.log("Felbontás : "+sWr+" x "+sHr);
+},false);
+
 function OrientationReCalc()
 {
 	document.body.style.height = document.documentElement.clientHeight;    //screen.availHeight + 'px';
@@ -352,7 +359,6 @@ function OrientationReCalc()
         {
         	sW = document.documentElement.clientWidth;    		//console.log("PORTRAIT");
         	sH = document.documentElement.clientHeight;			
-        	console.log("Felbontás : "+sW+" x "+sH);
         }
         else					// PC-s bnöngészőn fut
         {
