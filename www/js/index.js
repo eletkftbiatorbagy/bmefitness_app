@@ -332,8 +332,7 @@ window.addEventListener("orientationchange", function() {
 
 function OrientationReCalc()
 {
-	document.body.style.height = screen.availHeight + 'px';
-	if (ReSizeEnabled) { return; }   // keyboard miatt történt
+	document.body.style.height = document.documentElement.clientHeight;    //screen.availHeight + 'px';
 	var sW;
     var sH;
     var PORTRAIT = true;
@@ -353,7 +352,7 @@ function OrientationReCalc()
         {
         	sW = document.documentElement.clientWidth;    		//console.log("PORTRAIT");
         	sH = document.documentElement.clientHeight;			
-        	//console.log("Felbontás : "+sW+" x "+sH);
+        	console.log("Felbontás : "+sW+" x "+sH);
         }
         else					// PC-s bnöngészőn fut
         {
