@@ -595,6 +595,8 @@ var posX=0, posY=0,
 
 function Avatar_mozgat(ev)
 {
+	var MinMax_x = elemRect.width;
+	var MinMax_y = elemRect.height;  
 	switch(ev.type) 
 	{
             case 'touch':
@@ -604,8 +606,8 @@ function Avatar_mozgat(ev)
                 break;
  
             case 'drag':
-                    posX = Math.max(-100, Math.min(ev.gesture.deltaX + lastPosX,100));
-                    posY = Math.max(-100, Math.min(ev.gesture.deltaY + lastPosY,100));
+                    posX = Math.max(-MinMax_x, Math.min(ev.gesture.deltaX + lastPosX,MinMax_x));
+                    posY = Math.max(-MinMax_y, Math.min(ev.gesture.deltaY + lastPosY,MinMax_x));
                 break;
  
             case 'transform':
@@ -613,8 +615,8 @@ function Avatar_mozgat(ev)
                 break;
  
             case 'dragend':
-                lastPosX = Math.max(-100, Math.min(posX,100));
-                lastPosY = Math.max(-100, Math.min(posY,100));
+                lastPosX = posX;
+                lastPosY = posY;
                 break;
     }
  
