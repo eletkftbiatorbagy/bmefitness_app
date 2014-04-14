@@ -569,6 +569,7 @@ function onPhotoDataSuccess(imageData) {
 	document.getElementById("MODAVATAR").src = "data:image/jpeg;base64," + imageData;
 	document.getElementById("CHAVATAR").src = "data:image/jpeg;base64," + imageData;
 	document.getElementById("DATAAVATAR").src = "data:image/jpeg;base64," + imageData;
+	document.getElementById("EDITAVATAR").src = "data:image/jpeg;base64," + imageData;
 	AVATAR = "data:image/jpeg;base64," + imageData;
 }
 
