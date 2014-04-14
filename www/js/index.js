@@ -1,6 +1,6 @@
-const StartPage=1;      ///  DEVELOPMENT......................................................................................
+const StartPage=14;      ///  DEVELOPMENT......................................................................................
 const AJAX_URL = "http://e-let.hu/fitness/";
-const OldalSzam = 13;   //  ennyi lap van definiálva a .html fájlban
+const OldalSzam = 14;   //  ennyi lap van definiálva a .html fájlban
 var LOGIN = false;
 var REGISZTRALVA = false;
 var EMAIL;
@@ -77,11 +77,12 @@ var app = {
 		Hammer(document.getElementById("F4")).on("tap", function(event){ Oldal(8,0); });
 		Hammer(document.getElementById("F5")).on("tap", function(event){ Oldal(9,0); });
 		
-		for (var v=1;v<=3; v++)
+		
+		var V = document.getElementsByTagName("input");
+		for (var v=0;v<V.length; v++)
 		{
-			var V = document.getElementById("DATA"+v);
-			V.addEventListener('focus', function(e){ keyboard(false,e); } ,false);
-			V.addEventListener('blur', function(e){ keyboard(true,e); } ,false);
+			V[v].addEventListener('focus', function(e){ keyboard(false,e); } ,false);
+			V[v].addEventListener('blur', function(e){ keyboard(true,e); } ,false);
 		}	
 		
 		for (var v=1;v<=OldalSzam; v++)
@@ -94,11 +95,14 @@ var app = {
 		
 		Hammer(document.getElementById("LOGINBUTTON")).on("tap", function(event){ LoginButton();  });
 		
-		Hammer(document.getElementById("CHAVATAR")).on("tap", function(event){ Oldal(12,0);  });
-		Hammer(document.getElementById("MODAVATAR")).on("tap", function(event){ Mod_Avatar();  });
+		Hammer(document.getElementById("CHAVATAR")).on("tap", function(event)	{  if (AVATAR) { Oldal(14,0); } else { Oldal(12,0);}  });
+		Hammer(document.getElementById("MODAVATAR")).on("tap", function(event)	{  if (AVATAR) { Oldal(14,0); } else { Oldal(12,0);}  });
+		Hammer(document.getElementById("DATAAVATAR")).on("tap", function(event)	{  if (AVATAR) { Oldal(14,0); } else { Oldal(12,0);}  });
+		
+		//Hammer(document.getElementById("EDITAVATAR")).on("transform", function(event)	{    });
+		Hammer(document.getElementById("EDITAVATAR")).on("drag", function(ev)		{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
 		
 		
-		Hammer(document.getElementById("GRAVATAR_FOTO")).on("tap", function(event){  });
 		Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
 					navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
 					{ 	quality: 50, allowEdit: true,
@@ -130,12 +134,12 @@ var app = {
 			pictureSource=navigator.camera.PictureSourceType.CAMERA;
         	destinationType=navigator.camera.DestinationType;
 		}
-	
+		
 			
 		EMAIL = window.localStorage.getItem("email");
 		if (!EMAIL) { document.getElementById("LOGINTXT").innerHTML="Tovább >>>"; }
 		callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
-		ajax_hivas('login_get.php','', 'callback' ,'AJAX_LOGIN'); 
+		ajax_hivas(AJAX_URL +'login_get.php','', 'callback' ,'AJAX_LOGIN'); 
 		
     }};
    //   ooDeviceReady vége ================================================================================================================================================= 
@@ -564,30 +568,21 @@ function LoginButton()
 }
 
 
-function set_Hash()
-{
-	EMAIL_hash = CryptoJS.MD5(EMAIL);
-}
-
-function Gravatar()
-{
-	callback = function(response) { Gravatar_betolt('GRAVATAR',response); }
-	get_Gravatar(EMAIL_hash,'callback','GRAVATAR');
-}
-
-function Gravatar_betolt(DOM,response)
-{
-	
-}
-
 function keyboard(OnFF,event)
 {
-	 //ReSizeEnabled = OnFF;	
-	 // if(event.which)
-// 		{	
-// 			x=event.which;
-// 		
-// 			event.preventDefault(); event.stopPropagation();
-// 		}	
     window.scrollTo(0,0);
+}
+
+
+
+var Ax = 0;
+var Ay = 0;
+var Az = 0;
+
+function Avatar_mozgat(ev)
+{
+	var A = document.getElementById("EDITAVATAR");
+	A.style.marginLeft=ev.gesture.deltaX+"px";
+	A.style.marginTop=ev.gesture.deltaY+"px";
+	A.style.width = parseInt(105*ev.gesture.scale)+"%";
 }

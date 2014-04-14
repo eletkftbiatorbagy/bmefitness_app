@@ -1,7 +1,7 @@
 function get_Gravatar(EMAIL_hash,callback,DOM)
 {
-	var url 	= "http://www.gravatar.com/"+EMAIL_hash+".json";
-	ajax_hivas(url,"",callback,DOM,2000);
+	var url 	= "http://www.gravatar.com/avatar/"+EMAIL_hash;
+	ajax_hivas(url,"&s=200&d=wavatar",callback,DOM,2000);
 }
 
 
