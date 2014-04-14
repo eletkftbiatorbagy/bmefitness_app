@@ -99,10 +99,10 @@ var app = {
 		Hammer(document.getElementById("MODAVATAR")).on("tap", function(event)	{  if (AVATAR) { Oldal(14,0); } else { Oldal(12,0);}  });
 		Hammer(document.getElementById("DATAAVATAR")).on("tap", function(event)	{  if (AVATAR) { Oldal(14,0); } else { Oldal(12,0);}  });
 		
-		Hammer(document.getElementById("ADATOK")).on("transform", function(event)		{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
-		Hammer(document.getElementById("ADATOK")).on("transformend", function(event)	{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
-		Hammer(document.getElementById("EDITAVATAR")).on("drag", function(ev)			{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
-		Hammer(document.getElementById("EDITAVATAR")).on("dragend", function(ev)		{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
+		Hammer(document.getElementById("EAVATAR")).on("transform", function(event)		{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
+		Hammer(document.getElementById("EAVATAR")).on("transformend", function(event)	{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
+		Hammer(document.getElementById("EAVATAR")).on("drag", function(ev)			{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
+		Hammer(document.getElementById("EAVATAR")).on("dragend", function(ev)		{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
 		
 		
 		Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
