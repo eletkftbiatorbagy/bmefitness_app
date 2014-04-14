@@ -99,10 +99,19 @@ var app = {
 		Hammer(document.getElementById("MODAVATAR")).on("tap", function(event)	{  if (AVATAR) { Oldal(14,0); } else { Oldal(12,0);}  });
 		Hammer(document.getElementById("DATAAVATAR")).on("tap", function(event)	{  if (AVATAR) { Oldal(14,0); } else { Oldal(12,0);}  });
 		
-		Hammer(document.getElementById("EAVATAR")).on("transform", function(event)		{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
-		Hammer(document.getElementById("EAVATAR")).on("transformend", function(event)	{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
-		Hammer(document.getElementById("EAVATAR")).on("drag", function(ev)			{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
-		Hammer(document.getElementById("EAVATAR")).on("dragend", function(ev)		{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
+		
+				
+		var EAV = Hammer(document.getElementById('EAVATAR'), 
+		{
+			transform_always_block: true,
+			transform_min_scale: 1,
+			drag_block_horizontal: true,
+			drag_block_vertical: true,
+			drag_min_distance: 0
+		});
+		
+		EAV.on("touch transform drag dragend", function(ev)		{  elemRect = document.getElementById('EDITAVATAR'); Avatar_mozgat(ev);  });
+		
 		
 		
 		Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
@@ -577,33 +586,50 @@ function keyboard(OnFF,event)
 
 
 
-var Ax = 0;
-var Ay = 0;
-var Az = 0;
+var posX=0, posY=0,
+        lastPosX=0, lastPosY=0,
+        bufferX=0, bufferY=0,
+        scale=1, last_scale,
+        rotation= 1, last_rotation, dragReady=0;
 
 function Avatar_mozgat(ev)
 {
-	var A = document.getElementById("EDITAVATAR");
-	console.log(ev.type+" : "+Ax+","+ Ay+" / "+A.width);
-	if (ev.type=="drag")
+	switch(ev.type) 
 	{
-		A.style.marginLeft = Ax+ev.gesture.deltaX+"px";
-		A.style.marginTop  = Ay+ev.gesture.deltaY+"px";
-	}
-	if (ev.type=="dragend")
-	{
-		Ax +=  ev.gesture.deltaX;
-		Ay +=  ev.gesture.deltaY;
-		A.style.marginLeft = Ax+"px";
-		A.style.marginTop  = Ay+"px";
-	}
-	if (ev.type=="transform")
-	{
-		A.style.width = parseInt(Az*ev.gesture.scale)+"%";
-	}
-	if (ev.type=="transformend")
-	{
-		Az = ev.gesture.scale;
-		A.style.width = parseInt(A.width*Az)+"%";
-	}	
+            case 'touch':
+                last_scale = scale;
+                last_rotation = rotation;
+ 
+                break;
+ 
+            case 'drag':
+                    posX = ev.gesture.deltaX + lastPosX;
+                    posY = ev.gesture.deltaY + lastPosY;
+                break;
+ 
+            case 'transform':
+                rotation = last_rotation + ev.gesture.rotation;
+                scale = Math.max(1, Math.min(last_scale * ev.gesture.scale, 10));
+                break;
+ 
+            case 'dragend':
+                lastPosX = posX;
+                lastPosY = posY;
+                break;
+    }
+ 
+ 	elemRect.style.marginLeft = posX+"px";
+ 	elemRect.style.marginTop  = posY+"px";
+ 	elemRect.style.width  = 105*scale+"%";
+ 
+	// var transform =
+// 			"translate3d("+posX+"px,"+posY+"px, 0) " +
+// 			"scale3d("+scale+","+scale+", 0) " +
+// 			"rotate("+rotation+"deg) ";
+// 
+// 	elemRect.style.transform = transform;
+// 	elemRect.style.oTransform = transform;
+// 	elemRect.style.msTransform = transform;
+// 	elemRect.style.mozTransform = transform;
+// 	elemRect.style.webkitTransform = transform;
 }
