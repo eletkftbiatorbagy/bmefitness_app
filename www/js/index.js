@@ -604,18 +604,17 @@ function Avatar_mozgat(ev)
                 break;
  
             case 'drag':
-                    posX = ev.gesture.deltaX + lastPosX;
-                    posY = ev.gesture.deltaY + lastPosY;
+                    posX = Math.max(-100, Math.min(ev.gesture.deltaX + lastPosX,100));
+                    posY = Math.max(-100, Math.min(ev.gesture.deltaY + lastPosY,100));
                 break;
  
             case 'transform':
-                rotation = last_rotation + ev.gesture.rotation;
-                scale = Math.max(1, Math.min(last_scale * ev.gesture.scale, 10));
+                scale = Math.max(1, Math.min(last_scale * ev.gesture.scale, 5));    	// 1..5
                 break;
  
             case 'dragend':
-                lastPosX = posX;
-                lastPosY = posY;
+                lastPosX = Math.max(-100, Math.min(posX,100));
+                lastPosY = Math.max(-100, Math.min(posY,100));
                 break;
     }
  
