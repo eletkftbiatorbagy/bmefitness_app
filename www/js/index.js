@@ -116,11 +116,11 @@ var app = {
 		
 		Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
 					navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
-					{ 	quality: 60, allowEdit: true,
+					{ 	quality: 70, allowEdit: true,
 						destinationType: destinationType.DATA_URL, 
 						encodingType: Camera.EncodingType.JPEG,
-						targetWidth: 300,
-						targetHeight: 300,
+						targetWidth: 400,
+						targetHeight: 400,
 						MediaType: 0,
 						popoverOptions: CameraPopoverOptions,
 						cameraDirection: Camera.Direction.FRONT,
@@ -130,9 +130,9 @@ var app = {
 		Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 
 					navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
 					{ 	
-						quality: 60,
-						targetWidth: 300,
-						targetHeight: 300,
+						quality: 70,
+						targetWidth: 400,
+						targetHeight: 400,
 						destinationType: destinationType.DATA_URL,
 						MediaType: 0,
 						sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM
