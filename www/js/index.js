@@ -116,11 +116,11 @@ var app = {
 		
 		Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
 					navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
-					{ 	quality: 50, allowEdit: true,
+					{ 	quality: 60, allowEdit: true,
 						destinationType: destinationType.DATA_URL, 
 						encodingType: Camera.EncodingType.JPEG,
-						targetWidth: 150,
-						targetHeight: 150,
+						targetWidth: 300,
+						targetHeight: 300,
 						MediaType: 0,
 						popoverOptions: CameraPopoverOptions,
 						cameraDirection: Camera.Direction.FRONT,
@@ -130,9 +130,9 @@ var app = {
 		Hammer(document.getElementById("ALBUM_FOTO")).on("tap", function(event){ 
 					navigator.camera.getPicture(onPhotoDataSuccess, onCameraFail, 
 					{ 	
-						quality: 50,
-						targetWidth: 150,
-						targetHeight: 150,
+						quality: 60,
+						targetWidth: 300,
+						targetHeight: 300,
 						destinationType: destinationType.DATA_URL,
 						MediaType: 0,
 						sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM
@@ -623,14 +623,5 @@ function Avatar_mozgat(ev)
  	elemRect.style.marginTop  = posY+"px";
  	elemRect.style.width  = 105*scale+"%";
  
-	// var transform =
-// 			"translate3d("+posX+"px,"+posY+"px, 0) " +
-// 			"scale3d("+scale+","+scale+", 0) " +
-// 			"rotate("+rotation+"deg) ";
-// 
-// 	elemRect.style.transform = transform;
-// 	elemRect.style.oTransform = transform;
-// 	elemRect.style.msTransform = transform;
-// 	elemRect.style.mozTransform = transform;
-// 	elemRect.style.webkitTransform = transform;
+	
 }
