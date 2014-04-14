@@ -582,7 +582,13 @@ var Az = 0;
 function Avatar_mozgat(ev)
 {
 	var A = document.getElementById("EDITAVATAR");
-	A.style.marginLeft=ev.gesture.deltaX+"px";
-	A.style.marginTop=ev.gesture.deltaY+"px";
-	A.style.width = parseInt(105*ev.gesture.scale)+"%";
+	if (ev.type=="drag")
+	{
+		A.style.marginLeft=ev.gesture.deltaX+"px";
+		A.style.marginTop=ev.gesture.deltaY+"px";
+	}
+	if (ev.type="transform")
+	{
+		A.style.width = parseInt(105*ev.gesture.scale)+"%";
+	}	
 }
