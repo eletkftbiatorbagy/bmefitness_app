@@ -99,8 +99,10 @@ var app = {
 		Hammer(document.getElementById("MODAVATAR")).on("tap", function(event)	{  if (AVATAR) { Oldal(14,0); } else { Oldal(12,0);}  });
 		Hammer(document.getElementById("DATAAVATAR")).on("tap", function(event)	{  if (AVATAR) { Oldal(14,0); } else { Oldal(12,0);}  });
 		
-		Hammer(document.getElementById("POROND14")).on("transform", function(event)	{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
+		Hammer(document.getElementById("ADATOK")).on("transform", function(event)		{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
+		Hammer(document.getElementById("ADATOK")).on("transformend", function(event)	{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
 		Hammer(document.getElementById("EDITAVATAR")).on("drag", function(ev)			{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
+		Hammer(document.getElementById("EDITAVATAR")).on("dragend", function(ev)		{  ev.gesture.preventDefault(); Avatar_mozgat(ev);  });
 		
 		
 		Hammer(document.getElementById("KAMERA_FOTO")).on("tap", function(event){ 
@@ -582,14 +584,26 @@ var Az = 0;
 function Avatar_mozgat(ev)
 {
 	var A = document.getElementById("EDITAVATAR");
-	console.log(ev.type+" : "+ev.gesture.deltaX+","+ev.gesture.deltaY+" / "+ev.gesture.scale);
+	console.log(ev.type+" : "+Ax+","+ Ay+" / "+A.width);
 	if (ev.type=="drag")
 	{
-		A.style.marginLeft=ev.gesture.deltaX+"px";
-		A.style.marginTop=ev.gesture.deltaY+"px";
+		A.style.marginLeft = Ax+ev.gesture.deltaX+"px";
+		A.style.marginTop  = Ay+ev.gesture.deltaY+"px";
+	}
+	if (ev.type=="dragend")
+	{
+		Ax +=  ev.gesture.deltaX;
+		Ay +=  ev.gesture.deltaY;
+		A.style.marginLeft = Ax+"px";
+		A.style.marginTop  = Ay+"px";
 	}
 	if (ev.type=="transform")
 	{
-		A.style.width = parseInt(105*ev.gesture.scale)+"%";
+		A.style.width = parseInt(Az*ev.gesture.scale)+"%";
+	}
+	if (ev.type=="transformend")
+	{
+		Az = ev.gesture.scale;
+		A.style.width = parseInt(A.width*Az)+"%";
 	}	
 }
