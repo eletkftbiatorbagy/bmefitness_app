@@ -352,15 +352,18 @@ nav div img{
 	
 }
 .lap{
-	margin-top:25%;
+	position: absolute;
+	top:15%;
+	font-family: 'Verdana';
+	overflow-y: scroll;
 }
 .lap h1{
 	font-size: 2em;
-	font-family:betu1;
+	margin:1% 5%;
 }
 .lap p{
 	font-size: 1.2em;
-	font-family:betu1;
+	margin:3% 5%;
 }
 .fomenu_animation{
 	animation-play-state:paused;

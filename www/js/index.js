@@ -1,4 +1,4 @@
-const StartPage=7;      ///  DEVELOPMENT......................................................................................
+const StartPage=5;      ///  DEVELOPMENT......................................................................................
 const AJAX_URL = "http://e-let.hu/fitness/";
 const OldalSzam = 14;   //  ennyi lap van definiálva a .html fájlban
 var LOGIN = false;
@@ -38,6 +38,8 @@ var ErtekelesOK = false;
 var Ertekelesek = Array();
 var callback;                   // ajax hívás visszatérő függvénye
 
+var Scrolls = Array();
+
 var app = {
     initialize: function() {
         this.bindEvents();
@@ -48,6 +50,11 @@ var app = {
 			{
 				PS5 = new iScroll('POROND5',{ hScrollbar: false, vScrollbar: false, hScroll: false });
 				PS7 = new iScroll('POROND7',{ hScrollbar: false, vScrollbar: false, hScroll: false });
+				var S = document.getElementsByTagName('article');
+				for (var s=0;s<S.length;s++)
+				{
+					Scrolls[S[s].id]= new iScroll(S[s],{ hScrollbar: false, vScrollbar: false, hScroll: false });
+				}
 			}, 100);
 		}
 		window.addEventListener('load', loaded, false);
@@ -259,7 +266,15 @@ function Nav(ID)
 		var lap=1;
 		var NR = ID.substr(ID.search(/\d/));
 		var NEV = ID.substr(0,ID.search(/\d/));
-		while (lap<=7)
+		var elems = new Array();
+		var delays = new Array();
+		var C = document.getElementById(ID).parentNode.children;
+		var lapok = 0;
+		for (var c=0;c<C.length;c++)
+		{
+			if (C[c].tagName.toUpperCase()=="NAV") { lapok++; }
+		}
+		while (lap<=lapok)
 		{
 			var I = document.getElementById(NEV+lap);
 			if (NR==lap) 
@@ -269,15 +284,18 @@ function Nav(ID)
 			}
 			else 
 			{ 
-					I.classList.add("fomenu_animation");
-					I.style.animation="kikapcs 0.5s linear 0s 1 normal" ;
-					I.style.animationDelay=lap/10+"s";
-					I.style.animationFillMode = "forwards";
-					I.style.animationPlayState="running";	
+					elems.push (I);
+					delays.push (lap*10);
+					// I.classList.add("fomenu_animation");
+// 					I.style.animation="kikapcs 0.5s linear 0s 1 normal" ;
+// 					I.style.animationDelay=lap/10+"s";
+// 					I.style.animationFillMode = "forwards";
+// 					I.style.animationPlayState="running";	
 			}	
 			lap++;
 		}
-		setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";},600);
+		animate2(elems,'marginLeft','%',0,100,500,delays); 
+		setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";},600*(1+Math.max.apply(Math, delays)/100));
 }
 
 
@@ -306,7 +324,25 @@ function animate(elem,style,unit,from,to,time) {
     elem.style[style] = from+unit;
 }
 
-
+function animate2(elems,style,unit,from,to,time,delays) {
+    if( !elems) return;
+    var start = new Date().getTime();
+    var delay_plussz = (1+Math.max.apply(Math, delays)/100);
+    time = time * delay_plussz;
+    to  = to * delay_plussz;
+        timer = setInterval(function() {
+            var step = (new Date().getTime()-start)/time;
+            for (var e=0; e<elems.length;e++)
+            {
+            	if (step>time*delays[e]/100000) {  	elems[e].style[style] = (from+(step-delays[e]/100)*(to-from))+unit;  }
+            }	
+            if( step >= delay_plussz) { clearInterval(timer); timer=""; }
+        },30);
+    for (var e=0; e<elems.length;e++)
+    {
+    	elems[e].style[style] = from+unit;
+    }	
+}
 
 
 function Enter(e)
