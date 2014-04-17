@@ -1,4 +1,4 @@
-const StartPage=14;      ///  DEVELOPMENT......................................................................................
+const StartPage=7;      ///  DEVELOPMENT......................................................................................
 const AJAX_URL = "http://e-let.hu/fitness/";
 const OldalSzam = 14;   //  ennyi lap van definiálva a .html fájlban
 var LOGIN = false;
@@ -10,6 +10,7 @@ var AVATAR;
 
 var BodyHeight;
 var OldalMost;
+var LablecMost;
 
 var pictureSource;   // picture source
 var destinationType; // sets the format of returned value
@@ -45,7 +46,8 @@ var app = {
 		{
 			setTimeout(function () 
 			{
-				/// PS3 = new iScroll('POROND3',{ hScrollbar: false, vScrollbar: false, hScroll: false });
+				PS5 = new iScroll('POROND5',{ hScrollbar: false, vScrollbar: false, hScroll: false });
+				PS7 = new iScroll('POROND7',{ hScrollbar: false, vScrollbar: false, hScroll: false });
 			}, 100);
 		}
 		window.addEventListener('load', loaded, false);
@@ -89,6 +91,12 @@ var app = {
 		{
 			Hammer(document.getElementById("VISSZA"+v)).on("tap", function(event){ Vissza(); }); 
 			Hammer(document.getElementById("LOGO"+v)).on("tap", function(event){ Oldal(0,0); });
+		}	
+		
+		var NAV = document.getElementsByTagName("nav");
+		for (var n=0;n<NAV.length; n++)
+		{
+			Hammer(NAV[n]).on("tap", function(event){ Nav(this.id);} ); 
 		}	
     	   	   	
 		document.addEventListener("backbutton", Vissza, false);
@@ -174,11 +182,18 @@ function Oldal(oldal,lablec)
 		LastLablec.push(lablec);  
 	}
 	if (oldal==1 && !LOGIN) { oldal=11; }
-	if (oldal==3 || oldal==4 || oldal==5 || oldal==6)	
+	
+	var I = document.getElementsByTagName("nav");
+	for (var i=0; i<I.length;i++)
 	{
-		var Porond = document.getElementById("POROND"+oldal);
-		Porond.style.display="none";
+		I[i].classList.remove("fomenu_animation"); I[i].style="";   //&& I[i].id.substr(0,1)=="i"
 	}
+	var A = document.getElementsByTagName("article");
+	for (var a=0; a<A.length;a++)
+	{
+		A[a].style.display="none";
+	}
+	
 	for (var n=0;n<=OldalSzam;n++)
 	{
 		document.getElementById("Oldal"+n).style.display=(oldal==n)?"block":"none";
@@ -232,9 +247,64 @@ function Lablec(oldal,NR)
 		//var OLF = ;
 		var hammertime = Hammer(MENU).on("tap", function(event){ Oldal(parseInt(event.target.getAttribute('nr')),parseInt(event.target.getAttribute('nr'))); });
 		
-	}	
+	}
+	LablecMost = NR;
 }
 
+
+function Nav(ID)
+{
+		LastPage.push(OldalMost);
+		LastLablec.push(LablecMost);
+		var lap=1;
+		var NR = ID.substr(ID.search(/\d/));
+		var NEV = ID.substr(0,ID.search(/\d/));
+		while (lap<=7)
+		{
+			var I = document.getElementById(NEV+lap);
+			if (NR==lap) 
+			{ 
+				//setTimeout( function() {   },600);
+				if (lap!=1) { setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','%',parseInt((NR-1)*13),3,80*NR);},700	); }
+			}
+			else 
+			{ 
+					I.classList.add("fomenu_animation");
+					I.style.animation="kikapcs 0.5s linear 0s 1 normal" ;
+					I.style.animationDelay=lap/10+"s";
+					I.style.animationFillMode = "forwards";
+					I.style.animationPlayState="running";	
+			}	
+			lap++;
+		}
+		setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";},600);
+}
+
+
+function Nav_OLD(NR)			// hagyományos animáció
+{
+		LastPage.push(OldalMost);
+		LastLablec.push(LablecMost);
+		var lap=1;
+		while (lap<=7)
+		{
+			if (NR==lap) { lap++; }
+			animate(document.getElementById("i"+lap),'opacity','',1,0,500);
+			lap++;
+		}
+		
+}
+
+function animate(elem,style,unit,from,to,time) {
+    if( !elem) return;
+    var start = new Date().getTime(),
+        timer = setInterval(function() {
+            var step = Math.min(1,(new Date().getTime()-start)/time);
+            elem.style[style] = (from+step*(to-from))+unit;
+            if( step == 1) clearInterval(timer);
+        },25);
+    elem.style[style] = from+unit;
+}
 
 
 
@@ -626,3 +696,5 @@ function Avatar_mozgat(ev)
  
 	
 }
+
+
