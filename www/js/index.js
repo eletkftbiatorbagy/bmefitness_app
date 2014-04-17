@@ -32,13 +32,17 @@ var RIdoH;
 var RIdoT;  var RIdoT2;
 var RCsiH;
 var RCsiT;  var RCsiT2;
+var GombH;
 
 var ErtekelesProba;
 var ErtekelesOK = false;
 var Ertekelesek = Array();
 var callback;                   // ajax hívás visszatérő függvénye
 
-var Scrolls = Array();
+
+var Scrolls = Array();			// article gördítő váltzók gyűjteménye
+
+var NavMost;					// aktuálisan megjelenített elmenű
 
 var app = {
     initialize: function() {
@@ -46,16 +50,7 @@ var app = {
          
         function loaded() 
 		{
-			setTimeout(function () 
-			{
-				PS5 = new iScroll('POROND5',{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				PS7 = new iScroll('POROND7',{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				var S = document.getElementsByTagName('article');
-				for (var s=0;s<S.length;s++)
-				{
-					Scrolls[S[s].id]= new iScroll(S[s],{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				}
-			}, 100);
+			
 		}
 		window.addEventListener('load', loaded, false);
     },
@@ -68,7 +63,19 @@ var app = {
         var args = {};   // email pluginnek kell 
         
         OrientationReCalc();
-                
+        
+        setTimeout(function () 
+			{
+				PS5 = new iScroll('POROND5',{ hScrollbar: false, vScrollbar: false, hScroll: false });
+				PS7 = new iScroll('POROND7',{ hScrollbar: false, vScrollbar: false, hScroll: false });
+				var S = document.getElementsByTagName('article');
+				for (var s=0;s<S.length;s++)
+				{
+					Scrolls[S[s].id]= new iScroll(S[s],{ hScrollbar: false, vScrollbar: false, hScroll: false });
+				}
+			}, 100);
+        
+        
         if (StartPage) 
         { Oldal(StartPage,0); }
         else 
@@ -103,7 +110,7 @@ var app = {
 		var NAV = document.getElementsByTagName("nav");
 		for (var n=0;n<NAV.length; n++)
 		{
-			Hammer(NAV[n]).on("tap", function(event){ Nav(this.id);} ); 
+			Hammer(NAV[n]).on("tap", function(event){ Nav(this.id); } ); 
 		}	
     	   	   	
 		document.addEventListener("backbutton", Vissza, false);
@@ -193,7 +200,7 @@ function Oldal(oldal,lablec)
 	var I = document.getElementsByTagName("nav");
 	for (var i=0; i<I.length;i++)
 	{
-		I[i].classList.remove("fomenu_animation"); I[i].style="";   //&& I[i].id.substr(0,1)=="i"
+		I[i].classList.remove("fomenu_animation"); I[i].style="height:"+GombH+"px";   //&& I[i].id.substr(0,1)=="i"
 	}
 	var A = document.getElementsByTagName("article");
 	for (var a=0; a<A.length;a++)
@@ -261,6 +268,8 @@ function Lablec(oldal,NR)
 
 function Nav(ID)
 {
+		if (ID == NavMost) { return; }
+		NavMost = ID;
 		LastPage.push(OldalMost);
 		LastLablec.push(LablecMost);
 		var lap=1;
@@ -280,7 +289,7 @@ function Nav(ID)
 			if (NR==lap) 
 			{ 
 				//setTimeout( function() {   },600);
-				if (lap!=1) { setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','%',parseInt((NR-1)*13),3,80*NR);},700	); }
+				 setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','%',parseInt((NR-1)*13),3,80*NR);},700	);
 			}
 			else 
 			{ 
@@ -512,6 +521,7 @@ function OrientationReCalc()
 			document.getElementById("Oldal"+n).style.width = sW+"px";
 			document.getElementById("Oldal"+n).style.height = sH+"px";
 		}
+		
         
         ScreenHeight = sH;
         RHatterH  = parseInt(ScreenHeight*0.1216);  
@@ -523,6 +533,8 @@ function OrientationReCalc()
 		RIdoT     = parseInt(ScreenHeight*0.075);  RIdoT2     = parseInt(ScreenHeight*0.080);
 		RCsiH     = parseInt(ScreenHeight*0.027);
 		RCsiT     = parseInt(ScreenHeight*0.063);  RCsiT2     = parseInt(ScreenHeight*0.078);
+		
+		GombH     = parseInt(ScreenHeight*0.12);
 	}
 	else		// landscape  ======================================================================
 	{
@@ -554,11 +566,29 @@ function OrientationReCalc()
 		RIdoH     = parseInt(ScreenHeight*0.045);
 		RIdoT     = parseInt(ScreenHeight*0.135);  RIdoT2     = parseInt(ScreenHeight*0.13);
 		RCsiH     = parseInt(ScreenHeight*0.055);
-		RCsiT     = parseInt(ScreenHeight*0.12);  RCsiT2     = parseInt(ScreenHeight*0.16);			
+		RCsiT     = parseInt(ScreenHeight*0.12);  RCsiT2     = parseInt(ScreenHeight*0.16);
+		
+		GombH     = parseInt(ScreenHeight*0.15);
 	}
-	
+	var N=document.getElementsByTagName('nav');
+	for (var n=0;n<N.length;n++)
+	{
+		N[n].style.height = GombH + "px"; 
+ 	}
 	ScrollRefresh();
 }
+
+function ScrollRefresh(oldal)
+{
+	setTimeout(function () 
+		{ 
+			/// PS3.refresh();
+			
+		},100);
+	
+}
+
+
 
 function ertekeles(NUM)
 {
@@ -648,22 +678,6 @@ function Ertekeles_feldolgoz(CMEZO,response)
 		FreeCallback(CMEZO);
 }
 
-
-function ScrollRefresh(oldal)
-{
-	if (oldal)
-	{
-		/// if (oldal==3) { setTimeout(function () { PS3.refresh();},100); }
-	}
-	else
-	{
-		setTimeout(function () 
-		{ 
-			/// PS3.refresh();
-			
-		},100);
-	}
-}
 
 
 function onCameraFail(message) {
