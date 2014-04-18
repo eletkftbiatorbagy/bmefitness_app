@@ -219,7 +219,7 @@ function Oldal(oldal,lablec)
 		var I = document.getElementsByTagName("nav");   console.log("TOTAL: "+I.length);
 		for (var i=0; i<I.length;i++)
 		{
-			I[i].style="height:"+GombH+"px";   console.log(I[i].id);
+			I[i].setAttribute("style","height:"+GombH+"px");   console.log(I[i].id);
 		}
 		
 	var A = document.getElementsByTagName("article");
