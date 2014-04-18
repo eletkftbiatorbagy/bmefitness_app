@@ -216,10 +216,10 @@ function Oldal(oldal,lablec)
 	}
 	if (oldal==1 && !LOGIN) { oldal=11; }
 	
-		var I = document.getElementsByTagName("nav");   console.log(I.length);
+		var I = document.getElementsByTagName("nav");   console.log("TOTAL: "+I.length);
 		for (var i=0; i<I.length;i++)
 		{
-			I[i].style="height:"+GombH+"px";   //&& I[i].id.substr(0,1)=="i"
+			I[i].style="height:"+GombH+"px";   console.log(I[i].id);
 		}
 		
 	var A = document.getElementsByTagName("article");
