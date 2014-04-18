@@ -188,7 +188,7 @@ var map;
 function initializeMap() {
         var mapOptions = {
           center: new google.maps.LatLng(47.4796413,19.0573835),
-          zoom: 19,
+          zoom: 17,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         map = new google.maps.Map(document.getElementById("map-canvas"),
@@ -218,6 +218,7 @@ function Oldal(oldal,lablec)
 	for (var a=0; a<A.length;a++)
 	{
 		A[a].style.display="none";
+		if (Scrolls[A[a].id]!=null) { Scrolls[A[a].id].enable();}
 	}
 	
 	for (var n=0;n<=OldalSzam;n++)
@@ -301,7 +302,7 @@ function Nav(ID)
 			if (NR==lap) 
 			{ 
 				//setTimeout( function() {   },600);
-				 setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','%',parseInt((NR-1)*13),3,80*NR);},700	);
+				 setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','%',parseInt((NR-1)*13),3,80*NR); Scrolls[ID.toUpperCase()].refresh();},700	);
 			}
 			else 
 			{ 
@@ -317,7 +318,7 @@ function Nav(ID)
 		}
 		animate2(elems,'marginLeft','%',0,100,500,delays); 
 		setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";  },600*(1+Math.max.apply(Math, delays)/100));
-		if (ID=='info7') { setTimeout( function() { initializeMap();},3000); }
+		if (ID=='info7') { Scrolls[ID.toUpperCase()].disable(); setTimeout( function() { initializeMap();},2000); }
 }
 
 
