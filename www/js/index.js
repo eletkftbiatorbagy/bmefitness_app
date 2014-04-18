@@ -161,6 +161,7 @@ var app = {
 					} );
 				});
 	
+	
 		if (window.device) 
 		{   	
 			FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });
@@ -168,7 +169,8 @@ var app = {
         	destinationType=navigator.camera.DestinationType;
 		}
 		
-			
+		
+    
 		EMAIL = window.localStorage.getItem("email");
 		if (!EMAIL) { document.getElementById("LOGINTXT").innerHTML="Tovább >>>"; }
 		callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
@@ -182,6 +184,16 @@ var LastPage=[0];			// első oldal száma
 var LastLablec=[0];			// első oldal lábléce
 
 
+var map;
+function initializeMap() {
+        var mapOptions = {
+          center: new google.maps.LatLng(47.4796413,19.0573835),
+          zoom: 19,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+      }
 
 function Oldal(oldal,lablec)
 {
@@ -304,7 +316,8 @@ function Nav(ID)
 			lap++;
 		}
 		animate2(elems,'marginLeft','%',0,100,500,delays); 
-		setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";},600*(1+Math.max.apply(Math, delays)/100));
+		setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";  },600*(1+Math.max.apply(Math, delays)/100));
+		if (ID=='info7') { setTimeout( function() { initializeMap();},3000); }
 }
 
 
@@ -534,7 +547,7 @@ function OrientationReCalc()
 		RCsiH     = parseInt(ScreenHeight*0.027);
 		RCsiT     = parseInt(ScreenHeight*0.063);  RCsiT2     = parseInt(ScreenHeight*0.078);
 		
-		GombH     = parseInt(ScreenHeight*0.12);
+		GombH     = parseInt(ScreenHeight*0.11);
 	}
 	else		// landscape  ======================================================================
 	{
@@ -568,7 +581,7 @@ function OrientationReCalc()
 		RCsiH     = parseInt(ScreenHeight*0.055);
 		RCsiT     = parseInt(ScreenHeight*0.12);  RCsiT2     = parseInt(ScreenHeight*0.16);
 		
-		GombH     = parseInt(ScreenHeight*0.15);
+		GombH     = parseInt(ScreenHeight*0.10);
 	}
 	var N=document.getElementsByTagName('nav');
 	for (var n=0;n<N.length;n++)

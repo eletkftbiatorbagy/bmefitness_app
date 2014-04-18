@@ -20,6 +20,9 @@
         <script type="text/javascript" src="js/hammer.min.js"></script>
         <script type="text/javascript" src="js/iscroll-lite.js"></script>
         <script type="text/javascript" src="js/ajax.js"></script>
+        
+        
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgg8iOJH-TEXq8fK28y_AglH5ceGXwpAU&sensor=false"></script>
 
         <script type="text/javascript">
             if (window.device) { app.initialize(); }
@@ -123,14 +126,15 @@
 			</div>
 			
 			<div id="POROND5" class="porond">
-				<nav id="info1"><div><img src="img/bme/info2.png"/><h1>A sportközpontról</h1></div></nav>
-				<nav id="info2"><div><img src="img/bme/info2.png"/><h1>Szolgáltatások</h1></div></nav>
-				<nav id="info3"><div><img src="img/bme/info2.png"/><h1>Órarend</h1></div></nav>
-				<nav id="info4"><div><img src="img/bme/info2.png"/><h1>Árak</h1></div></nav>
-				<nav id="info5"><div><img src="img/bme/info2.png"/><h1>Trénerek</h1></div></nav>
-				<nav id="info6"><div><img src="img/bme/info2.png"/><h1>Házirend</h1></div></nav>
-				<nav id="info7"><div><img src="img/bme/info2.png"/><h1>Elérhetőségek</h1></div></nav>
-			
+				<div>
+					<nav id="info1"><div><img src="img/bme/info2.png"/><h1>A sportközpontról</h1></div></nav>
+					<nav id="info2"><div><img src="img/bme/info2.png"/><h1>Szolgáltatások</h1></div></nav>
+					<nav id="info3"><div><img src="img/bme/info2.png"/><h1>Órarend</h1></div></nav>
+					<nav id="info4"><div><img src="img/bme/info2.png"/><h1>Árak</h1></div></nav>
+					<nav id="info5"><div><img src="img/bme/info2.png"/><h1>Trénerek</h1></div></nav>
+					<nav id="info6"><div><img src="img/bme/info2.png"/><h1>Házirend</h1></div></nav>
+					<nav id="info7"><div><img src="img/bme/info2.png"/><h1>Elérhetőségek</h1></div></nav>
+				</div>
 				<article id="INFO1" class="lap">	<!-- A sportközpontról -->
 						<div>
 							<h1>Világszinvonalú sportközpont</h1>
@@ -163,7 +167,9 @@
 					<div></div>
 				</article>
 				<article id="INFO7" class="lap">	<!-- Elérhetőségek -->
-					<div></div>
+					<div>
+						<div id="map-canvas"></div>
+					</div>
 				</article>
 				
 			</div>
@@ -205,7 +211,7 @@
 						<nav id="fogl8"><div><img src="img/bme/kuzdosport.png"/><h1>Küzdősport</h1></div></nav>
 						<nav id="fogl9"><div><img src="img/bme/squash.png"/><h1>Squash</h1></div></nav>
 						<nav id="fogl10"><div><img src="img/bme/szedzo.png"/><h1>Személyi edzés</h1></div></nav>
-						<nav id="fogl11"><div><img src="img/bme/.png"/><h1>Terembérlet</h1></div></nav>
+						<nav id="fogl11"><div><img src="img/bme/teremberles.png"/><h1>Terembérlet</h1></div></nav>
 						
 						<article id="FOGL1" class="lap">	<!--  -->
 							<div></div>
