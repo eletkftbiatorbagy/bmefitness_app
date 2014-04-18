@@ -188,7 +188,7 @@ var map;
 function initializeMap() {
         var mapOptions = {
           center: new google.maps.LatLng(47.4796413,19.0573835),
-          zoom: 17,
+          zoom: 17	,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         map = new google.maps.Map(document.getElementById("map-canvas"),
@@ -302,7 +302,7 @@ function Nav(ID)
 			if (NR==lap) 
 			{ 
 				//setTimeout( function() {   },600);
-				 setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','%',parseInt((NR-1)*13),3,80*NR); Scrolls[ID.toUpperCase()].refresh();},700	);
+				 setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','%',parseInt((NR-1)*13),3,80*NR); Scrolls[ID.toUpperCase()].scrollTo(0,0,100);},700	);
 			}
 			else 
 			{ 
