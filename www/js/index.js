@@ -1,4 +1,4 @@
-const StartPage=5;      ///  DEVELOPMENT......................................................................................
+const StartPage=null;      ///  DEVELOPMENT......................................................................................
 const AJAX_URL = "http://e-let.hu/fitness/";
 const OldalSzam = 14;   //  ennyi lap van definiálva a .html fájlban
 var LOGIN = false;
@@ -200,6 +200,11 @@ function initializeMap() {
 function Oldal(oldal,lablec)
 {
 	if (!oldal && oldal!=0) { return; }
+	
+	NavMost = null;
+	clearInterval(Anim_Timer1); Anim_Timer1="";
+	clearInterval(Anim_Timer2); Anim_Timer2="";
+	
 	if (oldal<0)        // vissza
 	{
 		oldal = Math.abs(oldal);
@@ -211,11 +216,13 @@ function Oldal(oldal,lablec)
 	}
 	if (oldal==1 && !LOGIN) { oldal=11; }
 	
-	var I = document.getElementsByTagName("nav");
-	for (var i=0; i<I.length;i++)
-	{
-		I[i].classList.remove("fomenu_animation"); I[i].style="height:"+GombH+"px";   //&& I[i].id.substr(0,1)=="i"
-	}
+	
+		var I = document.getElementsByTagName("nav");
+		for (var i=0; i<I.length;i++)
+		{
+			I[i].style="height:"+GombH+"px";   //&& I[i].id.substr(0,1)=="i"
+		}
+		
 	var A = document.getElementsByTagName("article");
 	for (var a=0; a<A.length;a++)
 	{
@@ -243,6 +250,7 @@ function Oldal2(oldal,lablec)
 
 function Vissza()
 {
+	if (Anim_Timer2!="") { return;}
 	if (LastPage.length==1) { return; }    // utolsó oldalon vagyunk
 	var LP=LastPage.pop();	  if (!LP){ return; }
 	var LL=LastLablec.pop();
@@ -320,7 +328,7 @@ function Nav(ID)
 		}
 		animate2(elems,'marginLeft','%',0,100,500,delays); 
 		setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";  },600*(1+Math.max.apply(Math, delays)/100));
-		if (ID=='info7') { Scrolls[ID.toUpperCase()].disable(); setTimeout( function() { initializeMap();},2000); }
+		if (ID=='info7') {  setTimeout( function() { initializeMap();},2000); }
 		Scrolls['POROND'+OldalMost].scrollTo(0,0,100);
 		Scrolls['POROND'+OldalMost].disable();
 }
@@ -340,13 +348,15 @@ function Nav_OLD(NR)			// hagyományos animáció
 		
 }
 
+var Anim_Timer1="", Anim_Timer2="";
+
 function animate(elem,style,unit,from,to,time) {
     if( !elem) return;
     var start = new Date().getTime(),
-        timer = setInterval(function() {
+        Anim_Timer1 = setInterval(function() {
             var step = Math.min(1,(new Date().getTime()-start)/time);
             elem.style[style] = (from+step*(to-from))+unit;
-            if( step == 1) clearInterval(timer);
+            if( step == 1) { clearInterval(Anim_Timer1); Anim_Timer1=""; }
         },25);
     elem.style[style] = from+unit;
 }
@@ -357,13 +367,13 @@ function animate2(elems,style,unit,from,to,time,delays) {
     var delay_plussz = (1+Math.max.apply(Math, delays)/100);
     time = time * delay_plussz;
     to  = to * delay_plussz;
-        timer = setInterval(function() {
+        Anim_Timer2 = setInterval(function() {
             var step = (new Date().getTime()-start)/time;
             for (var e=0; e<elems.length;e++)
             {
             	if (step>time*delays[e]/100000) {  	elems[e].style[style] = (from+(step-delays[e]/100)*(to-from))+unit;  }
             }	
-            if( step >= delay_plussz) { clearInterval(timer); timer=""; }
+            if( step >= delay_plussz) { clearInterval(Anim_Timer2); Anim_Timer2=""; }
         },30);
     for (var e=0; e<elems.length;e++)
     {
