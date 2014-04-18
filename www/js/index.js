@@ -66,8 +66,10 @@ var app = {
         
         setTimeout(function () 
 			{
-				PS5 = new iScroll('POROND5',{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				PS7 = new iScroll('POROND7',{ hScrollbar: false, vScrollbar: false, hScroll: false });
+				for (var p=1;p<=OldalSzam;p++)
+				{
+					Scrolls['POROND'+p] = new iScroll('POROND'+p,{ hScrollbar: false, vScrollbar: false, hScroll: false });
+				}
 				var S = document.getElementsByTagName('article');
 				for (var s=0;s<S.length;s++)
 				{
@@ -302,7 +304,7 @@ function Nav(ID)
 			if (NR==lap) 
 			{ 
 				//setTimeout( function() {   },600);
-				 setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','%',parseInt((NR-1)*13),3,80*NR); Scrolls[ID.toUpperCase()].scrollTo(0,0,100);},700	);
+				 setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','%',parseInt((NR-1)*13),3,80*NR);},700	);
 			}
 			else 
 			{ 
@@ -319,6 +321,8 @@ function Nav(ID)
 		animate2(elems,'marginLeft','%',0,100,500,delays); 
 		setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";  },600*(1+Math.max.apply(Math, delays)/100));
 		if (ID=='info7') { Scrolls[ID.toUpperCase()].disable(); setTimeout( function() { initializeMap();},2000); }
+		Scrolls['POROND'+OldalMost].scrollTo(0,0,100);
+		Scrolls['POROND'+OldalMost].disable();
 }
 
 
