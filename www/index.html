@@ -28,7 +28,11 @@
         <script type="text/javascript">
             if (window.device) { app.initialize(); }
         </script>
-        
+        <script type="text/javascript">
+			window.onerror = function(message, url, lineNumber) {
+				console.log("Error: "+message+" in "+url+" at line "+lineNumber);
+			}
+		</script>
     </head>
     <body onload="app.onDeviceReady();">
     	<div id="fb-root"></div>

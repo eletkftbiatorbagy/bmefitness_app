@@ -8,7 +8,7 @@ function Sync()
 
 function onFileSystemSuccess(fs) {
         console.log("FileSystem OK");
-       	
+       	console.log("fs.root"+fs.root);
        	var dirReader = fs.root.createReader();
   		var entries = [];
   		
