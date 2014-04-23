@@ -8,15 +8,14 @@ function Sync()
 
 function onFileSystemSuccess(fs) {
         console.log("FileSystem OK");
-       	console.log("fs.root"+fs.root);
        	var dirReader = fs.root.createReader();
   		var entries = [];
   		
-  		var readEntries = function() {
+  		var readEntries = function() {		console.log("readEntries - start");
 			 dirReader.readEntries (function(results) {
-			  if (!results.length) {
+			  if (!results.length) {		console.log("readEntries - length=0");
 				listResults(entries.sort());
-			  } else {
+			  } else {						console.log("readEntries - toArray");
 				entries = entries.concat(toArray(results));
 				readEntries();
 			  }
@@ -28,7 +27,7 @@ function onFileSystemSuccess(fs) {
 
 
 function listResults(entries) {
-
+	console.log("listResults");
   entries.forEach(function(entry, i) {
     var img  = entry.isDirectory ? '[ ' : '  ';
     var img2 = entry.isDirectory ? '] ' : '  ';
