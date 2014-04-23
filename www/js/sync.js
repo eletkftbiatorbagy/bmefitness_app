@@ -8,12 +8,13 @@ function Sync()
 
 function onFileSystemSuccess(fs) {
         console.log("FileSystem OK");
+        fs.root.getDirectory('db', {create: true}, null, fail);
        	var dirReader = fs.root.createReader();
   		var entries = [];
   		
   		var readEntries = function() {		console.log("readEntries - start");
 			 dirReader.readEntries (function(results) {
-			  if (!results.length) {		console.log("readEntries - length=0");
+			  if (!results.length) {		console.log("readEntries - Filesystem is empty.");
 				listResults(entries.sort());
 			  } else {						console.log("readEntries - toArray");
 				entries = entries.concat(toArray(results));
