@@ -9,7 +9,7 @@
     </author>
     <content src="index.html" />
     <feature name="http://api.phonegap.com/1.0/device" />
-    <preference name="phonegap-version" value="3.4.0" />
+    <preference name="phonegap-version" value="3.3.0" />
 	<gap:platform name="ios" />
 	<gap:platform name="android" />
     
