@@ -6,13 +6,44 @@ function Sync()
 	
 }
 
-function onFileSystemSuccess(fileSystem) {
-        console.log("FileSystem : "+fileSystem.name);
-        console.log("Root name : "+fileSystem.root.name);
-        console.log(fileSystem.root.fullPath + "db/");
-       	//window.resolveLocalFileSystemURI(fileSystem.root.fullPath + "db/", getDirSuccess, fail);
-        fileSystem.root.getDirectory("/db/", {create: false, exclusive: false}, getDirSuccess, fail);
+function onFileSystemSuccess(fs) {
+        console.log("FileSystem : "+fs.name);
+        console.log("Root name : "+fs.root.name);
+        console.log(fs.root.fullPath);
+       	
+       	var dirReader = fs.root.createReader();
+  		var entries = [];
+  		
+  		var readEntries = function() {
+			 dirReader.readEntries (function(results) {
+			  if (!results.length) {
+				listResults(entries.sort());
+			  } else {
+				entries = entries.concat(toArray(results));
+				readEntries();
+			  }
+			}, errorHandler);
+		};
+		
+		readEntries();
     }
+
+
+function listResults(entries) {
+
+  entries.forEach(function(entry, i) {
+    var img  = entry.isDirectory ? '[ ' : '  ';
+    var img2 = entry.isDirectory ? '] ' : '  ';
+    console.log(img + entry.name + img2);
+    
+  });
+}
+
+function toArray(list) {
+  return Array.prototype.slice.call(list || [], 0);
+}
+
+
 
 
 function getDirSuccess(dirEntry)
@@ -45,8 +76,8 @@ function fail(error) {
 	desc[FileError.QUOTA_EXCEEDED_ERR]="Quota exceeded";
 	desc[FileError.TYPE_MISMATCH_ERR]="Type mismatch";
 	desc[FileError.PATH_EXISTS_ERR]="Path exists";
-
-    console.log("File ERROR : " + error.code+" / " + desc[error.code]);
+	description = desc[error.code] || "Ismeretlen hiba";
+    console.log("File ERROR : " + error.code+" / " + description);
 }
 
 
