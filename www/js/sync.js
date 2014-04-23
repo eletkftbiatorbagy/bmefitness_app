@@ -1,14 +1,13 @@
 function Sync()
 {
 	console.log("Sync - start");
-	 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+	 window.requestFileSystem(window.TEMPORARY, 0, onFileSystemSuccess, fail);
 	
 	
 }
 
 function onFileSystemSuccess(fs) {
-        console.log("FileSystem : "+fs.name);
-        console.log("Root name : "+fs.root.name);
+        console.log("FileSystem OK");
        	
        	var dirReader = fs.root.createReader();
   		var entries = [];
