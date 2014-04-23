@@ -9,9 +9,9 @@ function Sync()
 function onFileSystemSuccess(fileSystem) {
         console.log("FileSystem : "+fileSystem.name);
         console.log("Root name : "+fileSystem.root.name);
-        console.log(fileSystem.root.fullPath + "/db/");
-        window.resolveLocalFileSystemURI(fileSystem.root.fullPath + "/db/", getDirSuccess, fail);
-        //fileSystem.root.getDirectory("/db/", {create: false, exclusive: false}, getDirSuccess, fail);
+        console.log(fileSystem.root.fullPath + "db/");
+       	//window.resolveLocalFileSystemURI(fileSystem.root.fullPath + "db/", getDirSuccess, fail);
+        fileSystem.root.getDirectory("/db/", {create: false, exclusive: false}, getDirSuccess, fail);
     }
 
 
@@ -48,3 +48,48 @@ function fail(error) {
 
     console.log("File ERROR : " + error.code+" / " + desc[error.code]);
 }
+
+
+
+    
+function DirectoryReader(localURL) {
+    this.localURL = localURL || null;
+    this.hasReadEntries = false;
+}
+
+DirectoryReader.prototype.readEntries = function(successCallback, errorCallback) 
+{
+	if (this.hasReadEntries) 
+		{
+        	successCallback([]);
+        	return;
+    	}
+    var reader = this;
+    var win = typeof successCallback !== 'function' ? null : function(result) {
+        var retVal = [];
+        for (var i=0; i<result.length; i++) {
+            var entry = null;
+            if (result[i].isDirectory) {
+                entry = new (require('./DirectoryEntry'))();
+            }
+            else if (result[i].isFile) {
+                entry = new (require('./FileEntry'))();
+            }
+            entry.isDirectory = result[i].isDirectory;
+            entry.isFile = result[i].isFile;
+            entry.name = result[i].name;
+            entry.fullPath = result[i].fullPath;
+            entry.filesystem = new (require('./FileSystem'))(result[i].filesystemName);
+            entry.nativeURL = result[i].nativeURL;
+            retVal.push(entry);
+        }
+        reader.hasReadEntries = true;
+        successCallback(retVal);
+    };
+    
+	var fail = typeof errorCallback !== 'function' ? null : function(code) {
+        errorCallback(new FileError(code));
+    };
+    exec(win, fail, "File", "readEntries", [this.localURL]);
+};
+	   
