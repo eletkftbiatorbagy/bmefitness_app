@@ -20,7 +20,7 @@ function onFileSystemSuccess(fs) {
 				entries = entries.concat(toArray(results));
 				readEntries();
 			  }
-			}, errorHandler);
+			}, fail);
 		};
 		
 		readEntries();
