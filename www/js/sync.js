@@ -27,11 +27,9 @@ function onFileSystemSuccess(fs) {
 
 
 function listResults(entries) {
-	console.log("listResults");
+	console.log("listResults : " + entries.length);
   entries.forEach(function(entry, i) {
-    var img  = entry.isDirectory ? '[ ' : '  ';
-    var img2 = entry.isDirectory ? '] ' : '  ';
-    console.log(img + entry.name + img2);
+   if (entry.isDirectory) { console.log("[" + entry.name + "]"); } else {console.log(entry.name);}
     
   });
 }
