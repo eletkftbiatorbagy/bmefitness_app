@@ -77,7 +77,7 @@ var app = {
 				}
 			}, 100);
         
-        if (window.device) { Sync(); }
+        
         
         if (StartPage) 
         { Oldal(StartPage,0); }
@@ -94,7 +94,7 @@ var app = {
 		Hammer(document.getElementById("F2")).on("tap", function(event){ Oldal(6,0); });
 		Hammer(document.getElementById("F3")).on("tap", function(event){ Oldal(7,0); });
 		Hammer(document.getElementById("F4")).on("tap", function(event){ Oldal(8,0); });
-		Hammer(document.getElementById("F5")).on("tap", function(event){ Oldal(9,0); });
+		Hammer(document.getElementById("F5")).on("tap", function(event){ Sync(); Oldal(9,0); });
 		
 		
 		var V = document.getElementsByTagName("input");
@@ -217,10 +217,10 @@ function Oldal(oldal,lablec)
 	}
 	if (oldal==1 && !LOGIN) { oldal=11; }
 	
-		var I = document.getElementsByTagName("nav");   console.log("TOTAL: "+I.length);
+		var I = document.getElementsByTagName("nav");   
 		for (var i=0; i<I.length;i++)
 		{
-			I[i].setAttribute("style","height:"+GombH+"px");   console.log(I[i].id);
+			I[i].setAttribute("style","height:"+GombH+"px");   
 		}
 		
 	var A = document.getElementsByTagName("article");
