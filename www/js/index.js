@@ -94,7 +94,7 @@ var app = {
 		Hammer(document.getElementById("F2")).on("tap", function(event){ Oldal(6,0); });
 		Hammer(document.getElementById("F3")).on("tap", function(event){ Oldal(7,0); });
 		Hammer(document.getElementById("F4")).on("tap", function(event){ Oldal(8,0); });
-		Hammer(document.getElementById("F5")).on("tap", function(event){ console.log("oldal9"); Sync(); Oldal(9,0); });
+		Hammer(document.getElementById("F5")).on("tap", function(event){ event.stopPropagation(); Sync(); Oldal(9,0); });
 		
 		
 		var V = document.getElementsByTagName("input");
