@@ -13,7 +13,7 @@ function onFileSystemSuccess(fileSystem) {
     }
 
 
-function Get_Dir(dirEntry)
+function getDirSuccess(dirEntry)
 {
 	var directoryReader = dirEntry.createReader();
 	directoryReader.readEntries(success,fail);
