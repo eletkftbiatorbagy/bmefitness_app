@@ -9,11 +9,11 @@ function Sync()
 function onFileSystemSuccess(fileSystem) {
         console.log("FileSystem : "+fileSystem.name);
         console.log("Root name : "+fileSystem.root.name);
-        Get_Dir("./db");
+        fileSystem.root.getDirectory("db/", {create: false, exclusive: false}, getDirSuccess, fail);
     }
 
 
-function Get_Dir(DIR)
+function Get_Dir(dirEntry)
 {
 	var directoryReader = dirEntry.createReader();
 	directoryReader.readEntries(success,fail);
