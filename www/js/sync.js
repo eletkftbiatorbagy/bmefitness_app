@@ -1,7 +1,7 @@
 function Sync()
 {
 	console.log("Sync - start");
-	 window.requestFileSystem(window.TEMPORARY, 0, onFileSystemSuccess, fail);
+	window.requestFileSystem(window.TEMPORARY, 1024*1024, onFileSystemSuccess, fail);
 	
 	
 }
