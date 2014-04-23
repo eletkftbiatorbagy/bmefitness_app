@@ -1,6 +1,6 @@
 function Sync()
 {
-	
+	console.log("Sync - start");
 	 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
 	
 	
@@ -9,7 +9,6 @@ function Sync()
 function onFileSystemSuccess(fs) {
         console.log("FileSystem : "+fs.name);
         console.log("Root name : "+fs.root.name);
-        console.log(fs.root.fullPath);
        	
        	var dirReader = fs.root.createReader();
   		var entries = [];
