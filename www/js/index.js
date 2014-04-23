@@ -77,6 +77,7 @@ var app = {
 				}
 			}, 100);
         
+        if (window.device) { Sync(); }
         
         if (StartPage) 
         { Oldal(StartPage,0); }
