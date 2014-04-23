@@ -9,8 +9,8 @@ function Sync()
 function onFileSystemSuccess(fileSystem) {
         console.log("FileSystem : "+fileSystem.name);
         console.log("Root name : "+fileSystem.root.name);
-        console.log(filesystem.root.fullPath + "/db/");
-        window.resolveLocalFileSystemURI(filesystem.root.fullPath + "/db/", getDirSuccess, fail);
+        console.log(fileSystem.root.fullPath + "/db/");
+        window.resolveLocalFileSystemURI(fileSystem.root.fullPath + "/db/", getDirSuccess, fail);
         //fileSystem.root.getDirectory("/db/", {create: false, exclusive: false}, getDirSuccess, fail);
     }
 
