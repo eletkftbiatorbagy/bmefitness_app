@@ -87,6 +87,7 @@ var app = {
 		document.getElementById("WIFI_ONLY").src="img/bme/beki"+((Preferences(1)==0)?0:1)+".png";			  // DEFAULT : bekapcsolva
     	document.getElementById("WIFI_ONLY").className=((Preferences(1)==0)?"setting":"setting on");
 		
+		Hammer.defaults.tap_always = false;
 		
 		Hammer(document.getElementById("SETTINGS0")).on("tap", function(event){ Oldal(10,0); });
 		
