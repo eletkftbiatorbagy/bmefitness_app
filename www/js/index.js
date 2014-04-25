@@ -1,5 +1,5 @@
 const StartPage=null;      ///  DEVELOPMENT......................................................................................
-const AJAX_URL = "http://e-let.hu/fitness/";
+const AJAX_URL = "http://fajlbank.hu/";
 const OldalSzam = 14;   //  ennyi lap van definiálva a .html fájlban
 var LOGIN = false;
 var REGISZTRALVA = false;
