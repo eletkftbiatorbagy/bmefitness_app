@@ -6,6 +6,7 @@ function Sync()
 	SyncStarted=true;
 	
 	callback = function(response) { GetRemoteDirs('AJAX_LOGIN',response); } ;
+	console.log("ajax jön");
 	ajax_hivas(AJAX_URL +'login_get.php','', 'callback' ,'AJAX_LOGIN'); 
 }
 
