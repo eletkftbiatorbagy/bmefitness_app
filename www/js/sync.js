@@ -5,7 +5,7 @@ function Sync()
 	if (SyncStarted) { return; }
 	SyncStarted=true;
 	
-	callback = function(response) { GetRemoteDirs('AJAX_LOGIN',response); } 
+	callback = function(response) { GetRemoteDirs('AJAX_LOGIN',response); } ;
 	ajax_hivas(AJAX_URL +'login_get.php','', 'callback' ,'AJAX_LOGIN'); 
 }
 
@@ -14,6 +14,7 @@ var RemoteDirs;
 function GetRemoteDirs(DOMelement,response)
 {
 	if (!response) { return; }
+	console.log("ajax response : "+response);
 	RemoteDirs = JSON.parse(response);
 	FreeCallback(DOMelement);
 	
