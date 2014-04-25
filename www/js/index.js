@@ -178,8 +178,8 @@ var app = {
     
 		EMAIL = window.localStorage.getItem("email");
 		if (!EMAIL) { document.getElementById("LOGINTXT").innerHTML="Tovább >>>"; }
-		callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
-		ajax_hivas(AJAX_URL +'login_get.php','', 'callback' ,'AJAX_LOGIN'); 
+		///callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
+		///ajax_hivas(AJAX_URL +'login_get.php','', 'callback' ,'AJAX_LOGIN'); 
 		
     }};
    //   ooDeviceReady vége ================================================================================================================================================= 
