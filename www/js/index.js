@@ -87,7 +87,7 @@ var app = {
 		document.getElementById("WIFI_ONLY").src="img/bme/beki"+((Preferences(1)==0)?0:1)+".png";			  // DEFAULT : bekapcsolva
     	document.getElementById("WIFI_ONLY").className=((Preferences(1)==0)?"setting":"setting on");
 		
-		Hammer.defaults.tap_always = false;
+		//Hammer.defaults.tap_always = false;
 		
 		Hammer(document.getElementById("SETTINGS0")).on("tap", function(event){ Oldal(10,0); });
 		
@@ -95,7 +95,7 @@ var app = {
 		Hammer(document.getElementById("F2")).on("tap", function(event){ Oldal(6,0); });
 		Hammer(document.getElementById("F3")).on("tap", function(event){ Oldal(7,0); });
 		Hammer(document.getElementById("F4")).on("tap", function(event){ Oldal(8,0); });
-		Hammer(document.getElementById("F5")).on("tap", function(event){  Sync(); Oldal(9,0); event.stopPropagation(); event.preventDefault(); }); 
+		Hammer(document.getElementById("F5")).on("tap", function(event){  Sync(); Oldal(9,0); }); 
 		//Hammer(document.getElementById("F5")).on("click", function(event){ event.preventDefault(); });
 		
 		
@@ -178,8 +178,8 @@ var app = {
     
 		EMAIL = window.localStorage.getItem("email");
 		if (!EMAIL) { document.getElementById("LOGINTXT").innerHTML="Tovább >>>"; }
-		///callback = function(response) { Login_adatok('AJAX_LOGIN',response); } 
-		///ajax_hivas(AJAX_URL +'login_get.php','', 'callback' ,'AJAX_LOGIN'); 
+		callback = function(response) { Login_adatok('AJAX_LOGIN',response); }; 
+		ajax_hivas(AJAX_URL +'get_server_dir.php','', 'callback' ,'AJAX_LOGIN',0); 
 		
     }};
    //   ooDeviceReady vége ================================================================================================================================================= 
@@ -187,6 +187,17 @@ var app = {
    
 var LastPage=[0];			// első oldal száma
 var LastLablec=[0];			// első oldal lábléce
+
+
+function Login_adatok(DOM,response)
+{
+	var obj = eval(response);
+	for(var name in obj) 
+	{
+    	console.log(name+" = "+ JSON.parse(obj[name])[0]);
+	}
+	
+}
 
 
 var map;
