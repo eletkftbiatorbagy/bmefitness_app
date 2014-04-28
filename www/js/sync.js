@@ -1,9 +1,9 @@
-var SyncStarted=false;
+var SzinkronStart=false;
 
 function Szinkron()
 {
-	if (SyncStarted) { return; }
-	SyncStarted=true;
+	if (SzinkronStart) { return; }
+	SzinkronStart=true;
 	
 	callback = function(response) { GetRemoteDirs('AJAX_LOGIN',response); } ;
 	console.log("ajax jön: "+AJAX_URL);
