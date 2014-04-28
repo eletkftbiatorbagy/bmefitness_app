@@ -35,7 +35,7 @@ function GetRemoteDirs(DOMelement,response)
 	RemoteDirs = eval(response);
 	FreeCallback(DOMelement);
 	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-	window.requestFileSystem(window.PERSISTENT, 0, function (fs) { StartScanning_OLD(); } , fail);
+	window.requestFileSystem(window.PERSISTENT, 0, function (fs) { StartScanning_OLD(fs); } , fail);
 }
 
 var szinkronizalni = [];
