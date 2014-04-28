@@ -67,7 +67,7 @@ function StartScanning(fs)
 
 function listResults(entries) {
   	entries.forEach(function(entry, i) {
-   if (entry.isDirectory) { console.log("[" + entry.name + "]"); } else {console.log(entry.name);}
+   if (entry.isDirectory) { console.log("[" + entry.name + "]  "+entry.size); } else {console.log(entry.name);}
     
   });
 }
