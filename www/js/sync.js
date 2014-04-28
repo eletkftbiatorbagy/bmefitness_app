@@ -34,7 +34,7 @@ function GetRemoteDirs(DOMelement,response)
 	if (!response) { return; }
 	RemoteDirs = eval(response);
 	FreeCallback(DOMelement);
-	
+	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 	window.requestFileSystem(window.PERSISTENT, 0, function (fs) { Keres(fs,''); } , fail);
 }
 
@@ -43,53 +43,53 @@ var szinkronizalni = [];
 function Keres(fs, konyvtar)
 {
 	fs.root.getFile('db/valami1.txt', {create: true}, null, fail);
-	fs.root.getDirectory(konyvtar, { create: false },
-		function(directory) { 
-			var dirReader = directory.createReader();
-			var readEntries = function()
-			{
-				dirReader.readEntries (function(results) 
-					 {
-					  if (!results.length) 
-					  {		
-						SzinkronStart(szinkronizalni);
-					  } 
-					  else 
-					  {						
-						for (var F in results)
-						{
-							console.log(F.name);
-							// if (F.isDirectory) 
-// 							{
-// 								if (RemoteDirs.indexOf(F.name)==-1)
-// 								{
-// 									console.log('Könyvtárt törölni : '+F.name);
-// 								}
-// 								else
-// 								{
-// 									console.log('Könyvtár rendben '+F.name);
-// 								}
-// 							}
-// 							else  // fájl
-// 							{
-// 								var parentDir = F.getParent.name;
-// 								if (RemoteDirs[parentDir].indexOf(F.name)==-1)
-// 								{
-// 									console.log('Fájlt törölni : '+F.name);
-// 								}
-// 								else
-// 								{
-// 									console.log('Fájl rendben '+F.name);
-// 								}
-//							}
-						}
-						readEntries();
-					  }
-					}, fail);
-				};
-			readEntries();
-		
-		},fail);
+	// fs.root.getDirectory(konyvtar, { create: false },
+// 		function(directory) { 
+// 			var dirReader = directory.createReader();
+// 			var readEntries = function()
+// 			{
+// 				dirReader.readEntries (function(results) 
+// 					 {
+// 					  if (!results.length) 
+// 					  {		
+// 						SzinkronStart(szinkronizalni);
+// 					  } 
+// 					  else 
+// 					  {						
+// 						for (var F in results)
+// 						{
+// 							console.log(F.name);
+// 							// if (F.isDirectory) 
+// // 							{
+// // 								if (RemoteDirs.indexOf(F.name)==-1)
+// // 								{
+// // 									console.log('Könyvtárt törölni : '+F.name);
+// // 								}
+// // 								else
+// // 								{
+// // 									console.log('Könyvtár rendben '+F.name);
+// // 								}
+// // 							}
+// // 							else  // fájl
+// // 							{
+// // 								var parentDir = F.getParent.name;
+// // 								if (RemoteDirs[parentDir].indexOf(F.name)==-1)
+// // 								{
+// // 									console.log('Fájlt törölni : '+F.name);
+// // 								}
+// // 								else
+// // 								{
+// // 									console.log('Fájl rendben '+F.name);
+// // 								}
+// //							}
+// 						}
+// 						readEntries();
+// 					  }
+// 					}, fail);
+// 				};
+// 			readEntries();
+// 		
+// 		},fail);
 }
 
 
