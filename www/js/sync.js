@@ -1,6 +1,6 @@
 var SyncStarted=false;
 
-function Sync()
+function Szinkron()
 {
 	if (SyncStarted) { return; }
 	SyncStarted=true;

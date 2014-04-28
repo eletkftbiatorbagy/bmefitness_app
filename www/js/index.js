@@ -95,7 +95,7 @@ var app = {
 		Hammer(document.getElementById("F2")).on("tap", function(event){ Oldal(6,0); });
 		Hammer(document.getElementById("F3")).on("tap", function(event){ Oldal(7,0); });
 		Hammer(document.getElementById("F4")).on("tap", function(event){ Oldal(8,0); });
-		Hammer(document.getElementById("F5")).on("tap", function(event){  Sync(); Oldal(9,0); }); 
+		Hammer(document.getElementById("F5")).on("tap", function(event){  Szinkron(); Oldal(9,0); }); 
 		//Hammer(document.getElementById("F5")).on("click", function(event){ event.preventDefault(); });
 		
 		
