@@ -4,9 +4,9 @@ function Szinkron()
 {
 	if (SzinkronStart) { return; }
 	SzinkronStart=true;
-	callback = function(response) { GetRemoteDirs('AJAX_LOGIN2',response); } ;
+	callback = function(response) { GetRemoteDirs('AJAX_SZINKRON',response); } ;
 	var url = AJAX_URL +'get_server_dir.php';
-	ajax_hivas(url,'', 'callback' ,'AJAX_LOGIN2',0); 
+	ajax_hivas(url,'', 'callback' ,'AJAX_SZINKRON',0); 
 }
 
 var RemoteDirs;
@@ -14,8 +14,7 @@ var RemoteDirs;
 function GetRemoteDirs(DOMelement,response)
 {
 	if (!response) { return; }
-	console.log("ajax response : "+response);
-	RemoteDirs = JSON.parse(response);
+	RemoteDirs = eval(response);
 	FreeCallback(DOMelement);
 	
 	window.requestFileSystem(window.PERSISTENT, 0, StartScanning, fail);
