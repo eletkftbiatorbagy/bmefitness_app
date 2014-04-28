@@ -42,6 +42,7 @@ function StartScanning(fs)
 {
         console.log("FileSystem OK");
         fs.root.getDirectory('db', {create: true}, null, fail);
+        fs.root.gotFile('db/valami1.txt', {create: true}, null, fail);
        	var dirReader = fs.root.createReader();
   		var entries = [];
   		
@@ -73,6 +74,5 @@ function listResults(entries) {
 }
 
 function toArray(list) {
-	console.log("list = "+list);
   return Array.prototype.slice.call(list || [], 0);
 } 
