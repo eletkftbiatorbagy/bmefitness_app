@@ -42,7 +42,7 @@ var szinkronizalni = [];
 
 function Keres(fs, konyvtar)
 {
-	fs.root.gotFile('db/valami1.txt', {create: true}, null, fail);
+	fs.root.getFile('db/valami1.txt', {create: true}, null, fail);
 	fileSystem.root.getDirectory(konvtar, { create: false },
 		function(directory) { 
 			var dirReader = directory.createReader();
