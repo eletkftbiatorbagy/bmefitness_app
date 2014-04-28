@@ -35,12 +35,74 @@ function GetRemoteDirs(DOMelement,response)
 	RemoteDirs = eval(response);
 	FreeCallback(DOMelement);
 	
-	window.requestFileSystem(window.PERSISTENT, 0, StartScanning, fail);
+	window.requestFileSystem(window.PERSISTENT, 0, function (fs) { Keres(fs,''); } , fail);
 }
 
-function StartScanning(fs) 
+var szinkronizalni = [];
+
+function Keres(fs, konyvtar)
 {
-        console.log("FileSystem OK");
+	fs.root.gotFile('db/valami1.txt', {create: true}, null, fail);
+	fileSystem.root.getDirectory(konvtar, { create: false },
+		function(directory) { 
+			var dirReader = directory.createReader();
+			var readEntries = function()
+			{
+				dirReader.readEntries (function(results) 
+					 {
+					  if (!results.length) 
+					  {		
+						SzinkronStart(szinkronizalni);
+					  } 
+					  else 
+					  {						
+						for (var F in results)
+						{
+							if (F.isDirectory) 
+							{
+								if (RemoteDirs.indexOf(F.name)==-1)
+								{
+									console.log('Könyvtárt törölni : '+F.name);
+								}
+								else
+								{
+									console.log('Könyvtár rendben '+F.name);
+								}
+							}
+							else  // fájl
+							{
+								var parentDir = F.getParent.name;
+								if (RemoteDirs[parentDir].indexOf(F.name)==-1)
+								{
+									console.log('Fájlt törölni : '+F.name);
+								}
+								else
+								{
+									console.log('Fájl rendben '+F.name);
+								}
+							}
+						}
+						readEntries();
+					  }
+					}, fail);
+				};
+			readEntries();
+		
+		},fail);
+		
+	
+	
+	
+	
+	
+	
+	
+		
+}
+
+
+function StartScanning_OLD(fs) 
+{
         fs.root.getDirectory('db', {create: true}, null, fail);
         fs.root.gotFile('db/valami1.txt', {create: true}, null, fail);
        	var dirReader = fs.root.createReader();
