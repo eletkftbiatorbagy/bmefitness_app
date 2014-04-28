@@ -58,29 +58,30 @@ function Keres(fs, konyvtar)
 					  {						
 						for (var F in results)
 						{
-							if (F.isDirectory) 
-							{
-								if (RemoteDirs.indexOf(F.name)==-1)
-								{
-									console.log('Könyvtárt törölni : '+F.name);
-								}
-								else
-								{
-									console.log('Könyvtár rendben '+F.name);
-								}
-							}
-							else  // fájl
-							{
-								var parentDir = F.getParent.name;
-								if (RemoteDirs[parentDir].indexOf(F.name)==-1)
-								{
-									console.log('Fájlt törölni : '+F.name);
-								}
-								else
-								{
-									console.log('Fájl rendben '+F.name);
-								}
-							}
+							console.log(F.name);
+							// if (F.isDirectory) 
+// 							{
+// 								if (RemoteDirs.indexOf(F.name)==-1)
+// 								{
+// 									console.log('Könyvtárt törölni : '+F.name);
+// 								}
+// 								else
+// 								{
+// 									console.log('Könyvtár rendben '+F.name);
+// 								}
+// 							}
+// 							else  // fájl
+// 							{
+// 								var parentDir = F.getParent.name;
+// 								if (RemoteDirs[parentDir].indexOf(F.name)==-1)
+// 								{
+// 									console.log('Fájlt törölni : '+F.name);
+// 								}
+// 								else
+// 								{
+// 									console.log('Fájl rendben '+F.name);
+// 								}
+//							}
 						}
 						readEntries();
 					  }
@@ -89,15 +90,12 @@ function Keres(fs, konyvtar)
 			readEntries();
 		
 		},fail);
-		
+}
+
+
+function SzinkronStart()
+{
 	
-	
-	
-	
-	
-	
-	
-		
 }
 
 
