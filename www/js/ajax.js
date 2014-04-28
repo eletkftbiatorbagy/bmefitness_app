@@ -1,4 +1,4 @@
-function ajax_hivas(url,params,callback,DOM,DELETE_msec=1000)
+function ajax_hivas(url,params,callback,DOM,DELETE_msec)
 {
 				if (network_status=='nincs') { return; }
 				url =  url + "?random="+Math.random() + params + "&callback="+callback; 
@@ -7,7 +7,7 @@ function ajax_hivas(url,params,callback,DOM,DELETE_msec=1000)
 				script.setAttribute("id",DOM);
 				script.setAttribute('src', url);
 				document.getElementsByTagName('head')[0].appendChild(script);
-				if (DELETE_msec != 0) { setTimeout( function() { FreeCallback(DOM); }  ,DELETE_msec); } 
+				if (DELETE_msec != 0) { setTimeout( function() { FreeCallback(DOM); }  ,DELETE_msec || 1000); } 
 }
 
 function FreeCallback(DOM)

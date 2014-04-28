@@ -4,10 +4,9 @@ function Szinkron()
 {
 	if (SzinkronStart) { return; }
 	SzinkronStart=true;
-	
-	callback = function(response) { GetRemoteDirs('AJAX_LOGIN',response); } ;
-	console.log("ajax jön: "+AJAX_URL);
-	ajax_hivas(AJAX_URL +'get_server_dir.php','', 'callback' ,'AJAX_LOGIN'); 
+	callback = function(response) { GetRemoteDirs('AJAX_LOGIN2',response); } ;
+	var url = AJAX_URL +'get_server_dir.php';
+	ajax_hivas(url,'', 'callback' ,'AJAX_LOGIN2',0); 
 }
 
 var RemoteDirs;

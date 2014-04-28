@@ -95,7 +95,7 @@ var app = {
 		Hammer(document.getElementById("F2")).on("tap", function(event){ Oldal(6,0); });
 		Hammer(document.getElementById("F3")).on("tap", function(event){ Oldal(7,0); });
 		Hammer(document.getElementById("F4")).on("tap", function(event){ Oldal(8,0); });
-		Hammer(document.getElementById("F5")).on("tap", function(event){ Szinkron(); Oldal(9,0); }); 
+		Hammer(document.getElementById("F5")).on("tap", function(event){ SZINKRON(); Oldal(9,0); }); 
 		//Hammer(document.getElementById("F5")).on("click", function(event){ event.preventDefault(); });
 		
 		
@@ -188,6 +188,11 @@ var app = {
 var LastPage=[0];			// első oldal száma
 var LastLablec=[0];			// első oldal lábléce
 
+
+function SZINKRON()
+{
+	Szinkron();
+}
 
 function Login_adatok(DOM,response)
 {
