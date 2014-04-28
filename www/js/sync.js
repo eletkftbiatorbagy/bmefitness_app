@@ -35,7 +35,7 @@ function GetRemoteDirs(DOMelement,response)
 	RemoteDirs = eval(response);
 	FreeCallback(DOMelement);
 	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-	window.requestFileSystem(window.PERSISTENT, 0, function (fs) { Keres(fs,''); } , fail);
+	window.requestFileSystem(window.PERSISTENT, 0, function (fs) { StartScanning_OLD(); } , fail);
 }
 
 var szinkronizalni = [];
@@ -101,8 +101,6 @@ function SzinkronStart()
 
 function StartScanning_OLD(fs) 
 {
-        fs.root.getDirectory('db', {create: true}, null, fail);
-        fs.root.gotFile('db/valami1.txt', {create: true}, null, fail);
        	var dirReader = fs.root.createReader();
   		var entries = [];
   		
