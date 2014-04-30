@@ -38,9 +38,16 @@ function GetRemoteDirs(DOMelement,response)
 	// // 	window.requestFileSystem(window.PERSISTENT, 0, function (fs) { StartScanning_OLD(fs); } , fail);
 	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 	
-	navigator.webkitPersistentStorage.requestQuota( 1024*1024, function(grantedBytes) {gotFS(grantedBytes);}, 
+	if (window.device)
+	{
+		gotFs(1024*1024);
+	}
+	else
+	{
+		navigator.webkitPersistentStorage.requestQuota( 1024*1024, function(grantedBytes) {gotFS(grantedBytes);}, 
 			function hiba2(e){fail(e);}
 		);
+	}	
 }
 
 function gotFS(grantedBytes) {  console.log(grantedBytes);
