@@ -63,12 +63,7 @@ function Keres(fs, konyvtar)
 {
 	console.log("getfile:");
 	fs.root.getFile('valami1.txt', {create:true}, function(){console.log('Sikeres fájl létrehozás!');}, function hiba3(e){fail(e);});
-	navigator.webkitPersistentStorage.queryUsageAndQuota( 
-		function(used, remaining) {
-		  console.log("Used quota: " + used + ", remaining quota: " + remaining);
-		}, function(e) {
-		  console.log('Error', e); 
-		} );
+	
 	// fs.root.getDirectory(konyvtar, { create: false },
 // 		function(directory) { 
 // 			var dirReader = directory.createReader();
