@@ -40,7 +40,7 @@ function GetRemoteDirs(DOMelement,response)
 	
 	if (window.device)
 	{
-		gotFs(1024*1024);
+		window.requestFileSystem(PERSISTENT,1024*1024, function(fs) { Keres(fs,'')} , function hiba1(e){fail(e);} );
 	}
 	else
 	{
