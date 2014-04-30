@@ -749,22 +749,6 @@ function onPhotoDataSuccess(imageData) {
 	AVATAR = "data:image/jpeg;base64," + imageData;
 }
 
-function network_status() {
-			if (!window.device)  { return "PC"; }
-            var networkState = navigator.connection.type;
-
-            var states = {};
-            states[Connection.UNKNOWN]  = '???';
-            states[Connection.ETHERNET] = 'Vezetékes';
-            states[Connection.WIFI]     = 'WiFi';
-            states[Connection.CELL_2G]  = 'Mobil';
-            states[Connection.CELL_3G]  = 'Mobil';
-            states[Connection.CELL_4G]  = 'Mobil';
-            states[Connection.CELL]     = 'Mobil';
-            states[Connection.NONE]     = 'nincs';
-            return states[networkState];
-} 
-
 function LoginButton()
 {
 	if (!EMAIL) { Oldal(13,0); }

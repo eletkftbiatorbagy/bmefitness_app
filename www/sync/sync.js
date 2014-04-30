@@ -1,21 +1,7 @@
 var SzinkronStart=false;
 
 function fail(error) {
-	var desc={};
-	desc[FileError.NOT_FOUND_ERR]="File not found";
-	desc[FileError.SECURITY_ERR]="Security error";
-	desc[FileError.ABORT_ERR]="Abort error";
-	desc[FileError.NOT_READABLE_ERR]="File not readable";
-	desc[FileError.ENCODING_ERR]="File encoding error";
-	desc[FileError.NO_MODIFICATION_ALLOWED_ERR]="No file modification allowed";
-	desc[FileError.INVALID_STATE_ERR]="Invalid state";
-	desc[FileError.SYNTAX_ERR]="Syntax error";
-	desc[FileError.INVALID_MODIFICATION_ERR]="Invalid modification error";
-	desc[FileError.QUOTA_EXCEEDED_ERR]="Quota exceeded";
-	desc[FileError.TYPE_MISMATCH_ERR]="Type mismatch";
-	desc[FileError.PATH_EXISTS_ERR]="Path exists";
-	description = desc[error.code] || "Ismeretlen hiba";
-    console.log("File ERROR : " + error.code+": "+description+" / " + error.message);
+	console.log("File ERROR : "+error.name+" / " + error.message);
 }
 
 function Szinkron()
@@ -34,21 +20,18 @@ function GetRemoteDirs(DOMelement,response)
 	if (!response) { return; }
 	RemoteDirs = eval(response);
 	FreeCallback(DOMelement);
-	// // window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-	// // 	window.requestFileSystem(window.PERSISTENT, 0, function (fs) { StartScanning_OLD(fs); } , fail);
 	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 	
 	navigator.webkitPersistentStorage.requestQuota( 1024*1024, function(grantedBytes) {gotFS(grantedBytes);}, 
 			function hiba2(e){fail(e);}
 		);
+	
+	
 }
 
 function gotFS(grantedBytes) {  console.log(grantedBytes);
 		 							 window.requestFileSystem(PERSISTENT, grantedBytes, function(fs) { Keres(fs,'')} , function hiba1(e){fail(e);} );
 		 					 }
-
-
-
 
 var szinkronizalni = [];
 
@@ -120,6 +103,7 @@ function SzinkronStart()
 
 function StartScanning_OLD(fs) 
 {
+		console.log('start scanning...');
        	var dirReader = fs.root.createReader();
   		var entries = [];
   		

@@ -28,40 +28,28 @@ function Szinkron()
 }
 
 var RemoteDirs;
+var cs = new ChromeStore( [{path: 'videos/clips'}, 
+    {path: 'audio/wav', callback: function(){console.log('finished creating audio/wav folder tree')}}] );
 
 function GetRemoteDirs(DOMelement,response)
 {
 	if (!response) { return; }
 	RemoteDirs = eval(response);
 	FreeCallback(DOMelement);
-	// // window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-	// // 	window.requestFileSystem(window.PERSISTENT, 0, function (fs) { StartScanning_OLD(fs); } , fail);
-	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 	
-	navigator.webkitPersistentStorage.requestQuota( 1024*1024, function(grantedBytes) {gotFS(grantedBytes);}, 
-			function hiba2(e){fail(e);}
-		);
+	
+	
+	cs.init(1024*1024, function(cstore){
+    console.log('Chromestore initialized');
+});
 }
-
-function gotFS(grantedBytes) {  console.log(grantedBytes);
-		 							 window.requestFileSystem(PERSISTENT, grantedBytes, function(fs) { Keres(fs,'')} , function hiba1(e){fail(e);} );
-		 					 }
-
-
-
 
 var szinkronizalni = [];
 
 function Keres(fs, konyvtar)
 {
 	console.log("getfile:");
-	fs.root.getFile('valami1.txt', {create:true}, function(){console.log('Sikeres fájl létrehozás!');}, function hiba3(e){fail(e);});
-	navigator.webkitPersistentStorage.queryUsageAndQuota( 
-		function(used, remaining) {
-		  console.log("Used quota: " + used + ", remaining quota: " + remaining);
-		}, function(e) {
-		  console.log('Error', e); 
-		} );
+	fs.root.getFile('valami1.txt', {}, null, fail);
 	// fs.root.getDirectory(konyvtar, { create: false },
 // 		function(directory) { 
 // 			var dirReader = directory.createReader();
@@ -120,6 +108,7 @@ function SzinkronStart()
 
 function StartScanning_OLD(fs) 
 {
+		console.log('start scanning...');
        	var dirReader = fs.root.createReader();
   		var entries = [];
   		
