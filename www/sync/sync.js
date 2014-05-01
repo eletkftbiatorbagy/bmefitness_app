@@ -30,7 +30,7 @@ function GetRemoteDirs(DOMelement,response)
 }
 
 function gotFS(grantedBytes) {  console.log(grantedBytes);
-		 							 window.requestFileSystem(PERSISTENT, grantedBytes, function(fs) { Keres(fs,'')} , function hiba1(e){fail(e);} );
+		 							 window.requestFileSystem(PERSISTENT, grantedBytes, function(fs) { Keres(fs,'db')} , function hiba1(e){fail(e);} );
 		 					 }
 
 var szinkronizalni = [];
@@ -38,64 +38,65 @@ var szinkronizalni = [];
 function Keres(fs, konyvtar)
 {
 	console.log("getfile:");
-	fs.root.getFile('valami1.txt', {create:true}, function(){console.log('Sikeres fájl létrehozás!');}, function hiba3(e){fail(e);});
+	fs.root.getDirectory(konyvtar,{ create: true }, function(){console.log('Sikeres könyvtár létrehozás!');}, function hiba3(e){fail(e);});
+	fs.root.getFile(konyvtar+'/valami1.txt', {create:true}, function(){console.log('Sikeres fájl létrehozás!');}, function hiba4(e){fail(e);});
 	navigator.webkitPersistentStorage.queryUsageAndQuota( 
 		function(used, remaining) {
 		  console.log("Used quota: " + used + ", remaining quota: " + remaining);
 		}, function(e) {
 		  console.log('Error', e); 
 		} );
-	// fs.root.getDirectory(konyvtar, { create: false },
-// 		function(directory) { 
-// 			var dirReader = directory.createReader();
-// 			var readEntries = function()
-// 			{
-// 				dirReader.readEntries (function(results) 
-// 					 {
-// 					  if (!results.length) 
-// 					  {		
-// 						SzinkronStart(szinkronizalni);
-// 					  } 
-// 					  else 
-// 					  {						
-// 						for (var F in results)
-// 						{
-// 							console.log(F.name);
-// 							// if (F.isDirectory) 
-// // 							{
-// // 								if (RemoteDirs.indexOf(F.name)==-1)
-// // 								{
-// // 									console.log('Könyvtárt törölni : '+F.name);
-// // 								}
-// // 								else
-// // 								{
-// // 									console.log('Könyvtár rendben '+F.name);
-// // 								}
-// // 							}
-// // 							else  // fájl
-// // 							{
-// // 								var parentDir = F.getParent.name;
-// // 								if (RemoteDirs[parentDir].indexOf(F.name)==-1)
-// // 								{
-// // 									console.log('Fájlt törölni : '+F.name);
-// // 								}
-// // 								else
-// // 								{
-// // 									console.log('Fájl rendben '+F.name);
-// // 								}
-// //							}
-// 						}
-// 						readEntries();
-// 					  }
-// 					}, fail);
-// 				};
-// 			readEntries();
-// 		
-// 		},fail);
+	fs.root.getDirectory(konyvtar, { create: false },
+		function(directory) { 
+			var dirReader = directory.createReader();
+			var readEntries = function()
+			{
+				dirReader.readEntries (function(results) 
+					 {
+					  if (!results.length) 
+					  {		
+						SzinkronStart(szinkronizalni);
+					  } 
+					  else 
+					  {						
+						for (var F in results)
+						{
+							console.log(F.name);
+							// if (F.isDirectory) 
+// 							{
+// 								if (RemoteDirs.indexOf(F.name)==-1)
+// 								{
+// 									console.log('Könyvtárt törölni : '+F.name);
+// 								}
+// 								else
+// 								{
+// 									console.log('Könyvtár rendben '+F.name);
+// 								}
+// 							}
+// 							else  // fájl
+// 							{
+// 								var parentDir = F.getParent.name;
+// 								if (RemoteDirs[parentDir].indexOf(F.name)==-1)
+// 								{
+// 									console.log('Fájlt törölni : '+F.name);
+// 								}
+// 								else
+// 								{
+// 									console.log('Fájl rendben '+F.name);
+// 								}
+//							}
+						}
+						readEntries();
+					  }
+					}, fail);
+				};
+			readEntries();
+		
+		},fail);
 }
 
 
-function SzinkronStart()
+function SzinkronStart(files)
 {
 	
 }
