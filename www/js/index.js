@@ -8,6 +8,8 @@ var EMAIL_hash;
 var NEV;
 var AVATAR;
 
+var Szazalek;  			// az oldal magasságának az 1%-a (px)
+
 var BodyHeight;
 var OldalMost;
 var LablecMost;
@@ -113,11 +115,21 @@ var app = {
 		}	
 		
 		var NAV = document.getElementsByTagName("nav");
-		for (var n=0;n<NAV.length; n++)
+		for (n in NAV)
 		{
-			Hammer(NAV[n]).on("tap", function(event){ Nav(this.id); } ); 
+			if (NAV[n].tagName=="NAV")
+			{
+				Hammer(NAV[n]).on("tap", function(event){ Nav(this.id); } );
+				if (NAV[n].parentNode.parentNode.tagName=="ARTICLE") { NAV[n].classList.add("subnav"); }
+			}
 		}	
-    	   	   	
+    	 
+    	var HEA = document.getElementsByTagName("header");
+		for (h in HEA)
+		{
+			if (HEA[h].tagName=="HEADER" && HEA[h].getAttribute("alt")!="") { Hammer(HEA[h]).on("tap", function(event){ Help(this); } );  }
+		} 
+    	 
 		document.addEventListener("backbutton", Vissza, false);
 		
 		Hammer(document.getElementById("LOGINBUTTON")).on("tap", function(event){ LoginButton();  });
@@ -174,7 +186,7 @@ var app = {
         	destinationType=navigator.camera.DestinationType;
 		}
 		
-		console.log('OnDeviceReady fut');
+		console.log('OnDeviceReady fut');    return;
     
 		EMAIL = window.localStorage.getItem("email");
 		if (!EMAIL) { document.getElementById("LOGINTXT").innerHTML="Tovább >>>"; }
@@ -188,7 +200,7 @@ var app = {
    
 var LastPage=[0];			// első oldal száma
 var LastLablec=[0];			// első oldal lábléce
-
+var LastNav=[0];			// első oldal kiválasztott menűje
 
 function Login_adatok(DOM,response)
 {
@@ -212,7 +224,7 @@ function initializeMap() {
             mapOptions);
       }
 
-function Oldal(oldal,lablec)
+function Oldal(oldal,lablec,nav)
 {
 	if (!oldal && oldal!=0) { return; }
 	
@@ -227,20 +239,24 @@ function Oldal(oldal,lablec)
 	else
 	{
 		LastPage.push(oldal);
-		LastLablec.push(lablec);  
+		LastLablec.push(lablec);
+		//LastNav.push(nav);
 	}
 	if (oldal==1 && !LOGIN) { oldal=11; }
 	
 		var I = document.getElementsByTagName("nav");   
 		for (var i=0; i<I.length;i++)
 		{
-			I[i].setAttribute("style","height:"+GombH+"px");   
+			I[i].setAttribute("style","height:"+GombH+"px");
+			I[i].style.display = "block";
+			I[i].style.visibility = "visible";
 		}
 		
 	var A = document.getElementsByTagName("article");
 	for (var a=0; a<A.length;a++)
 	{
 		A[a].style.display="none";
+		A[a].style.paddingTop="20%";
 		if (Scrolls[A[a].id]!=null) { Scrolls[A[a].id].enable();}
 	}
 	
@@ -252,6 +268,7 @@ function Oldal(oldal,lablec)
 	Lablec(oldal,lablec);
 	setTimeout(function(){ Oldal2(oldal,lablec); },1000);
 	OldalMost = oldal;
+	if (nav!=null && nav!="null") { Nav(nav); } else  { LastNav.push(null); }
 }	
 
 function Oldal2(oldal,lablec)
@@ -264,11 +281,12 @@ function Oldal2(oldal,lablec)
 
 function Vissza()
 {
-	if (Anim_Timer2!="") { return;}
+	if (Anim_Timer2!="") { return;}         // a gombok animációja még nem ért véget
 	if (LastPage.length==1) { return; }    // utolsó oldalon vagyunk
 	var LP=LastPage.pop();	  if (!LP){ return; }
 	var LL=LastLablec.pop();
-	Oldal(-1*LastPage[parseInt(LastPage.length-1)],LastLablec[parseInt(LastLablec.length-1)]);
+	var LN=LastNav.pop(); LV=(LastNav[parseInt(LastNav.length-1)])?"-":"";
+	Oldal(-1*LastPage[parseInt(LastPage.length-1)],LastLablec[parseInt(LastLablec.length-1)],LV+LastNav[parseInt(LastNav.length-1)]);
 }
 
 
@@ -305,44 +323,75 @@ function Lablec(oldal,NR)
 
 function Nav(ID)
 {
-		if (ID == NavMost) { return; }
+		if (ID == NavMost ) { return; }
 		NavMost = ID;
-		LastPage.push(OldalMost);
-		LastLablec.push(LablecMost);
-		var lap=1;
-		var NR = ID.substr(ID.search(/\d/));
-		var NEV = ID.substr(0,ID.search(/\d/));
+		var gyors=false;
+		if (ID.substr(0,1)=="-")
+		{
+			ID=ID.substr(1);
+			gyors=true;
+		}
+		else
+		{
+			LastPage.push(OldalMost);
+			LastLablec.push(LablecMost);
+			LastNav.push(ID);
+		}		
+		var gomb=1;
+		//var NR = ID.substr(ID.search(/\d/));
+		//var NEV = ID.substr(0,ID.search(/\d/));
 		var elems = new Array();
 		var delays = new Array();
-		var C = document.getElementById(ID).parentNode.children;
-		var lapok = 0;
-		for (var c=0;c<C.length;c++)
+		var ChildNodes = document.getElementById(ID).parentNode.childNodes;
+		var gombX = 0;
+		var gombC = 0;
+		for (c in ChildNodes)
 		{
-			if (C[c].tagName.toUpperCase()=="NAV") { lapok++; }
-		}
-		while (lap<=lapok)
-		{
-			var I = document.getElementById(NEV+lap);
-			if (NR==lap) 
+			if (ChildNodes[c].tagName=="NAV") 
 			{ 
-				//setTimeout( function() {   },600);
-				 setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','%',parseInt((NR-1)*13),3,80*NR);},700	);
-			}
-			else 
-			{ 
-					elems.push (I);
-					delays.push (lap*10);
-					// I.classList.add("fomenu_animation");
-// 					I.style.animation="kikapcs 0.5s linear 0s 1 normal" ;
-// 					I.style.animationDelay=lap/10+"s";
-// 					I.style.animationFillMode = "forwards";
-// 					I.style.animationPlayState="running";	
+				if (ChildNodes[c].id==ID) 
+				{ 
+					gombX = gomb;  gombC = c;
+					if (!gyors)
+					{
+						setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','px',parseInt((gombX-1)*GombH),parseInt(0*Szazalek),80*gombX);},800	);
+					}
+					else
+					{
+						document.getElementById(ID).style.position="absolute"; document.getElementById(ID).style.top=parseInt(0*Szazalek)+"px";
+					}
+					if (ChildNodes[c].classList.contains("subnav")) 
+					{
+						document.getElementById(ChildNodes[gombC].parentNode.parentNode.id.toLowerCase()).style.visibility="hidden";
+						setTimeout( function() 
+						{
+							document.getElementById(ChildNodes[gombC].parentNode.parentNode.id.toLowerCase()).style.display="none";
+							ChildNodes[gombC].parentNode.parentNode.style.paddingTop=0;
+						},(gyors)?0:800);
+					}
+				}
+				else 
+				{ 
+						elems.push (ChildNodes[c]);
+						delays.push (gomb*10);
+				}
+				gomb++;
 			}	
-			lap++;
 		}
-		animate2(elems,'marginLeft','%',0,100,500,delays); 
-		setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";  },600*(1+Math.max.apply(Math, delays)/100));
-		if (ID=='info7') {  setTimeout( function() { initializeMap();},2000); }
+		if (!gyors)
+		{
+			animate2(elems,'marginLeft','%',0,100,500,delays); 
+			setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";  },parseInt(800+80*gombX));  //600*(1+Math.max.apply(Math, delays)/100));
+		}
+		else
+		{
+			for (e in elems)
+			{
+				elems[e].style.marginLeft="500%";
+				document.getElementById(ID.toUpperCase()).style.display="block";
+			}
+		}
+		if (ID=='info8') {  setTimeout( function() { initializeMap();},2000); }
 		Scrolls['POROND'+OldalMost].scrollTo(0,0,100);
 		Scrolls['POROND'+OldalMost].disable();
 }
@@ -352,12 +401,12 @@ function Nav_OLD(NR)			// hagyományos animáció
 {
 		LastPage.push(OldalMost);
 		LastLablec.push(LablecMost);
-		var lap=1;
-		while (lap<=7)
+		var gomb=1;
+		while (gomb<=7)
 		{
-			if (NR==lap) { lap++; }
-			animate(document.getElementById("i"+lap),'opacity','',1,0,500);
-			lap++;
+			if (NR==gomb) { gomb++; }
+			animate(document.getElementById("i"+gomb),'opacity','',1,0,500);
+			gomb++;
 		}
 		
 }
@@ -396,6 +445,7 @@ function animate2(elems,style,unit,from,to,time,delays) {
 }
 
 function network_status() {
+            if (!window.device) { return "PC"; }
             var networkState = navigator.connection.type;
 
             var states = {};
@@ -419,7 +469,7 @@ function Enter(e)
 }
 
 function hideKeyboard(element) 
-{
+{	return;
     element.setAttribute('readonly', 'readonly'); // Force keyboard to hide on input field.
     element.setAttribute('disabled', 'true'); // Force keyboard to hide on textarea field.
     setTimeout(function() {
@@ -571,7 +621,7 @@ function OrientationReCalc()
         	sH = window.innerHeight;
         	BodyHeight = window.innerHeight;
         }
-        
+        Szazalek = BodyHeight*0.01;
 		for (var n=0;n<=OldalSzam;n++)
 		{
 			document.getElementById("Oldal"+n).style.width = sW+"px";
@@ -802,4 +852,13 @@ function Avatar_mozgat(ev)
 	
 }
 
+function Help(obj)
+{
+	PopUp_HTML(obj.getAttribute("alt"));
+}
 
+function PopUp_HTML(txt,options)
+{
+	document.getElementById("PopUp_txt").innerHTML=txt;
+	document.getElementById("PopUp").style.display="block";	
+}

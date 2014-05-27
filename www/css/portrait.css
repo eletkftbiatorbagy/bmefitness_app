@@ -27,7 +27,7 @@
 }
 
 @font-face {
-    font-family: betu1;
+    font-family: normalBetu;
     src: url("../fonts/Sturkopf.otf") format("opentype");    
     }
 
@@ -39,7 +39,7 @@ body {
     background-color:#262F0E;
     background-attachment:fixed;
     padding:none;
-    font-family:betu1;
+    font-family:normalBetu;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -66,7 +66,7 @@ a{
 	text-align:center;
 	--border:1px solid red;
 }
-.fejlec h1{
+.fejlec header{
 	font-size:4em;
 	text-align-center;
 	float:left;
@@ -108,7 +108,7 @@ a{
 	top:-85%;
 	width:71%;
 	font-size:1.6em;
-	font-family:betu1;
+	font-family:normalBetu;
 	text-align:right;
 }
 
@@ -116,6 +116,7 @@ a{
 	width:100%;
 	height: 74%;
 	left:0px;
+	top:12%;
 	position:absolute;
 	padding-top:2%;
 	overflow-x: hidden;
@@ -236,13 +237,12 @@ p {
 
 .fomenu div img, nav div img{
 	margin-left:3%;
-	--margin-top:3%;
-	--width:100%;
+	max-width:100%;
 	height:130%;
 	margin:0 auto;
 	float:left;	
 }
-.fomenu div h1, nav div h1{
+.fomenu div h1, nav div h1, .subnav div h1{
 	text-align: left;
 	font-size: 2.5em;
 	color:white;
@@ -257,6 +257,21 @@ nav div{
 }
 nav div img{
 	height: 120%;
+}
+.subnav{
+	--margin-top:5%;
+}
+.subnav div{
+	width:95%;
+	min-height:80%;
+	background-color:#7AAEa2;
+}
+.subnav div img{
+
+}
+.subnav div h1{
+	font-family:normalBetu;
+	font-size:2.5em;
 }
 
 /* ----- BEÁLLÍTÁSOK ----------------- */
@@ -353,11 +368,12 @@ nav div img{
 }
 .lap{
 	position: absolute;
-	top:18%;
+	top:0%;
 	font-family: 'Verdana';
 	overflow-y: scroll;
 	width:100%;
 	height:85%;
+	padding-top:20%;
 }
 .lap h1{
 	font-size: 2em;
@@ -380,20 +396,31 @@ article div{
 	--position: absolute;
 }
 
-
-
-.fomenu_animation{
-	animation-play-state:paused;
-	animation-fill-mode:forwards;
-	--webkit-animation-fill-mode: forwards;
+#PopUp{
+	z-index:10;
+	display:none;
+	position: absolute;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	opacity: 0.5;
+	background-color:#0a0a0a;
 }
-@keyframes kikapcs
-{
-from  {opacity:1; margin-left:0%;   display:block;}
-to    {opacity:0; margin-left:100%; display:none;}
+.PopUp_frame{
+	margin:auto;
+	margin-top:25%;
+	width:80%;
+	min-height:25%;
+	display:block;
+	position:relative;
+	background-color:#f0f0f0;
+	border:2px solid #0f0f0f;
+	border-radius: 20px;
+	padding:5%;
 }
-@keyframes fel
-{
-from  { }
-to    { top:3%; }
+#PopUp_txt{
+	font-family: 'Verdana';
+	font-size:2em;
+	line-height:1.2em;
 }
