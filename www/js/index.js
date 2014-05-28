@@ -72,12 +72,13 @@ var app = {
 				for (var p=1;p<=OldalSzam;p++)
 				{
 					Scrolls['POROND'+p] = new iScroll('POROND'+p,{ hScrollbar: false, vScrollbar: false, hScroll: false });
+					
 				}
-				var S = document.getElementsByTagName('article');
-				for (var s=0;s<S.length;s++)
-				{
-					Scrolls[S[s].id]= new iScroll(S[s],{ hScrollbar: false, vScrollbar: false, hScroll: false });
-				}
+				// var S = document.getElementsByTagName('article');
+// 				for (var s=0;s<S.length;s++)
+// 				{
+// 					Scrolls[S[s].id]= new iScroll(S[s],{ hScrollbar: false, vScrollbar: false, hScroll: false });
+// 				}
 			}, 100);
         
         
@@ -277,13 +278,15 @@ function Oldal(oldal,lablec,nav)
 	for (var a=0; a<A.length;a++)
 	{
 		A[a].style.display="none";
-		A[a].style.paddingTop="20%";
+		//A[a].style.paddingTop="20%";
 		if (Scrolls[A[a].id]!=null) { Scrolls[A[a].id].enable();}
 	}
 	
 	for (var n=0;n<=OldalSzam;n++)
 	{
 		document.getElementById("Oldal"+n).style.display=(oldal==n)?"block":"none";
+		var KP = document.getElementById("KISPOROND"+n);
+		if (KP) {KP.style.display="none";}
 	}
 	if (!lablec) { lablec=0; }
 	Lablec(oldal,lablec);
@@ -293,6 +296,7 @@ function Oldal(oldal,lablec,nav)
 	if (window.localStorage.getItem("Hint0")==null)
 	{ Hint("OldalX"); }
 	else {	Hint("Oldal"+oldal); }
+	if (Scrolls['POROND'+oldal]) { Scrolls['POROND'+oldal].refresh();}
 }	
 
 function Oldal2(oldal,lablec)
@@ -403,10 +407,19 @@ function Nav(ID)
 				gomb++;
 			}	
 		}
+		var KP = document.getElementById("KISPOROND"+OldalMost);
+			KP.innerHTML = "<div class='lap'>"+document.getElementById(ID.toUpperCase()).innerHTML+"</div>";
 		if (!gyors)
 		{
 			animate2(elems,'marginLeft','%',0,100,500,delays); 
-			setTimeout(function() {document.getElementById(ID.toUpperCase()).style.display="block";  },parseInt(800+80*gombX));  //600*(1+Math.max.apply(Math, delays)/100));
+			setTimeout(function()
+			{	
+				document.getElementById(ID.toUpperCase()).style.display="block";
+				KP.style.display="block";
+			},parseInt(800+80*gombX));  //600*(1+Math.max.apply(Math, delays)/100));
+			setTimeout(function(){
+				Scrolls["POROND"+OldalMost].refresh();
+			},800+240*gombX);	
 		}
 		else
 		{
@@ -415,10 +428,12 @@ function Nav(ID)
 				elems[e].style.marginLeft="500%";
 				document.getElementById(ID.toUpperCase()).style.display="block";
 			}
+				KP.style.display="block";
+				Scrolls["POROND"+OldalMost].refresh();
 		}
 		if (ID=='info8') {  setTimeout( function() { initializeMap();},2000); }
 		Scrolls['POROND'+OldalMost].scrollTo(0,0,100);
-		Scrolls['POROND'+OldalMost].disable();
+		//Scrolls['POROND'+OldalMost].disable();
 }
 
 
@@ -882,14 +897,14 @@ var PopUpOn;
 
 var HintMost=0;
 var Hints = Array();
-Hints.push( [ "OldalX"			,80,0,20,12,true,	"A logóra kattintva a főmenűbe visszaléphet bármely oldalról." ] );
-Hints.push( [ "-OldalX"			,20,0,60,12,true,	"A fejlécre kattintva rövid leírás nyílik meg az adott oldal funkcióival kapcsolatban." ] );
-Hints.push( [ "-OldalX"			,0,0,20,12,false,	"A visszagombbal az előző oldalra visszaléphet." ] );
-Hints.push( [ "Bevezetes"		,0,100,0,0,true,	"<span style='color:#f5e7c3;'>Üdvözöljük a felhasználóink között!</span><br>Némi segítség a használathoz a következőkben.<br>A lapozáshoz érintse meg a képernyőt." ] );
-Hints.push( [ "Oldal0"			,0,88,25,20,true,	"A teljes körű használathoz be kell jelentkeznie.<br>A bejelentkezés és az ehhez szükséges regisztráció végezhető el a 'Személyes' oldalon."  ] );
-Hints.push( [ "-Oldal0"			,25,88,25,20,true,	"A foglalkozások órarendje érhető el itt.<br>Lehet külön foglalkozás típusra, teremre vagy edzőre leválogatni az időpontokat.<br>Itt tekinthetjük meg a foglalásainkat is." ] );
-Hints.push( [ "-Oldal0"			,50,88,25,20,true,	"Csapatsportoknál - ha nincs ki a létszám - itt lehet társakat toborozni, a csapattagokat a jelentkezők közül kiválogatni.<br>Mások csapatába is itt lehet jelentkezni." ] );
-Hints.push( [ "-Oldal0"			,75,88,25,20,false,	"Az általunk indított foglalások listája időponttal és a viszaigazolás jelzésével." ] );
+Hints.push( [ "OldalX"			,77,0,23,13,true,75,20,		"A logóra kattintva a főmenűbe visszaléphet bármely oldalról." ] );
+Hints.push( [ "-OldalX"			,22,0,57,13,true,50,20,		"A fejlécre kattintva egy rövid leírás nyílik meg az adott oldal funkcióival kapcsolatban." ] );
+Hints.push( [ "-OldalX"			,0,0,22,13,false,25,20,		"A vissza gomb segítségével az előző oldalra léphet vissza." ] );
+Hints.push( [ "Bevezetes"		,0,100,0,0,true,0,0,		"<span style='color:#f5e7c3;'>Üdvözöljük a felhasználóink között!</span><br>Némi segítség a használathoz a következőkben.<br>A lapozáshoz érintse meg a képernyőt." ] );
+Hints.push( [ "Oldal0"			,0,88,25,12,true,25,80,		"A teljes körű használathoz be kell jelentkeznie.<br>A bejelentkezés és az ehhez szükséges regisztráció végezhető el a 'Személyes' oldalon."  ] );
+Hints.push( [ "-Oldal0"			,25,88,25,12,true,45,80,	"A foglalkozások órarendje érhető el itt.<br>Lehet külön foglalkozás típusra, teremre vagy edzőre leválogatni az időpontokat.<br>Itt tekinthetjük meg a foglalásainkat is." ] );
+Hints.push( [ "-Oldal0"			,50,88,25,12,true,65,80,	"Csapatsportoknál - ha nincs ki a létszám - itt lehet társakat toborozni, a csapattagokat a jelentkezők közül kiválogatni.<br>Mások csapatába is itt lehet jelentkezni." ] );
+Hints.push( [ "-Oldal0"			,75,88,25,12,false,85,80,	"Az általunk indított foglalások listája időponttal és a viszaigazolás jelzésével." ] );
 
 
 
@@ -942,25 +957,44 @@ function Hint(hint)
 	var AreaY = Hints[HNR][2];
 	var AreaW = Hints[HNR][3];
 	var AreaH = Hints[HNR][4];
-	var HText = Hints[HNR][6];
+	var NyilX = Hints[HNR][6];
+	var NyilY = Hints[HNR][7];
+	//var Szog  = parseInt(Math.acos(((parseInt(AreaX+AreaW/2)-NyilX)*SzazalekW)/Math.sqrt(Math.pow((parseInt(AreaX+AreaW/2)-NyilX)*SzazalekW,2)+Math.pow((parseInt(AreaY+AreaH/2)-NyilY)*SzazalekH,2)))/Math.PI*360);
+	
+	
+	// document.getElementById("FROM").style.left=parseInt(parseInt(NyilX)*SzazalekW)+"px";
+// 	document.getElementById("FROM").style.top=parseInt(parseInt(NyilY)*SzazalekH)+"px";
+// 	document.getElementById("TO").style.left=parseInt(parseInt(AreaX+AreaW/2)*SzazalekW)+"px";
+// 	document.getElementById("TO").style.top=parseInt(parseInt(AreaY+AreaH/2)*SzazalekH)+"px";
+	
 	if (AreaY < 17 )                  // a gombokat alulra kell rakni
 	{ 
+		//var Szog  = parseInt( Math.atan(      (parseFloat((AreaY+AreaH/2)-NyilY-10)*SzazalekH)   /   (parseFloat((AreaX+AreaW/2)-NyilX+10)*SzazalekW)     )/Math.PI/2*360  );
+		var Szog  = parseInt(-1*Math.acos(((parseFloat(AreaX+AreaW/2)-NyilX)*SzazalekW)/Math.sqrt(Math.pow((parseFloat(AreaX+AreaW/2)-NyilX)*SzazalekW,2)+Math.pow((parseFloat(AreaY+AreaH/2)-NyilY)*SzazalekH,2)))/Math.PI/2*360+90);
+		document.getElementById("NYIL").style.transform="rotate("+Szog+"deg)";
 		document.getElementById("HintBezar").style.top=""; document.getElementById("HintBezar").style.bottom=0;
 		document.getElementById("HintKikapcs").style.top=""; document.getElementById("HintKikapcs").style.bottom=0;
 	}
 	else
 	{
+		var Szog  = parseInt(Math.acos(((parseFloat(AreaX+AreaW/2)-NyilX)*SzazalekW)/Math.sqrt(Math.pow((parseFloat(AreaX+AreaW/2)-NyilX)*SzazalekW,2)+Math.pow((parseFloat(AreaY+AreaH/2)-NyilY)*SzazalekH,2)))/Math.PI/2*360+90);
+		document.getElementById("NYIL").style.transform="rotate("+Szog+"deg)";
 		document.getElementById("HintBezar").style.top=0; document.getElementById("HintBezar").style.bottom="";
 		document.getElementById("HintKikapcs").style.top=0; document.getElementById("HintKikapcs").style.bottom="";
 	}
+	
+	document.getElementById("NYIL").style.left=parseInt(NyilX-10)*SzazalekW+"px";
+	document.getElementById("NYIL").style.top=parseInt(NyilY-10)*SzazalekH+"px";
+	var HText = Hints[HNR][8]+" szog : "+Szog;
+	
 	var T1 = document.getElementById("HT1");
-		T1.style.top=0;  T1.style.left=0; T1.style.width="100%"; T1.style.height = parseInt(AreaY*SzazalekH)+"px";
+		T1.style.top=0;  T1.style.left=0; T1.style.width="100%"; T1.style.height = parseFloat(AreaY*SzazalekH)+"px";
 	var T2 = document.getElementById("HT2");
-		T2.style.top=parseInt(AreaY*SzazalekH)+"px";  T2.style.left=0; T2.style.width=parseInt(AreaX*SzazalekW)+"px"; T2.style.height = parseInt(AreaH*SzazalekH)+"px";
+		T2.style.top=parseFloat(AreaY*SzazalekH)+"px";  T2.style.left=0; T2.style.width=parseFloat(AreaX*SzazalekW)+"px"; T2.style.height = parseFloat(AreaH*SzazalekH)+"px";
 	var T3 = document.getElementById("HT3");
-		T3.style.top=parseInt(AreaY*SzazalekH)+"px";  T3.style.left=parseInt((AreaX+AreaW)*SzazalekW)+"px"; T3.style.width=parseInt((100-AreaX-AreaW)*SzazalekW)+"px"; T3.style.height = parseInt(AreaH*SzazalekH)+"px";
+		T3.style.top=parseFloat(AreaY*SzazalekH)+"px";  T3.style.left=parseFloat((AreaX+AreaW)*SzazalekW)+"px"; T3.style.width=parseFloat((100-AreaX-AreaW)*SzazalekW)+"px"; T3.style.height = parseFloat(AreaH*SzazalekH)+"px";
 	var T4 = document.getElementById("HT4");
-		T4.style.bottom=0;  T4.style.left=0; T4.style.width="100%"; T4.style.height = parseInt((100-AreaY-AreaH)*SzazalekH)+"px";
+		T4.style.bottom=0;  T4.style.left=0; T4.style.width="100%"; T4.style.height = parseFloat((100-AreaY-AreaH)*SzazalekH)+"px";
 	document.getElementById("HintTXT").innerHTML=HText;
 	document.getElementById("Hint").style.display="block";
 	window.localStorage.setItem("Hint"+HNR,true);
