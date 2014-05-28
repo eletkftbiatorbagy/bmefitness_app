@@ -396,7 +396,7 @@ article div{
 	--position: absolute;
 }
 
-#PopUp{
+#Hint,#PopUp{
 	z-index:10;
 	display:none;
 	position: absolute;
@@ -404,8 +404,46 @@ article div{
 	top:0;
 	width:100%;
 	height:100%;
-	opacity: 0.5;
 	background-color:#0a0a0a;
+}
+#Hint { background:none; }
+#HT1,#HT2,#HT3,#HT4,#PopUp { opacity: 0.75; }
+.HintTabla{
+	background-color:#0a0a0a;
+	position: absolute;
+}
+#HintTXT{
+	color:#fcfcfc;
+	position: absolute;
+	left:10%;
+	top:30%;
+	width:80%;
+	height:15%;
+	font: 1.7em Verdana;
+}
+#HintBezar,#HintKikapcs{
+	color:#fcfcfc;
+	border: 2px solid #fcfcfc;
+	position: absolute;
+	right:0;
+	--top:0;
+	width:33%;
+	height:15%;
+	background:#000000;
+	opacity: 1;
+	display: table;
+}
+#HintBezar p, #HintKikapcs p{
+display: table-cell; 
+vertical-align: middle;
+font: bold 1em Verdana;
+text-align:center;
+width:100%;
+
+}
+#HintBezar{
+	right: inherit;
+	left:0;
 }
 .PopUp_frame{
 	margin:auto;
@@ -418,9 +456,21 @@ article div{
 	border:2px solid #0f0f0f;
 	border-radius: 20px;
 	padding:5%;
+	overflow: hidden;
 }
 #PopUp_txt{
 	font-family: 'Verdana';
-	font-size:2em;
+	font-size:1.7em;
 	line-height:1.2em;
+}
+#PopUp_x{
+	position: absolute;
+	right:0;
+	top:0;
+	height:10%;
+	width:10%;
+	padding-top:3%;
+	padding-left:4%;
+	font: bold 1.3em Verdana;
+	color:red;
 }

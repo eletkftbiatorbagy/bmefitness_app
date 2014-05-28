@@ -104,7 +104,7 @@
 			<div id="FEJLEC3" class="fejlec">
 				<div class="menu"><img id="VISSZA3" class="ikon" src="img/bme/menu00.png"/></div>
 				<header 
-					alt="Itt csapattársakat kereshetsz vagy jelentkezhetsz a meghírdetett helyek egyikére. <span style='color:red'>FIGYELEM: A jelentkezés csak akkor érvényes, ha az azt meghírdető személy jóvá is hagyta!"
+					alt="Itt csapattársakat kereshetsz vagy jelentkezhetsz a meghirdetett helyek egyikére. <span style='color:red'><br>FIGYELEM: A jelentkezés csak akkor érvényes, ha az azt meghirdető személy jóvá is hagyta!</span>"
 				>
 				Sporttársak</header>
 				<img id="LOGO3" class="logo" src="img/bme/logo_kicsi.jpg" />
@@ -351,8 +351,8 @@
 					
 					<div class="beall_sor">
 						<div class="blokk">
-							<div class="beallitas">Frissítés csak WiFi kapcsolat esetén </div>
-							<div class="magyarazat">A fotók csak ezen típusú internetkapcsolat esetén frissülnek illetve töltődnek le.</div>
+							<div class="beallitas">Frissítés csak WiFi kapcsolatnál </div>
+							<div class="magyarazat">A fotók csak ezen típusú internetkapcsolat esetén frissülnek illetve töltődnek le.<br>(a használathoz szükséges frissítések ekkor is letöltődnek)</div>
 						</div>
 						<img 	id="WIFI_ONLY" class="setting on" 
 								src="img/bme/beki1.png" 
@@ -361,7 +361,21 @@
 										 Preferences(1,((this.className=='setting on')?1:0));
 										 " />
 					</div>	
-					
+					<div class="beall_sor">
+						<div class="blokk">
+							<div class="beallitas">Tippek megjelenítése</div>
+							<div class="magyarazat">Ha nem akar több tippet látni.<br>Egy tipp csak egyszer jelenik meg, ha újra látni szeretné, állítsa vissza a lenti gombbal.</div>
+						</div>
+						<img 	id="TIPPEK" class="setting on" 
+								src="img/bme/beki1.png" 
+								ontouchstart="this.src=(this.className=='setting on')?'img/bme/beki0.png':'img/bme/beki1.png';
+										 this.className=(this.className=='setting on')?'setting':'setting on';
+										 Preferences(2,((this.className=='setting on')?1:0));
+										 " />
+					</div>
+					<div class="beall_sor">
+						<nav id="TIPPEK_RESET"><div><h1 style="margin-left:0;text-align:center;">Tippek alaphelyzetbe állítása</h1></div></nav>
+					</div>	
 										
 				</div>  <!-- SCROLLER -->	
 			</div>
@@ -498,15 +512,24 @@
 			<div id="LABLEC14" class="lablec"></div>
         </div>
         
+        <div id="Hint">
+        	<div id="HT1" class="HintTabla"></div>
+        	<div id="HT2" class="HintTabla"></div>
+        	<div id="HT3" class="HintTabla"></div>
+        	<div id="HT4" class="HintTabla"></div>
+        	<div id="HintTXT"></div>
+        	<div id="HintBezar"><p>Bezárás</p></div>
+        	<div id="HintKikapcs"><p>Nem kérek több tippet ezen az oldalon</p></div>
+        	
+        </div>
         
         
         <div id="PopUp">
-        	
-				<div class="PopUp_frame">        		
-					<div id="PopUp_txt" class="szoveg"></div>
-					<div class="PopUp_options"></div>
-				</div>	
-        		
+        	<div class="PopUp_frame">        		
+				<div id="PopUp_txt" class="szoveg"></div>
+				<div class="PopUp_options"></div>
+				<div id="PopUp_x">X</div>
+			</div>	
         </div>
         
         

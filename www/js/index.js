@@ -8,7 +8,8 @@ var EMAIL_hash;
 var NEV;
 var AVATAR;
 
-var Szazalek;  			// az oldal magasságának az 1%-a (px)
+var SzazalekH;  			// az oldal magasságának az 1%-a (px)
+var SzazalekW;  			// az oldal szélességének az 1%-a (px)
 
 var BodyHeight;
 var OldalMost;
@@ -84,10 +85,14 @@ var app = {
         if (StartPage) 
         { Oldal(StartPage,0); }
         else 
-        {  Lablec(0,0); }
+        {  Lablec(0,0);  Hint("Bevezetes");}
+       
         		
 		document.getElementById("WIFI_ONLY").src="img/bme/beki"+((Preferences(1)==0)?0:1)+".png";			  // DEFAULT : bekapcsolva
     	document.getElementById("WIFI_ONLY").className=((Preferences(1)==0)?"setting":"setting on");
+    	
+    	document.getElementById("TIPPEK").src="img/bme/beki"+((Preferences(2)==0)?0:1)+".png";			  // DEFAULT : bekapcsolva
+    	document.getElementById("TIPPEK").className=((Preferences(2)==0)?"setting":"setting on");
 		
 		//Hammer.defaults.tap_always = false;
 		
@@ -113,6 +118,9 @@ var app = {
 			Hammer(document.getElementById("VISSZA"+v)).on("tap", function(event){ Vissza(); }); 
 			Hammer(document.getElementById("LOGO"+v)).on("tap", function(event){ Oldal(0,0); });
 		}	
+		Hammer(document.getElementById("PopUp_x")).on("tap", function(event){ PopUp_HTML(null); });
+		Hammer(document.getElementById("PopUp")).on("tap", function(event){ PopUp_HTML(null); });
+		
 		
 		var NAV = document.getElementsByTagName("nav");
 		for (n in NAV)
@@ -178,7 +186,16 @@ var app = {
 					} );
 				});
 	
-	
+		Hammer(document.getElementById("HT1")).on("tap", function(event){ Hint(null); });
+		Hammer(document.getElementById("HT2")).on("tap", function(event){ Hint(null); });
+		Hammer(document.getElementById("HT3")).on("tap", function(event){ Hint(null); });
+		Hammer(document.getElementById("HT4")).on("tap", function(event){ Hint(null); });
+		Hammer(document.getElementById("HintTXT")).on("tap", function(event){ Hint(null); });
+		Hammer(document.getElementById("HintBezar")).on("tap", function(event){ Hint("bezaras"); });
+		Hammer(document.getElementById("HintKikapcs")).on("tap", function(event){ Hint(-1); });
+		
+		
+		
 		if (window.device) 
 		{   	
 			FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });
@@ -193,6 +210,10 @@ var app = {
 		
 		callback = function(response) { Login_adatok('AJAX_LOGIN',response); }; 
 		ajax_hivas(AJAX_URL +'get_server_dir.php','', 'callback' ,'AJAX_LOGIN',0); 
+		
+		
+		
+		
 		
     }};
    //   ooDeviceReady vége ================================================================================================================================================= 
@@ -269,6 +290,9 @@ function Oldal(oldal,lablec,nav)
 	setTimeout(function(){ Oldal2(oldal,lablec); },1000);
 	OldalMost = oldal;
 	if (nav!=null && nav!="null") { Nav(nav); } else  { LastNav.push(null); }
+	if (window.localStorage.getItem("Hint0")==null)
+	{ Hint("OldalX"); }
+	else {	Hint("Oldal"+oldal); }
 }	
 
 function Oldal2(oldal,lablec)
@@ -324,6 +348,7 @@ function Lablec(oldal,NR)
 function Nav(ID)
 {
 		if (ID == NavMost ) { return; }
+		if (ID=="TIPPEK_RESET") { Tippek_Reset(); return; }
 		NavMost = ID;
 		var gyors=false;
 		if (ID.substr(0,1)=="-")
@@ -354,11 +379,11 @@ function Nav(ID)
 					gombX = gomb;  gombC = c;
 					if (!gyors)
 					{
-						setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','px',parseInt((gombX-1)*GombH),parseInt(0*Szazalek),80*gombX);},800	);
+						setTimeout( function() {  document.getElementById(ID).style.position="absolute";animate(document.getElementById(ID),'top','px',parseInt((gombX-1)*GombH),parseInt(0*SzazalekH),80*gombX);},800	);
 					}
 					else
 					{
-						document.getElementById(ID).style.position="absolute"; document.getElementById(ID).style.top=parseInt(0*Szazalek)+"px";
+						document.getElementById(ID).style.position="absolute"; document.getElementById(ID).style.top=parseInt(0*SzazalekH)+"px";
 					}
 					if (ChildNodes[c].classList.contains("subnav")) 
 					{
@@ -621,7 +646,8 @@ function OrientationReCalc()
         	sH = window.innerHeight;
         	BodyHeight = window.innerHeight;
         }
-        Szazalek = BodyHeight*0.01;
+        SzazalekH = BodyHeight*0.01;
+        SzazalekW = sW*0.01;
 		for (var n=0;n<=OldalSzam;n++)
 		{
 			document.getElementById("Oldal"+n).style.width = sW+"px";
@@ -852,6 +878,107 @@ function Avatar_mozgat(ev)
 	
 }
 
+var PopUpOn;
+
+var HintMost=0;
+var Hints = Array();
+Hints.push( [ "OldalX"			,80,0,20,12,true,	"A logóra kattintva a főmenűbe visszaléphet bármely oldalról." ] );
+Hints.push( [ "-OldalX"			,20,0,60,12,true,	"A fejlécre kattintva rövid leírás nyílik meg az adott oldal funkcióival kapcsolatban." ] );
+Hints.push( [ "-OldalX"			,0,0,20,12,false,	"A visszagombbal az előző oldalra visszaléphet." ] );
+Hints.push( [ "Bevezetes"		,0,100,0,0,true,	"<span style='color:#f5e7c3;'>Üdvözöljük a felhasználóink között!</span><br>Némi segítség a használathoz a következőkben.<br>A lapozáshoz érintse meg a képernyőt." ] );
+Hints.push( [ "Oldal0"			,0,88,25,20,true,	"A teljes körű használathoz be kell jelentkeznie.<br>A bejelentkezés és az ehhez szükséges regisztráció végezhető el a 'Személyes' oldalon."  ] );
+Hints.push( [ "-Oldal0"			,25,88,25,20,true,	"A foglalkozások órarendje érhető el itt.<br>Lehet külön foglalkozás típusra, teremre vagy edzőre leválogatni az időpontokat.<br>Itt tekinthetjük meg a foglalásainkat is." ] );
+Hints.push( [ "-Oldal0"			,50,88,25,20,true,	"Csapatsportoknál - ha nincs ki a létszám - itt lehet társakat toborozni, a csapattagokat a jelentkezők közül kiválogatni.<br>Mások csapatába is itt lehet jelentkezni." ] );
+Hints.push( [ "-Oldal0"			,75,88,25,20,false,	"Az általunk indított foglalások listája időponttal és a viszaigazolás jelzésével." ] );
+
+
+
+
+function Hint(hint)
+{
+	if (hint=="bezaras") { document.getElementById("Hint").style.display="none"; PopUpOn=false; return; }			// bezaras gomb
+	if (Preferences(2)=="0" ) { return; }																			  // ha az összes ki van kapcsolva (preferences)
+	if (window.localStorage.getItem("HintKi-"+hint)!=null) {  return; }    // ha az oldal ki van kapcsolva
+	if (hint==-1)				// kikapcsolás ezen a belépési ponton
+	{
+		var Belepes = Hints[HintMost][0];
+		if (Belepes.substr(0,1)=="-") { Belepes=Belepes.substr(1); }
+		window.localStorage.setItem("HintKi-"+Belepes,true);
+		if (HintMost==0) { window.localStorage.setItem("HintKi-Oldal0",true); }     // bevezetésnél a 0. oldalt is ki kell kapcsolni
+		document.getElementById("Hint").style.display="none"; PopUpOn=false;
+		return;
+	}
+	if (hint==null) 			// lapozás
+	{
+		if (Hints[HintMost][5]==false)			// ha nem kell folytatás
+		{ 	document.getElementById("Hint").style.display="none"; PopUpOn=false; return;}
+		else
+		{	Hint(parseInt(HintMost+1)); return;}
+	}
+	else
+	{
+		HNR=hint;
+		if (isNaN(hint))
+		{
+			var HNR=null;
+			for (h in Hints)
+			{
+				if (Hints[h][0]==hint) { HNR=h; }
+			}
+			if (HNR==null)  { return; }                            // az oldalhoz nincs hint hozzárendelve
+			HNR=parseInt(HNR);
+		}
+	}
+	if (window.localStorage.getItem("Hint"+HNR)!=null)               // ha már volt ez a hint
+	{
+	if (Hints[HNR][5]==false)			// ha nem kell folytatás
+		{ 	document.getElementById("Hint").style.display="none"; PopUpOn=false; return;}
+		else
+		{	Hint(parseInt(HNR+1)); return;}
+	}
+	
+	HintMost = HNR;
+	var AreaX = Hints[HNR][1];
+	var AreaY = Hints[HNR][2];
+	var AreaW = Hints[HNR][3];
+	var AreaH = Hints[HNR][4];
+	var HText = Hints[HNR][6];
+	if (AreaY < 17 )                  // a gombokat alulra kell rakni
+	{ 
+		document.getElementById("HintBezar").style.top=""; document.getElementById("HintBezar").style.bottom=0;
+		document.getElementById("HintKikapcs").style.top=""; document.getElementById("HintKikapcs").style.bottom=0;
+	}
+	else
+	{
+		document.getElementById("HintBezar").style.top=0; document.getElementById("HintBezar").style.bottom="";
+		document.getElementById("HintKikapcs").style.top=0; document.getElementById("HintKikapcs").style.bottom="";
+	}
+	var T1 = document.getElementById("HT1");
+		T1.style.top=0;  T1.style.left=0; T1.style.width="100%"; T1.style.height = parseInt(AreaY*SzazalekH)+"px";
+	var T2 = document.getElementById("HT2");
+		T2.style.top=parseInt(AreaY*SzazalekH)+"px";  T2.style.left=0; T2.style.width=parseInt(AreaX*SzazalekW)+"px"; T2.style.height = parseInt(AreaH*SzazalekH)+"px";
+	var T3 = document.getElementById("HT3");
+		T3.style.top=parseInt(AreaY*SzazalekH)+"px";  T3.style.left=parseInt((AreaX+AreaW)*SzazalekW)+"px"; T3.style.width=parseInt((100-AreaX-AreaW)*SzazalekW)+"px"; T3.style.height = parseInt(AreaH*SzazalekH)+"px";
+	var T4 = document.getElementById("HT4");
+		T4.style.bottom=0;  T4.style.left=0; T4.style.width="100%"; T4.style.height = parseInt((100-AreaY-AreaH)*SzazalekH)+"px";
+	document.getElementById("HintTXT").innerHTML=HText;
+	document.getElementById("Hint").style.display="block";
+	window.localStorage.setItem("Hint"+HNR,true);
+	PopUpOn = true;
+}
+
+function Tippek_Reset()
+{
+	for (h in Hints)
+	{
+		if (Hints[h][0].substr(0,1)!="-") { window.localStorage.removeItem("HintKi-"+Hints[h][0]);}    // kikapcsolások
+		window.localStorage.removeItem("Hint"+h);														// megtekintések
+	}
+	Preferences(2,1);
+	document.getElementById("TIPPEK").src="img/bme/beki1.png";			  // DEFAULT : bekapcsolva
+    document.getElementById("TIPPEK").className="setting on";
+}
+
 function Help(obj)
 {
 	PopUp_HTML(obj.getAttribute("alt"));
@@ -859,6 +986,8 @@ function Help(obj)
 
 function PopUp_HTML(txt,options)
 {
+	if (txt==null) { document.getElementById("PopUp").style.display="none"; PopUpOn=false; return;}
+	PopUpOn = true;
 	document.getElementById("PopUp_txt").innerHTML=txt;
 	document.getElementById("PopUp").style.display="block";	
 }
