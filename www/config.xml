@@ -68,10 +68,12 @@
     	<param name="android-package" value="org.apache.cordova.camera.CameraLauncher"/>
     	<param name="ios-package" value="CDVCamera"/>
 	</feature>
+    <!--
     <gap:plugin name="com.phonegap.plugins.facebookconnect">
     	<param name="APP_ID" value="529520623830569"/>
     	<param name="APP_NAME" value="Sütipédia"/>
 	</gap:plugin>
+	-->
 	<gap:plugin name="nl.x-services.plugins.socialsharing"/>
 	<gap:plugin name="com.badrit.emailcomposer"/>
 	<gap:plugin name="com.boyvanderlaak.cordova.plugin.orientationchanger"/>

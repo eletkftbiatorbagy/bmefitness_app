@@ -199,7 +199,7 @@ var app = {
 		
 		if (window.device) 
 		{   	
-			FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });
+			///  FB.init({ appId: "298154397003522", nativeInterface: CDV.FB, useCachedDialogs: false });
 			pictureSource=navigator.camera.PictureSourceType.CAMERA;
         	destinationType=navigator.camera.DestinationType;
 		}
